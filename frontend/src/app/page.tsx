@@ -2,6 +2,7 @@ import { HeroStarsBackground } from "@/components/dashboard/HeroStarsBackground"
 import { StaggeredMenu } from "@/components/navigation/StaggeredMenu";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { FAQSection } from "@/components/sections/FAQSection";
+import { ContactSection } from "@/components/sections/ContactSection";
 
 export default function Home() {
   return (
@@ -76,22 +77,7 @@ export default function Home() {
       <FAQSection />
 
       {/* 6. CONTACTS SECTION */}
-      <section
-        id="contacts"
-        className="relative min-h-screen w-full flex flex-col items-center justify-center px-6 sm:px-12 py-24 border-t border-white/[0.06] bg-[#0b0f19]"
-      >
-        <div className="max-w-4xl mx-auto text-center space-y-4">
-          <span className="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/10 text-[#00e676] border border-emerald-500/20">
-            Get In Touch
-          </span>
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-            Connect with AWS Club CHARUSAT
-          </h2>
-          <p className="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-            Have an idea or want to collaborate with us? Send us a message or join our Discord community!
-          </p>
-        </div>
-      </section>
+      <ContactSection />
     </main>
   );
 }
