@@ -1,11 +1,11 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import { motion, useReducedMotion } from "framer-motion"
 import { FACULTY, MEMBERS, type Faculty, type Member, type Socials } from "@/data/team"
 
-// ─── Icons ────────────────────────────────────────────────────────────────────
+// Icons 
 
 function LinkedInIcon({ className }: { className?: string }) {
   return (
@@ -42,7 +42,7 @@ function MailIcon({ className }: { className?: string }) {
   )
 }
 
-// ─── Shared pieces ────────────────────────────────────────────────────────────
+// Shared pieces 
 
 function initials(name: string) {
   return name
@@ -54,7 +54,17 @@ function initials(name: string) {
 }
 
 /** Fills its (relative) parent with the profile photo, or an initials fallback if missing/broken. */
-function ProfilePhoto({ name, image, sizes }: { name: string; image?: string; sizes: string }) {
+function ProfilePhoto({
+  name,
+  image,
+  sizes,
+  colored = true,
+}: {
+  name: string
+  image?: string
+  sizes: string
+  colored?: boolean
+}) {
   const [failed, setFailed] = useState(false)
 
   if (!image || failed) {
@@ -74,7 +84,9 @@ function ProfilePhoto({ name, image, sizes }: { name: string; image?: string; si
       fill
       sizes={sizes}
       onError={() => setFailed(true)}
-      className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105 motion-reduce:group-hover:scale-100"
+      className={`object-cover object-top transition-[filter,transform] duration-500 ease-out group-hover:scale-105 motion-reduce:group-hover:scale-100 ${
+        colored ? "grayscale-0" : "grayscale"
+      }`}
     />
   )
 }
@@ -124,17 +136,142 @@ function GroupLabel({ children }: { children: React.ReactNode }) {
   )
 }
 
-// ─── Cards ────────────────────────────────────────────────────────────────────
+// Flip card 
+
+/** How long the card stays in "color" before flipping to the thought. */
+const FLIP_DELAY_MS = 1200
+
+type FlipPerson = { name: string; role: string; image?: string; thought?: string; socials?: Socials }
+
+/**
+ * Hover (or tap) → photo turns from grayscale to color → after FLIP_DELAY_MS the card
+ * flips to reveal the person's thought. Keyboard users can press Enter/Space to flip.
+ */
+function FlipCard({
+  person,
+  sizes,
+  className = "",
+  children,
+}: {
+  person: FlipPerson
+  sizes: string
+  className?: string
+  children: (colored: boolean) => React.ReactNode
+}) {
+  const reduceMotion = useReducedMotion()
+  const [active, setActive] = useState(false)
+  const [flipped, setFlipped] = useState(false)
+  const pointerType = useRef<string>("mouse")
+  const canFlip = Boolean(person.thought)
+
+  const deactivate = () => {
+    setActive(false)
+    setFlipped(false)
+  }
+
+  useEffect(() => {
+    if (!active || !canFlip) return
+    const timer = window.setTimeout(() => setFlipped(true), FLIP_DELAY_MS)
+    return () => window.clearTimeout(timer)
+  }, [active, canFlip])
+
+  const backVisible = canFlip && flipped
+
+  return (
+    <div
+      tabIndex={canFlip ? 0 : undefined}
+      role={canFlip ? "group" : undefined}
+      aria-label={canFlip ? `${person.name}, ${person.role}. Press Enter to read their thought.` : undefined}
+      onPointerDown={(e) => (pointerType.current = e.pointerType)}
+      onPointerEnter={(e) => e.pointerType === "mouse" && setActive(true)}
+      onPointerLeave={(e) => e.pointerType === "mouse" && deactivate()}
+      onClick={(e) => {
+        // Touch has no hover: tap toggles the same color → flip sequence.
+        if (pointerType.current === "mouse" || (e.target as HTMLElement).closest("a")) return
+        if (active) deactivate()
+        else setActive(true)
+      }}
+      onKeyDown={(e) => {
+        if (!canFlip || e.target !== e.currentTarget || (e.key !== "Enter" && e.key !== " ")) return
+        e.preventDefault()
+        setActive(true)
+        setFlipped((v) => !v)
+      }}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) deactivate()
+      }}
+      className={`group relative h-full rounded-2xl [perspective:1400px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00e676]/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b0f19] ${className}`}
+    >
+      <div
+        className="relative h-full transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] [transform-style:preserve-3d]"
+        style={{ transform: backVisible && !reduceMotion ? "rotateY(180deg)" : undefined }}
+      >
+        {/* Front */}
+        <div
+          inert={backVisible}
+          className={`relative h-full [backface-visibility:hidden] transition-opacity duration-300 ${
+            reduceMotion && backVisible ? "opacity-0" : "opacity-100"
+          }`}
+        >
+          {children(active)}
+        </div>
+
+        {/* Back */}
+        {canFlip && (
+          <div
+            inert={!backVisible}
+            aria-hidden={!backVisible}
+            className={`absolute inset-0 overflow-hidden rounded-2xl border border-emerald-500/40 bg-[#0b0f19] shadow-[0_0_45px_-8px_rgba(0,230,118,0.45)] [backface-visibility:hidden] ${
+              reduceMotion
+                ? `transition-opacity duration-300 ${backVisible ? "opacity-100" : "pointer-events-none opacity-0"}`
+                : "[transform:rotateY(180deg)]"
+            }`}
+          >
+            <div className="absolute inset-0 scale-110 opacity-40 blur-xl" aria-hidden="true">
+              <ProfilePhoto name={person.name} image={person.image} sizes={sizes} />
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-b from-[#0b0f19]/80 via-[#0b0f19]/60 to-[#0b0f19]/90" />
+            <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent" />
+
+            <div className="relative flex h-full flex-col items-center justify-between gap-4 p-6 text-center">
+              <div>
+                <h4 className="text-lg sm:text-xl font-bold text-white leading-tight">{person.name}</h4>
+                <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-[#00e676]">{person.role}</p>
+              </div>
+
+              <blockquote className="max-w-[28ch] text-sm sm:text-base italic leading-relaxed text-slate-100">
+                <span className="text-emerald-400/80">&ldquo;</span>
+                {person.thought}
+                <span className="text-emerald-400/80">&rdquo;</span>
+              </blockquote>
+
+              <SocialLinks name={person.name} socials={person.socials} />
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// Cards 
+
+const FACULTY_PHOTO_SIZES = "(min-width: 1024px) 224px, (min-width: 640px) 192px, 100vw"
 
 function FacultyCard({ person }: { person: Faculty }) {
   return (
-    <div className="group relative h-full overflow-hidden rounded-2xl border border-white/[0.07] bg-gradient-to-br from-white/[0.05] via-white/[0.02] to-transparent backdrop-blur-sm shadow-[0_0_60px_rgba(0,0,0,0.4)] transition-[border-color,box-shadow] duration-300 hover:border-emerald-500/30 hover:shadow-[0_0_40px_-10px_rgba(0,230,118,0.35)]">
+    <FlipCard
+      person={{ ...person, thought: person.thought ?? `${person.designation}, ${person.department}` }}
+      sizes={FACULTY_PHOTO_SIZES}
+    >
+      {(colored) => (
+    <div className="relative h-full overflow-hidden rounded-2xl border border-white/[0.07] bg-gradient-to-br from-white/[0.05] via-white/[0.02] to-transparent backdrop-blur-sm shadow-[0_0_60px_rgba(0,0,0,0.4)] transition-[border-color,box-shadow] duration-300 group-hover:border-emerald-500/30 group-hover:shadow-[0_0_40px_-10px_rgba(0,230,118,0.35)]">
       <div className="absolute top-0 left-8 right-8 z-10 h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
 
       <div className="flex h-full flex-col sm:flex-row">
         {/* Photo */}
         <div className="relative aspect-[4/5] sm:aspect-auto sm:w-48 lg:w-56 shrink-0 overflow-hidden bg-[#0d121f]">
-          <ProfilePhoto name={person.name} image={person.image} sizes="(min-width: 1024px) 224px, (min-width: 640px) 192px, 100vw" />
+          <ProfilePhoto name={person.name} image={person.image} sizes={FACULTY_PHOTO_SIZES} colored={colored} />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0b0f19]/70 via-transparent to-transparent sm:bg-gradient-to-r sm:from-transparent sm:via-transparent sm:to-[#0b0f19]/40" />
         </div>
 
@@ -154,20 +291,26 @@ function FacultyCard({ person }: { person: Faculty }) {
         </div>
       </div>
     </div>
+      )}
+    </FlipCard>
   )
 }
 
+const MEMBER_PHOTO_SIZES = "(min-width: 1024px) 280px, (min-width: 640px) 45vw, 100vw"
+
 function MemberCard({ person }: { person: Member }) {
   return (
-    <div className="group relative h-full overflow-hidden rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.045] to-white/[0.01] backdrop-blur-sm flex flex-col transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-emerald-500/30 hover:shadow-[0_0_35px_-12px_rgba(0,230,118,0.4)] motion-reduce:hover:translate-y-0">
+    <FlipCard
+      person={{ ...person, thought: person.thought ?? `${person.role} · AWS Student Builder Group` }}
+      sizes={MEMBER_PHOTO_SIZES}
+      className="transition-transform duration-300 hover:-translate-y-1 motion-reduce:hover:translate-y-0"
+    >
+      {(colored) => (
+    <div className="relative h-full overflow-hidden rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.045] to-white/[0.01] backdrop-blur-sm flex flex-col transition-[border-color,box-shadow] duration-300 group-hover:border-emerald-500/30 group-hover:shadow-[0_0_35px_-12px_rgba(0,230,118,0.4)]">
       {/* Photo */}
       <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#0d121f]">
-        <ProfilePhoto name={person.name} image={person.image} sizes="(min-width: 1024px) 280px, (min-width: 640px) 45vw, 100vw" />
+        <ProfilePhoto name={person.name} image={person.image} sizes={MEMBER_PHOTO_SIZES} colored={colored} />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0b0f19] via-[#0b0f19]/50 to-transparent" />
-
-        <span className="absolute top-3 left-3 px-2.5 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider text-slate-200 bg-black/40 backdrop-blur-md border border-white/10">
-          {person.domain}
-        </span>
 
         <div className="absolute inset-x-0 bottom-0 p-5">
           <h4 className="text-lg font-bold text-white leading-tight">{person.name}</h4>
@@ -180,10 +323,12 @@ function MemberCard({ person }: { person: Member }) {
         <SocialLinks name={person.name} socials={person.socials} />
       </div>
     </div>
+      )}
+    </FlipCard>
   )
 }
 
-// ─── Main Team Section ────────────────────────────────────────────────────────
+// Main Team Section 
 
 export function TeamSection() {
   const reduceMotion = useReducedMotion()

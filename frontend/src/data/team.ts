@@ -19,14 +19,17 @@ export type Faculty = {
   designation: string
   department: string
   image?: string
+  /** Short quote revealed when the card flips on hover. Falls back to designation/department (faculty) or role (members). */
+  thought?: string
   socials?: Socials
 }
 
 export type Member = {
   name: string
   role: string
-  domain: string
   image?: string
+  /** Short quote revealed when the card flips on hover. Falls back to designation/department (faculty) or role (members). */
+  thought?: string
   socials?: Socials
 }
 
@@ -36,7 +39,8 @@ export const FACULTY: Faculty[] = [
     role: "Faculty Advisor",
     designation: "Assistant Professor",
     department: "Dept. of Information Technology, CHARUSAT",
-    image: "/team/faculty-advisor.jpg",
+    image: "",
+    thought: "Great engineers are built by curiosity, not by syllabus.",
     socials: { linkedin: "https://linkedin.com", email: "advisor@charusat.ac.in" },
   },
   {
@@ -45,6 +49,7 @@ export const FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "Dept. of Information Technology",
     image: "/team/faculty-coordinator.jpg",
+    thought: "The cloud is just someone else's computer — learn how it really works.",
     socials: { linkedin: "https://linkedin.com", email: "coordinator@charusat.ac.in" },
   },
 ]
@@ -53,56 +58,49 @@ export const MEMBERS: Member[] = [
   {
     name: "ABC",
     role: "Club Lead",
-    domain: "Leadership",
     image: "/team/vedant-bhatt.jpg",
+    thought: "Build in public, learn in public, grow together.",
     socials: { linkedin: "https://linkedin.com", github: "https://github.com" },
   },
   {
     name: "Member Name",
     role: "Co-Lead",
-    domain: "Leadership",
     image: "/team/co-lead.jpg",
     socials: { linkedin: "https://linkedin.com", github: "https://github.com" },
   },
   {
     name: "Member Name",
     role: "Cloud Lead",
-    domain: "Cloud & DevOps",
     image: "/team/cloud-lead.jpg",
     socials: { linkedin: "https://linkedin.com", github: "https://github.com" },
   },
   {
     name: "Member Name",
-    role: "Web Lead",
-    domain: "Web Development",
-    image: "/team/web-lead.jpg",
+    role: "Web Team",
+    image: "/team/Vedant Bhatt_Web_Team.png",
     socials: { linkedin: "https://linkedin.com", github: "https://github.com" },
   },
   {
     name: "Member Name",
     role: "Design Lead",
-    domain: "UI / UX",
     image: "/team/design-lead.jpg",
     socials: { linkedin: "https://linkedin.com", github: "https://github.com" },
   },
   {
     name: "Member Name",
     role: "Events Lead",
-    domain: "Operations",
     image: "/team/events-lead.jpg",
     socials: { linkedin: "https://linkedin.com", github: "https://github.com" },
   },
   {
     name: "Member Name",
     role: "Community Lead",
-    domain: "Outreach",
     image: "/team/community-lead.jpg",
     socials: { linkedin: "https://linkedin.com", instagram: "https://instagram.com" },
   },
   {
     name: "Member Name",
     role: "Content Lead",
-    domain: "Social Media",
     image: "/team/content-lead.jpg",
     socials: { linkedin: "https://linkedin.com", instagram: "https://instagram.com" },
   },
