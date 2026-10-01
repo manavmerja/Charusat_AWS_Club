@@ -3,6 +3,7 @@ import { StaggeredMenu } from "@/components/navigation/StaggeredMenu";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { ContactSection } from "@/components/sections/ContactSection";
+import { Footer } from "@/components/sections/Footer";
 
 export default function Home() {
   return (
@@ -78,6 +79,9 @@ export default function Home() {
 
       {/* 6. CONTACTS SECTION */}
       <ContactSection />
+
+      {/* 7. FOOTER */}
+      <Footer />
     </main>
   );
 }
