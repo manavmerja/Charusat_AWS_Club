@@ -1,6 +1,7 @@
 import { HeroStarsBackground } from "@/components/dashboard/HeroStarsBackground";
 import { StaggeredMenu } from "@/components/navigation/StaggeredMenu";
 import { AboutSection } from "@/components/sections/AboutSection";
+import { TeamSection } from "@/components/sections/TeamSection";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { Footer } from "@/components/sections/Footer";
@@ -57,22 +58,7 @@ export default function Home() {
       </section>
 
       {/* 4. CORE TEAMS SECTION */}
-      <section
-        id="teams"
-        className="relative min-h-screen w-full flex flex-col items-center justify-center px-6 sm:px-12 py-24 border-t border-white/[0.06] bg-[#0b0f19]"
-      >
-        <div className="max-w-4xl mx-auto text-center space-y-4">
-          <span className="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/10 text-[#00e676] border border-emerald-500/20">
-            Meet The Builders
-          </span>
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-            Core Team & Mentors
-          </h2>
-          <p className="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-            The passionate students and faculty leads driving cloud learning, web experiences, and community growth.
-          </p>
-        </div>
-      </section>
+      <TeamSection />
 
       {/* 5. FAQ SECTION */}
       <FAQSection />

@@ -10,7 +10,7 @@ import { AppleHelloEffectRajasthani } from "@/components/ui/apple-hello-effect/a
 import { AppleHelloEffectSpanish } from "@/components/ui/apple-hello-effect/apple-hello-effect-spanish"
 import { AppleHelloEffectVietnamese } from "@/components/ui/apple-hello-effect/apple-hello-effect-vietnamese"
 
-// ─── Language cycling component shown inside MacBook screen ─────────────────
+// Language cycling component shown inside MacBook screen ─
 
 function HelloCycler({ resetTrigger }: { resetTrigger?: number }) {
   const [index, setIndex] = useState(0)
@@ -39,7 +39,7 @@ function HelloCycler({ resetTrigger }: { resetTrigger?: number }) {
   )
 }
 
-// ─── Subject options ─────────────────────────────────────────────────────────
+// Subject options ─
 
 const SUBJECT_OPTIONS = [
   "Workshop Inquiry",
@@ -50,7 +50,7 @@ const SUBJECT_OPTIONS = [
   "Other",
 ]
 
-// ─── Contact Form ─────────────────────────────────────────────────────────────
+// Contact Form ─
 
 function ContactForm() {
   const [formData, setFormData] = useState({
@@ -202,7 +202,7 @@ function ContactForm() {
   )
 }
 
-// ─── Main Contact Section ─────────────────────────────────────────────────────
+// Main Contact Section ─
 
 export function ContactSection() {
   return (
