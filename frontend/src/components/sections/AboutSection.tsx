@@ -63,7 +63,7 @@ export function AboutSection({ className }: AboutSectionProps) {
           {/* Body Paragraphs */}
           <div className="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl font-normal">
             <p>
-              <strong className="text-white font-semibold">AWS Student Builder Group at CHARUSAT</strong> is a student-led community where aspiring developers, cloud engineers, AI enthusiasts, and builders come together to learn by building.
+              <strong className="text-white font-semibold">AWS Student Builder Group Charusat at CHARUSAT</strong> is a student-led community where aspiring developers, cloud engineers, AI enthusiasts, and builders come together to learn by building.
             </p>
             <p className="text-slate-400">
               Instead of only attending sessions, members create real-world applications, deploy production-ready projects on AWS, contribute to open-source, prepare for certifications, participate in hackathons, and collaborate with builders across the global AWS community.
@@ -80,14 +80,6 @@ export function AboutSection({ className }: AboutSectionProps) {
               </a>
               , our mission is simple:
             </p>
-          </div>
-
-          {/* Punchy Mission Tagline with Crisp, Balanced Colors */}
-          <div className="pt-3 text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight">
-            <span className="text-[#00e676]">Learn.</span>{" "}
-            <span className="text-white">Build.</span>{" "}
-            <span className="text-[#00e676]">Share.</span>{" "}
-            <span className="text-white">Grow.</span>
           </div>
         </div>
 
