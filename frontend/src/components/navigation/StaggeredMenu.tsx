@@ -416,7 +416,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           {/* Logo Container */}
           <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-[10px] flex-shrink-0 flex items-center justify-center p-1.5 bg-white border border-white/[0.08] group-hover:scale-[1.03] transition-transform duration-200 ease-out">
             <Image
-              src="/image.png"
+              src="/image.svg"
               alt="AWS Student Builder Group Logo"
               width={40}
               height={40}
