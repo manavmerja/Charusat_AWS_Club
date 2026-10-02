@@ -26,10 +26,13 @@ export function WordsPreloader({
   speed = 190,
 }: WordsPreloaderProps) {
   const [index, setIndex] = useState(0);
-  const [dimension, setDimension] = useState({ width: 0, height: 0 });
+  const [dimension, setDimension] = useState<{ width: number; height: number }>({
+    width: 0,
+    height: 0,
+  });
 
   useEffect(() => {
-    // Reset window scroll to very top
+    // Reset window scroll to top
     window.scrollTo(0, 0);
 
     // Lock scroll during preloading
@@ -74,8 +77,11 @@ export function WordsPreloader({
     return () => clearTimeout(timeout);
   }, [index, words.length, speed, onComplete]);
 
-  const initialPath = `M0 0 L${dimension.width} 0 L${dimension.width} ${dimension.height} Q${dimension.width / 2} ${dimension.height + 300} 0 ${dimension.height} L0 0`;
-  const targetPath = `M0 0 L${dimension.width} 0 L${dimension.width} ${dimension.height} Q${dimension.width / 2} ${dimension.height} 0 ${dimension.height} L0 0`;
+  const w = dimension.width;
+  const h = dimension.height;
+
+  const initialPath = `M0 0 L${w} 0 L${w} ${h} Q${w / 2} ${h + 300} 0 ${h} L0 0`;
+  const targetPath = `M0 0 L${w} 0 L${w} ${h} Q${w / 2} ${h} 0 ${h} L0 0`;
 
   const EASE_CURVE = [0.76, 0, 0.24, 1] as const;
 
@@ -105,31 +111,29 @@ export function WordsPreloader({
       variants={slideUp}
       initial="initial"
       exit="exit"
-      className="fixed inset-0 z-[99999] flex items-center justify-center bg-transparent cursor-wait select-none"
+      className="fixed inset-0 z-[99999] flex items-center justify-center bg-[#f4f4f4] cursor-wait select-none"
     >
-      {dimension.width > 0 && (
-        <>
-          {/* Centered Clean Modern Typography */}
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.15, ease: "easeOut" }}
-            className="relative z-10 flex items-center justify-center text-[#141516] text-4xl sm:text-6xl md:text-7xl font-semibold tracking-tight font-[var(--font-space-grotesk)] text-center px-4"
-          >
-            {words[index]}
-          </motion.div>
+      {/* Centered Clean Modern Typography */}
+      <motion.div
+        key={index}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.15, ease: "easeOut" }}
+        className="relative z-10 flex items-center justify-center text-[#141516] text-4xl sm:text-6xl md:text-7xl font-semibold tracking-tight font-[var(--font-space-grotesk)] text-center px-4"
+      >
+        {words[index]}
+      </motion.div>
 
-          {/* Smooth Morphing SVG Curved Background (#f4f4f4 Off-White) */}
-          <svg className="absolute top-0 left-0 w-full h-[calc(100%+300px)] pointer-events-none fill-[#f4f4f4]">
-            <motion.path
-              variants={curve}
-              initial="initial"
-              exit="exit"
-            />
-          </svg>
-        </>
+      {/* Smooth Morphing SVG Curved Bottom (Rendered after client dimensions are measured to prevent SSR mismatch) */}
+      {dimension.width > 0 && (
+        <svg className="absolute top-0 left-0 w-full h-[calc(100%+300px)] pointer-events-none fill-[#f4f4f4]">
+          <motion.path
+            variants={curve}
+            initial="initial"
+            exit="exit"
+          />
+        </svg>
       )}
     </motion.div>
   );
