@@ -40,14 +40,17 @@ export function Footer() {
     <footer className="relative z-30 bg-black text-gray-400 border-t border-white/10 overflow-hidden">
       <BackgroundBeamsWithCollision className="pt-14 pb-8 sm:pt-16 sm:pb-10 w-full h-auto min-h-auto bg-black">
         
-        {/* Background Dot Pattern on pure black */}
-        <div className="absolute inset-0 z-0 pointer-events-none opacity-40 [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_30%,transparent_100%)]">
-          <DotPattern width={20} height={20} cx={1} cy={1} cr={1} className="fill-white" />
+        {/* Background Dot Pattern matching portfolio (centered subtle circle with soft opacity) */}
+        <div className="absolute inset-0 z-0 h-full w-full bg-black pointer-events-none">
+          <DotPattern 
+            className="opacity-40 [mask-image:radial-gradient(600px_circle_at_center,white,transparent)]" 
+            width={20} 
+            height={20} 
+            cx={1} 
+            cy={1} 
+            cr={1} 
+          />
         </div>
-
-        {/* Ambient Glows */}
-        <div className="absolute bottom-0 right-1/4 w-[350px] h-[350px] bg-emerald-500/[0.04] rounded-full blur-[130px] pointer-events-none" />
-        <div className="absolute top-0 left-1/4 w-[300px] h-[300px] bg-teal-500/[0.03] rounded-full blur-[100px] pointer-events-none" />
 
         <div className="mx-auto max-w-6xl px-6 relative z-10 w-full flex flex-col">
           
@@ -118,7 +121,7 @@ export function Footer() {
 
           </div>
 
-          {/* ── Scaled & Balanced Fluid Gradient Text Watermark ── */}
+          {/* ── Fluid Gradient Text Watermark ── */}
           <div className="w-full my-6 sm:my-8 pt-4 border-t border-white/10">
             <FluidGradientText 
               text="AWS ✕ CHARUSAT" 
