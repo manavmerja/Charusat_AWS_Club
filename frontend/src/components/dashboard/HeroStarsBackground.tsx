@@ -2,6 +2,8 @@
 
 import { StarsBackground } from "@/components/animate-ui/components/backgrounds/stars";
 import { TechText } from "@/components/ui/TechText";
+import { LiquidButton } from "@/components/ui/liquid-button";
+import Link from "next/link";
 
 export function HeroStarsBackground() {
   return (
@@ -62,12 +64,16 @@ export function HeroStarsBackground() {
         </p>
 
         <div className="flex flex-wrap items-center gap-4 sm:gap-6">
-          <button className="h-12 px-8 flex items-center justify-center border border-white text-white font-semibold uppercase tracking-wider text-sm">
-            JOIN COMMUNITY
-          </button>
-          <button className="h-12 px-8 flex items-center justify-center border border-white text-white font-semibold uppercase tracking-wider text-sm">
-            EXPLORE EVENTS
-          </button>
+          <Link href="#contacts" className="inline-block">
+            <LiquidButton size="default">
+              JOIN COMMUNITY
+            </LiquidButton>
+          </Link>
+          <Link href="#events" className="inline-block">
+            <LiquidButton size="default" variant="secondary">
+              EXPLORE EVENTS
+            </LiquidButton>
+          </Link>
         </div>
       </div>
 
