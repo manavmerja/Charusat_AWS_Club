@@ -54,7 +54,7 @@ export const EVENTS: ClubEvent[] = [
     slug: "the-golden-stack",
     title: "The Golden Stack",
     tagline: "Skills, Certs & Cloud Leadership",
-    status: "past", // TODO: replace with the actual `date`
+    date: "2025-12-19", 
     time: "01:30 PM – 03:30 PM",
     mode: "In-person",
     venue: "CHARUSAT Campus",
@@ -96,7 +96,7 @@ export const EVENTS: ClubEvent[] = [
     slug: "terraform-triumphs",
     title: "Terraform Triumphs",
     tagline: "Infrastructure as Code, from first file to running EC2",
-    status: "past", // TODO: replace with the actual `date`
+    date: "2025-10-04", 
     mode: "Online",
     venue: "Live webinar on Zoom",
     category: "Webinar",
@@ -129,7 +129,7 @@ export const EVENTS: ClubEvent[] = [
     slug: "aws-roots",
     title: "AWS Roots",
     tagline: "Where every cloud builder starts",
-    status: "past", // TODO: replace with the actual `date`
+    date: "2025-07-21", 
     mode: "In-person",
     venue: "CHARUSAT Campus",
     category: "Community Session",

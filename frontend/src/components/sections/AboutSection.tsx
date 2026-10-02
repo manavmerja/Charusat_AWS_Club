@@ -81,14 +81,6 @@ export function AboutSection({ className }: AboutSectionProps) {
               , our mission is simple:
             </p>
           </div>
-
-          {/* Punchy Mission Tagline with Crisp, Balanced Colors */}
-          <div className="pt-3 text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight">
-            <span className="text-[#00e676]">Learn.</span>{" "}
-            <span className="text-white">Build.</span>{" "}
-            <span className="text-[#00e676]">Share.</span>{" "}
-            <span className="text-white">Grow.</span>
-          </div>
         </div>
 
         {/* Right Column: Crystal Clear Framed Group Photo with Scales Blending */}

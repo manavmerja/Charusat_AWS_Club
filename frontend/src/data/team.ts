@@ -149,7 +149,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
   },
   {
     id: "web-platforms",
-    name: "Web Teams",
+    name: "Web Team",
     icon: "🌐",
     description:
       "Architects and maintains community web applications, event registration portals, documentation, and open repositories.",
@@ -157,7 +157,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
     members: [
       {
         name: "Manav Merja",
-        role: "Web Teams",
+        role: "Web Team",
         initials: "MM",
         image: "",
         specialty: "Full Stack & Cloud Deployments",
@@ -168,7 +168,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       },
       {
         name: "Vedant Bhatt",
-        role: "Web Teams",
+        role: "Web Team",
         initials: "VB",
         image: "/team/Vedant Bhatt_Web_Team.png",
         specialty: "Frontend Systems & UI Engineering",
@@ -236,7 +236,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
         role: "Community Team",
         initials: "JV",
         image: "",
-        specialty: "Campus Outreach & Operations",
+        specialty: "Campus Outreach",
         socials: {
           linkedin: "https://www.linkedin.com/in/jeet-vadhia/",
           github: "https://github.com/Jeet16-kumar",
@@ -294,7 +294,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
   },
   {
     id: "media-operations",
-    name: "Media & Operations Team",
+    name: "Median Team",
     icon: "🎬",
     description:
       "Manages session photography, workshop video recordings, auditorium audio/visual production, and social media reels.",
