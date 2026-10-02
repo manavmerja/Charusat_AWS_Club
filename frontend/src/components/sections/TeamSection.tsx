@@ -175,6 +175,7 @@ function Member3DCard({
 // Main Team Section
 
 export function TeamSection() {
+  const [showMoreMobile, setShowMoreMobile] = useState(false)
   const reduceMotion = useReducedMotion()
   const reveal = (delay = 0) =>
     reduceMotion
@@ -220,7 +221,7 @@ export function TeamSection() {
       </motion.div>
 
       <div className="relative z-10 w-full max-w-6xl mx-auto space-y-16">
-        {/* 1. Academic Mentors */}
+        {/* 1. Academic Mentors (Always visible on mobile & desktop) */}
         {ACADEMIC_MENTORS.length > 0 && (
           <div>
             <CategoryHeading>Academic Mentors</CategoryHeading>
@@ -241,7 +242,7 @@ export function TeamSection() {
           </div>
         )}
 
-        {/* 2. Student Leadership */}
+        {/* 2. Student Leadership (Always visible on mobile & desktop) */}
         {STUDENT_LEADERSHIP.length > 0 && (
           <div>
             <CategoryHeading>Student Leadership</CategoryHeading>
@@ -262,37 +263,61 @@ export function TeamSection() {
           </div>
         )}
 
-        {/* 3. Founding Divisions */}
-        {FOUNDING_DIVISIONS.map((division) => (
-          <div key={division.id}>
-            <CategoryHeading>{division.name}</CategoryHeading>
-            <div
-              className={cn(
-                "grid gap-6",
-                division.members.length === 2
-                  ? "grid-cols-1 sm:grid-cols-2 max-w-2xl mx-auto"
-                  : division.members.length === 3
-                  ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 max-w-4xl mx-auto"
-                  : division.members.length === 4
-                  ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
-                  : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"
-              )}
-            >
-              {division.members.map((person, i) => (
-                <motion.div key={`${person.name}-${person.role}`} {...reveal((i % 5) * 0.05)}>
-                  <Member3DCard
-                    person={{
-                      name: person.name,
-                      role: person.role,
-                      image: person.image,
-                      socials: person.socials,
-                    }}
-                  />
-                </motion.div>
-              ))}
+        {/* 3. Founding Divisions (Visible on desktop; toggleable on mobile) */}
+        <div className={cn("space-y-16", !showMoreMobile && "hidden md:block")}>
+          {FOUNDING_DIVISIONS.map((division) => (
+            <div key={division.id}>
+              <CategoryHeading>{division.name}</CategoryHeading>
+              <div
+                className={cn(
+                  "grid gap-6",
+                  division.members.length === 2
+                    ? "grid-cols-1 sm:grid-cols-2 max-w-2xl mx-auto"
+                    : division.members.length === 3
+                    ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 max-w-4xl mx-auto"
+                    : division.members.length === 4
+                    ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+                    : "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"
+                )}
+              >
+                {division.members.map((person, i) => (
+                  <motion.div key={`${person.name}-${person.role}`} {...reveal((i % 5) * 0.05)}>
+                    <Member3DCard
+                      person={{
+                        name: person.name,
+                        role: person.role,
+                        image: person.image,
+                        socials: person.socials,
+                      }}
+                    />
+                  </motion.div>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
+        {/* Mobile Toggle Button (Only on screens smaller than md:) */}
+        <div className="flex justify-center pt-2 md:hidden">
+          <button
+            type="button"
+            onClick={() => setShowMoreMobile((prev) => !prev)}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/[0.1] bg-[#0c0d16] hover:bg-white/[0.05] text-xs font-mono font-medium text-slate-300 hover:text-white transition-all shadow-md active:scale-95"
+          >
+            <span>{showMoreMobile ? "Show Less" : "Show More Team Members"}</span>
+            <svg
+              className={cn(
+                "w-4 h-4 text-[#00e676] transition-transform duration-300",
+                showMoreMobile && "rotate-180"
+              )}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+        </div>
       </div>
     </section>
   )
