@@ -3,6 +3,7 @@
 import React from "react"
 import Image from "next/image"
 import { AWSOrbitingCircles } from "@/components/ui/aws-orbiting-circles"
+import { Ripple } from "@/components/ui/ripple"
 import {
   Accordion,
   AccordionItem,
@@ -102,8 +103,13 @@ export function FAQSection() {
       <div className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-8 lg:gap-0 relative z-10">
         {/* Left Side: 3D AWS Icon Cloud with Center CHARUSAT Logo */}
         <div className="flex-1 flex items-center justify-center py-4 lg:py-0 w-full">
-          <div className="relative flex items-center justify-center w-full max-w-[20rem] sm:max-w-[26rem] lg:max-w-[30rem]">
+          <div className="relative flex items-center justify-center w-full max-w-[20rem] sm:max-w-[26rem] lg:max-w-[30rem] min-h-[500px]">
             
+            {/* Background Ripple Effect */}
+            <div className="absolute inset-0 z-0 flex items-center justify-center">
+              <Ripple mainCircleSize={150} numCircles={8} color="0, 230, 118" />
+            </div>
+
             {/* Center Logo with Emerald Glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-[#F4F7F5] border border-white/[0.12] shadow-[0_0_60px_rgba(0,230,118,0.3)] backdrop-blur-md flex items-center justify-center">
               <div className="absolute inset-[10%] rounded-full overflow-hidden">
@@ -119,7 +125,7 @@ export function FAQSection() {
             </div>
 
             {/* Orbiting Circles */}
-            <div className="scale-[0.85] sm:scale-100 w-full flex items-center justify-center">
+            <div className="scale-[0.85] sm:scale-100 w-full flex items-center justify-center relative z-20">
               <AWSOrbitingCircles iconSlugs={awsServiceSlugs} />
             </div>
 
