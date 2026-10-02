@@ -83,7 +83,7 @@ export const STUDENT_LEADERSHIP: StudentLeader[] = [
     badges: ["AWS Cloud Captain", "Chapter Lead"],
     department: "CHARUSAT",
     initials: "DP",
-    image: "",
+    image: "/team/Diya_Group_Leader.png",
     bio: "Leads the AWS Student Builder Group at CHARUSAT. Sets the semester roadmap, coordinates founding student teams, and acts as the official liaison to AWS Student Programs.",
     socials: {
       linkedin: "https://www.linkedin.com/in/diya-h-prajapati",
@@ -105,7 +105,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
         name: "Bhargav Rakholiya",
         role: "Cloud Team",
         initials: "BR",
-        image: "",
+        image: "/team/Bhargav_Rakholiya.png",
         specialty: "AWS Architecture & Security",
         socials: {
           linkedin: "http://www.linkedin.com/in/bhargav-rakholiya",
@@ -116,7 +116,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
         name: "Param Vadhadiya",
         role: "Cloud Team",
         initials: "PV",
-        image: "",
+        image: "/team/Param Vadhadiya Cloud-Team.jpg",
         specialty: "Infrastructure & Networking",
         socials: {
           linkedin: "https://www.linkedin.com/in/param-vadhadiya/",
@@ -127,7 +127,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
         name: "Dev Jivani",
         role: "Cloud Team",
         initials: "DJ",
-        image: "",
+        image: "/team/Dev_Cloud-Team.jpeg",
         specialty: "Compute & Serverless",
         socials: {
           linkedin: "http://www.linkedin.com/in/dev-jivani-6a71a8321",
@@ -138,7 +138,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
         name: "Vansh Malani",
         role: "Cloud Team",
         initials: "VM",
-        image: "",
+        image: "/team/Vansh_Malani_cloud.jpg",
         specialty: "Linux & Cloud DevOps",
         socials: {
           linkedin: "https://www.linkedin.com/in/vanshmalani275/",
@@ -159,7 +159,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
         name: "Manav Merja",
         role: "Web Team",
         initials: "MM",
-        image: "",
+        image: "/team/Manav_Merja_card.jpg",
         specialty: "Full Stack & Cloud Deployments",
         socials: {
           linkedin: "http://www.linkedin.com/in/manav-merja-124ba7317",
@@ -191,7 +191,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
         name: "Jiya Sadaria",
         role: "Creative Team",
         initials: "JS",
-        image: "",
+        image: "/team/jiya sadaria.png",
         specialty: "Visual Identity & Brand Systems",
         socials: {
           linkedin: "www.linkedin.com/in/ jiya-sadaria-a76370311",
@@ -202,7 +202,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
         name: "Dipobithi Das",
         role: "Creative Team",
         initials: "DD",
-        image: "",
+        image: "/team/Dipobithi Das.jpg",
         specialty: "UI/UX & Workshop Creatives",
         socials: {
           linkedin: "https://www.linkedin.com/in/dipobithi-das-95a732317",
@@ -213,7 +213,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
         name: "Hasti Borda",
         role: "Creative Team",
         initials: "HB",
-        image: "",
+        image: "/team/Hasti_Borda_card.jpg",
         specialty: "Graphics & Digital Media",
         socials: {
           linkedin:
@@ -235,7 +235,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
         name: "Jeet Vadhia",
         role: "Community Team",
         initials: "JV",
-        image: "",
+        image: "/team/Jeet_Vadhia.png",
         specialty: "Campus Outreach",
         socials: {
           linkedin: "https://www.linkedin.com/in/jeet-vadhia/",
@@ -246,7 +246,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
         name: "Bhakti Tank",
         role: "Community Team",
         initials: "BT",
-        image: "",
+        image: "/team/BHAKTI_TANK_COMMUNITY_TEAM.jpeg",
         specialty: "Student Onboarding & Queries",
         socials: {
           linkedin:
@@ -270,7 +270,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
         name: "Naik Durva",
         role: "Community Team",
         initials: "ND",
-        image: "",
+        image: "/team/Durva_Naik_card.jpg",
         specialty: "Event Communications",
         socials: {
           linkedin:
@@ -282,7 +282,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
         name: "Kavya Shah",
         role: "Community Team",
         initials: "KS",
-        image: "",
+        image: "/team/Kavya shah-communityteam.png",
         specialty: "Engagement & Member Relations",
         socials: {
           linkedin:
@@ -304,7 +304,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
         name: "Ajay Kothari",
         role: "Media Team",
         initials: "AK",
-        image: "",
+        image: "/team/AjayKothari_MediaTeam.jpg",
         specialty: "Event Production & Video",
         socials: {
           linkedin:
@@ -316,7 +316,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
         name: "Shah Devam",
         role: "Media Team",
         initials: "SD",
-        image: "",
+        image: "/team/devamshah_media_team.jpg",
         specialty: "Photography & Post-Production",
         socials: {
           linkedin:
@@ -328,7 +328,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
         name: "Khushi Marathe",
         role: "Media Team",
         initials: "KM",
-        image: "",
+        image: "/team/Khushi marathe media team.jpg",
         specialty: "Event Logistics & Production",
         socials: {
           linkedin: "https://linkedin.com",
@@ -339,7 +339,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
         name: "Jeel Mendpara",
         role: "Media Team",
         initials: "JM",
-        image: "",
+        image: "/team/Jeel Mendpara.jpeg",
         specialty: "Social Media & Content Captures",
         socials: {
           linkedin:
@@ -351,7 +351,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
         name: "Vedant Kapadia",
         role: "Media Team",
         initials: "VK",
-        image: "",
+        image: "/team/Vedant-Kapadia-MediaTeam.jpg",
         specialty: "Lab & Stage Coordination",
         socials: {
           linkedin:
