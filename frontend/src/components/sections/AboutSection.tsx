@@ -14,7 +14,7 @@ export function AboutSection({ className }: AboutSectionProps) {
   return (
     <div
       className={cn(
-        "relative min-h-screen w-full flex items-center justify-center bg-[#0b0f19] overflow-hidden px-6 sm:px-12 lg:px-20 py-24 sm:py-32 font-[var(--font-space-grotesk)]",
+        "relative min-h-screen w-full flex items-center justify-center bg-black overflow-hidden px-6 sm:px-12 lg:px-20 py-24 sm:py-32 font-[var(--font-space-grotesk)]",
         className
       )}
     >
@@ -24,20 +24,21 @@ export function AboutSection({ className }: AboutSectionProps) {
         fill="#00e676"
       />
 
-      {/* 2. Seamless Blend Transition from Hero Section */}
-      <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-[#0b0f19] to-transparent pointer-events-none z-20" />
+      {/* 2. Seamless Blend Transitions (Top from Hero, Bottom into Events) */}
+      <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-black via-black/70 to-transparent pointer-events-none z-20" />
+      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent via-black/70 to-black pointer-events-none z-20" />
 
       {/* 3. Background Subtle Grid Pattern */}
       <div
         className={cn(
-          "absolute inset-0 pointer-events-none opacity-25 z-0",
-          "[background-size:32px_32px]",
+          "absolute inset-0 pointer-events-none opacity-20 z-0",
+          "[background-size:36px_36px]",
           "[background-image:linear-gradient(to_right,rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.04)_1px,transparent_1px)]"
         )}
       />
 
       {/* 4. Subtle Ambient Vignette Mask */}
-      <div className="pointer-events-none absolute inset-0 bg-[#0b0f19] [mask-image:radial-gradient(ellipse_80%_75%_at_center,transparent_30%,#0b0f19_100%)] z-[1]" />
+      <div className="pointer-events-none absolute inset-0 bg-black [mask-image:radial-gradient(ellipse_80%_75%_at_center,transparent_30%,#000000_100%)] z-[1]" />
 
       {/* 5. Main Two-Column Container */}
       <div className="relative z-20 max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
