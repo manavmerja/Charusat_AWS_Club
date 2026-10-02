@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS Student Builder Group — CHARUSAT</title>
+  <!-- Tailwind CSS -->
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #080b11;
+      color: #e2e8f0;
+      overflow-x: hidden;
+    }
+
+    .font-mono-code {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Subtle grid */
+    .bg-grid-subtle {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    }
+
+    /* Marquee animation */
+    @keyframes marquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes marquee-reverse {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0%); }
+    }
+    .animate-marquee {
+      display: flex;
+      width: 200%;
+      animation: marquee 40s linear infinite;
+    }
+    .animate-marquee-reverse {
+      display: flex;
+      width: 200%;
+      animation: marquee-reverse 45s linear infinite;
+    }
+    .animate-marquee:hover, .animate-marquee-reverse:hover {
+      animation-play-state: paused;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #080b11;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #334155;
+    }
+  </style>
+</head>
+<body class="bg-[#07070d] text-slate-200 antialiased selection:bg-purple-500/30 selection:text-purple-200">
+
+  <!-- BACKGROUND GLOWS (Purple primary with hint of green) -->
+  <div class="fixed inset-0 bg-grid-subtle pointer-events-none z-0"></div>
+  <div class="fixed top-0 left-1/4 w-[520px] h-[360px] bg-purple-600/10 blur-[130px] rounded-full pointer-events-none z-0"></div>
+  <div class="fixed top-1/3 right-10 w-[420px] h-[420px] bg-emerald-500/5 blur-[140px] rounded-full pointer-events-none z-0"></div>
+  <div class="fixed bottom-10 left-10 w-[400px] h-[400px] bg-violet-600/10 blur-[150px] rounded-full pointer-events-none z-0"></div>
+
+  <!-- NAVIGATION BAR -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-[#07070d]/85 border-b border-slate-800/80 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
+      
+      <!-- LOGO -->
+      <a href="#home" class="flex items-center gap-3 group">
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-purple-500 via-violet-600 to-emerald-400 p-[1.5px] shadow-sm">
+          <div class="w-full h-full bg-[#0c0d16] rounded-[6.5px] flex items-center justify-center font-bold text-emerald-400 text-sm">
+            ☁
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-white text-base tracking-tight">AWS Student Builder Group</span>
+            <span class="text-[11px] px-2 py-0.5 rounded bg-purple-950/60 text-purple-300 border border-purple-800/60 font-medium">CHARUSAT</span>
+          </div>
+          <p class="text-[10px] text-slate-400">Student Cloud Community</p>
+        </div>
+      </a>
+
+      <!-- DESKTOP NAV -->
+      <nav class="hidden md:flex items-center gap-7 text-sm text-slate-300 font-medium">
+        <a href="#about" class="hover:text-purple-400 transition-colors">About</a>
+        <a href="#leadership" class="hover:text-purple-400 transition-colors">Leadership</a>
+        <a href="#teams" class="hover:text-purple-400 transition-colors">Founding Team</a>
+        <a href="#mentors" class="hover:text-purple-400 transition-colors">Mentors</a>
+        <a href="#events" class="hover:text-purple-400 transition-colors">Events & Labs</a>
+        <a href="#gallery" class="hover:text-purple-400 transition-colors">Gallery</a>
+        <a href="#faq" class="hover:text-purple-400 transition-colors">FAQ</a>
+      </nav>
+
+      <!-- CTA BUTTONS -->
+      <div class="hidden sm:flex items-center gap-3">
+        <a href="#events" class="px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-300 border border-slate-800 hover:border-emerald-500/40 hover:text-emerald-300 transition-all bg-slate-900/60">
+          Events
+        </a>
+        <a href="https://www.meetup.com/aws-sbg-at-charotar-university-of-science-and-technology/" target="_blank" rel="noopener noreferrer" class="px-4 py-1.5 rounded-lg text-xs font-semibold bg-purple-600 hover:bg-purple-500 text-white transition-all shadow-md shadow-purple-900/40">
+          Join Meetup ↗
+        </a>
+      </div>
+
+      <!-- MOBILE MENU BUTTON -->
+      <button id="mobile-menu-btn" class="md:hidden text-slate-400 hover:text-white p-1.5" aria-label="Toggle menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- MOBILE DROPDOWN -->
+    <div id="mobile-menu" class="hidden md:hidden border-b border-slate-800 bg-[#0c0d16] px-6 py-4 space-y-2.5 text-sm">
+      <a href="#about" class="block text-slate-300 hover:text-purple-400">About</a>
+      <a href="#leadership" class="block text-slate-300 hover:text-purple-400">Leadership</a>
+      <a href="#teams" class="block text-slate-300 hover:text-purple-400">Founding Team</a>
+      <a href="#mentors" class="block text-slate-300 hover:text-purple-400">Mentors</a>
+      <a href="#events" class="block text-slate-300 hover:text-purple-400">Events & Labs</a>
+      <a href="#gallery" class="block text-slate-300 hover:text-purple-400">Gallery</a>
+      <a href="#faq" class="block text-slate-300 hover:text-purple-400">FAQ</a>
+      <div class="pt-3 border-t border-slate-800 flex gap-2">
+        <a href="https://www.meetup.com/aws-sbg-at-charotar-university-of-science-and-technology/" target="_blank" rel="noopener noreferrer" class="w-full text-center py-2 rounded text-xs font-semibold bg-purple-600 text-white">Join Meetup ↗</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="relative z-10">
+
+    <!-- ========================================== -->
+    <!-- SECTION 1: HERO (#home) -->
+    <!-- ========================================== -->
+    <section id="home" class="pt-16 pb-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
+
+      <!-- HEADLINE (Purple with subtle hint of green) -->
+      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mt-6 leading-tight">
+        Learning cloud computing by <br class="hidden sm:inline" />
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-300 to-emerald-400">building real projects together.</span>
+      </h1>
+
+      <!-- SUB-HEADLINE -->
+      <p class="mt-5 text-base sm:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+        A student-led community at Charotar University of Science and Technology. We organize peer-driven workshops, lab sessions, and study roadmaps to help students get comfortable with AWS, Linux, and modern software tools.
+      </p>
+
+      <!-- CTAs -->
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <a href="https://www.meetup.com/aws-sbg-at-charotar-university-of-science-and-technology/" target="_blank" rel="noopener noreferrer" class="px-6 py-2.5 rounded-lg text-sm font-semibold text-white bg-purple-600 hover:bg-purple-500 transition-all shadow-md shadow-purple-900/50 hover:shadow-purple-900/80">
+          Join on Meetup ↗
+        </a>
+        <a href="#events" class="px-6 py-2.5 rounded-lg text-sm font-medium text-slate-300 border border-slate-700/80 hover:border-emerald-500/50 hover:text-emerald-300 bg-slate-900/60 transition-all">
+          Explore Workshops
+        </a>
+      </div>
+
+      <!-- HONEST, GROUNDED STATS CARDS -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-14 max-w-3xl mx-auto text-left">
+        
+        <div class="bg-[#0c0d16] border border-slate-800 hover:border-purple-500/40 transition-all rounded-xl p-5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-slate-400">Meetup Community</span>
+            <span class="flex h-2 w-2 relative">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+          </div>
+          <div class="text-3xl font-bold text-white mt-2 font-mono-code">2,947</div>
+          <p class="text-xs text-slate-400 mt-1">Official registered student builders on our CHARUSAT Meetup chapter.</p>
+        </div>
+
+        <div class="bg-[#0c0d16] border border-slate-800 hover:border-purple-500/40 transition-all rounded-xl p-5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-slate-400">LinkedIn Followers</span>
+            <span class="flex h-2 w-2 relative">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+          </div>
+          <div class="text-3xl font-bold text-white mt-2 font-mono-code">1,000+</div>
+          <p class="text-xs text-slate-400 mt-1">Students, alumni, and industry engineers following our campus updates.</p>
+        </div>
+
+        <div class="bg-[#0c0d16] border border-slate-800 hover:border-emerald-500/40 transition-all rounded-xl p-5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-slate-400">Cost & Safety</span>
+            <span class="text-[11px] text-emerald-400 font-mono-code">Free Tier</span>
+          </div>
+          <div class="text-3xl font-bold text-emerald-400 mt-2 font-mono-code">100% Free</div>
+          <p class="text-xs text-slate-400 mt-1">All campus sessions are free; we teach budgeting alarms so you never incur surprises.</p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 2: ABOUT & PILLARS (#about) -->
+    <!-- ========================================== -->
+    <section id="about" class="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-slate-900">
+      
+      <div class="max-w-2xl">
+        <span class="text-xs font-mono-code text-purple-400 uppercase tracking-wider">About Us</span>
+        <h2 class="text-2xl sm:text-4xl font-bold text-white tracking-tight mt-1.5">
+          Who We Are
+        </h2>
+        <p class="mt-3 text-sm sm:text-base text-slate-400 leading-relaxed">
+          AWS Student Builder Group at Charotar University of Science and Technology is a student-led, student-driven user group based at Changa, Gujarat. An ASC Club initiative dedicated to learning AWS Cloud technology together, we guide students through practical use cases in cloud infrastructure, security, AI, business analytics, and business transformation.
+        </p>
+      </div>
+
+      <!-- 3 SIMPLE PILLARS -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-10">
+        
+        <div class="bg-[#0c0d16] border border-slate-800 hover:border-purple-500/40 rounded-xl p-6 transition-all">
+          <div class="w-10 h-10 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4 text-lg">
+            💻
+          </div>
+          <h3 class="text-lg font-semibold text-white">Hands-on Lab Sessions</h3>
+          <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed">
+            We prioritize lab time over purely theoretical slides. We walk through creating compute instances, setting up storage, and configuring basic networks together in campus labs.
+          </p>
+        </div>
+
+        <div class="bg-[#0c0d16] border border-slate-800 hover:border-purple-500/40 rounded-xl p-6 transition-all">
+          <div class="w-10 h-10 rounded-lg bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400 mb-4 text-lg">
+            🗺️
+          </div>
+          <h3 class="text-lg font-semibold text-white">Curated Peer Roadmaps</h3>
+          <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed">
+            While CHARUSAT's official AWS Academy covers formal curriculum, our club shares student-tested roadmaps, domain notes, and sample architecture questions to help peers prepare.
+          </p>
+        </div>
+
+        <div class="bg-[#0c0d16] border border-slate-800 hover:border-emerald-500/40 rounded-xl p-6 transition-all">
+          <div class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 text-lg">
+            🛡️
+          </div>
+          <h3 class="text-lg font-semibold text-white">Safe & Cost-Aware Learning</h3>
+          <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed">
+            The biggest fear when starting cloud is getting a surprise bill. In every onboarding session, we teach students how to configure zero-cost billing alerts and stay strictly inside Free Tier limits.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- 4 PRACTICAL FOCUS AREAS (Bento 2) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
+        
+        <div class="p-4 rounded-xl bg-[#090a12] border border-slate-800/80 hover:border-purple-500/30 transition-all">
+          <div class="text-purple-400 font-mono-code text-sm">&gt;_ Terminal Basics</div>
+          <p class="text-xs text-slate-400 mt-1.5">Getting comfortable with Linux commands, SSH keys, and the AWS Command Line Interface (CLI).</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-[#090a12] border border-slate-800/80 hover:border-emerald-500/30 transition-all">
+          <div class="text-emerald-400 font-mono-code text-sm">⚙️ Infrastructure as Code</div>
+          <p class="text-xs text-slate-400 mt-1.5">Introducing Terraform so students can see how modern teams define and launch servers cleanly.</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-[#090a12] border border-slate-800/80 hover:border-purple-500/30 transition-all">
+          <div class="text-purple-300 font-mono-code text-sm">🤝 Peer Debugging</div>
+          <p class="text-xs text-slate-400 mt-1.5">When code or configurations fail in the lab, seniors and team members sit with you to solve it.</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-[#090a12] border border-slate-800/80 hover:border-emerald-500/30 transition-all">
+          <div class="text-emerald-400 font-mono-code text-sm">💡 Industry Perspectives</div>
+          <p class="text-xs text-slate-400 mt-1.5">Inviting experienced architects and mentors to share how these systems work in production.</p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 3: LEADERSHIP & ADVISORS (#leadership) -->
+    <!-- ========================================== -->
+    <section id="leadership" class="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-slate-900">
+      
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-mono-code text-purple-400 uppercase tracking-wider">Leadership & Guidance</span>
+        <h2 class="text-2xl sm:text-4xl font-bold text-white tracking-tight mt-1.5">
+          Student Leadership & Faculty Advisors
+        </h2>
+        <p class="mt-2.5 text-sm text-slate-400">
+          Student-driven initiative supported by departmental guidance and faculty coordinators at CHARUSAT.
+        </p>
+      </div>
+
+      <!-- 1. STUDENT BUILDER LEADER (INTRODUCED FIRST) -->
+      <div class="bg-gradient-to-r from-purple-950/30 via-[#0e0d18] to-[#0c0d16] border border-purple-500/30 rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8 hover:border-purple-500/60 transition-all">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+          <!-- Leader Avatar / Photo Frame -->
+          <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-purple-500/20 border-2 border-purple-500/40 flex items-center justify-center text-2xl sm:text-3xl font-bold text-purple-300 font-mono-code shrink-0 overflow-hidden shadow-lg shadow-purple-950/50">
+            <!-- Ready for <img>: <img src="diya.jpg" alt="Diya Prajapati" class="w-full h-full object-cover" /> -->
+            <span>DP</span>
+          </div>
+          <div>
+            <div class="flex flex-wrap items-center gap-2 mb-1.5">
+              <span class="text-[10px] font-mono-code px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40 font-semibold">STUDENT BUILDER LEADER</span>
+              <span class="text-[10px] font-mono-code px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-semibold">AWS CLOUD CAPTAIN</span>
+            </div>
+            <h3 class="text-xl sm:text-2xl font-bold text-white">Diya Prajapati</h3>
+            <p class="text-xs sm:text-sm text-slate-400 mt-2 max-w-2xl leading-relaxed">
+              Leads the AWS Student Builder Group at CHARUSAT. Sets the semester roadmap, coordinates founding student teams, organizes campus workshops, and acts as the official liaison to AWS Student Programs.
+            </p>
+          </div>
+        </div>
+        <div class="shrink-0 self-end md:self-center">
+          <a href="https://linkedin.com" target="_blank" class="px-4 py-2 rounded-lg text-xs font-mono-code border border-purple-500/40 text-purple-300 hover:bg-purple-600 hover:text-white transition-all inline-block font-semibold">
+            LinkedIn Profile ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- 2. FACULTIES (CONVENOR & COORDINATOR) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- CARD 1: DR. PURVI PRAJAPATI -->
+        <div class="bg-[#0c0d16] border border-slate-800 hover:border-purple-500/40 rounded-xl p-6 flex flex-col justify-between transition-all">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-mono-code px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">FACULTY CONVENOR</span>
+              <span class="text-xs text-slate-500 font-mono-code">CHARUSAT</span>
+            </div>
+            <div class="w-14 h-14 rounded-xl bg-slate-800 border border-slate-700 mt-5 flex items-center justify-center text-xl font-bold text-white overflow-hidden">
+              <!-- Ready for <img>: <img src="purvi.jpg" alt="Dr. Purvi Prajapati" class="w-full h-full object-cover" /> -->
+              <span>PP</span>
+            </div>
+            <h3 class="text-lg font-bold text-white mt-4">Dr. Purvi Prajapati</h3>
+            <p class="text-xs text-purple-400 font-medium">Head of Department, Information Technology</p>
+            <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+              Provides departmental leadership and institutional backing, ensuring student cloud initiatives align with academic computer science rigor.
+            </p>
+          </div>
+          <div class="mt-6 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
+            <span class="text-slate-500 font-mono-code text-[11px]">Department of IT</span>
+            <a href="https://linkedin.com" target="_blank" class="text-slate-400 hover:text-white font-medium">LinkedIn ↗</a>
+          </div>
+        </div>
+
+        <!-- CARD 2: PROF. RAVI PATEL -->
+        <div class="bg-[#0c0d16] border border-slate-800 hover:border-purple-500/40 rounded-xl p-6 flex flex-col justify-between transition-all">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-mono-code px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">FACULTY COORDINATOR</span>
+              <span class="text-xs text-slate-500 font-mono-code">CHARUSAT</span>
+            </div>
+            <div class="w-14 h-14 rounded-xl bg-slate-800 border border-slate-700 mt-5 flex items-center justify-center text-xl font-bold text-white overflow-hidden">
+              <!-- Ready for <img>: <img src="ravi.jpg" alt="Prof. Ravi Patel" class="w-full h-full object-cover" /> -->
+              <span>RP</span>
+            </div>
+            <h3 class="text-lg font-bold text-white mt-4">Prof. Ravi Patel</h3>
+            <p class="text-xs text-purple-400 font-medium">Assistant Professor, Department of IT</p>
+            <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+              Coordinates campus laboratory access, student approvals, and logistical support for hands-on sessions and technical workshops.
+            </p>
+          </div>
+          <div class="mt-6 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
+            <span class="text-slate-500 font-mono-code text-[11px]">Department of IT</span>
+            <a href="https://linkedin.com" target="_blank" class="text-slate-400 hover:text-white font-medium">LinkedIn ↗</a>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 4: THE FOUNDING TEAM (#teams) -->
+    <!-- ========================================== -->
+    <section id="teams" class="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-slate-900">
+      
+      <div class="max-w-2xl mb-10">
+        <span class="text-xs font-mono-code text-purple-400 uppercase tracking-wider">Founding Members</span>
+        <h2 class="text-2xl sm:text-4xl font-bold text-white tracking-tight mt-1.5">
+          The Founding Team
+        </h2>
+        <p class="mt-2 text-sm text-slate-400">
+          The core student builders across departments shaping our technical labs, platforms, design, and campus outreach.
+        </p>
+      </div>
+
+      <!-- FOUNDING TEAMS BENTO GRID (VISUAL-FIRST PHOTO CONTAINERS) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- 1. CLOUD ENGINEERING DIVISION -->
+        <div class="bg-[#0c0d16] border border-slate-800 rounded-xl p-5 flex flex-col justify-between hover:border-purple-500/40 transition-all">
+          <div>
+            <div class="flex items-center gap-2 pb-3 border-b border-slate-800">
+              <span class="text-base">☁️</span>
+              <h3 class="text-base font-semibold text-white">Cloud Engineering</h3>
+            </div>
+
+            <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+              Plans terminal lab sessions, tests workshop code, and guides attendees through VPCs, IAM policies, and billing alarms.
+            </p>
+
+            <!-- Student Members (Visual Photo Cards) -->
+            <div class="mt-4 grid grid-cols-2 gap-2.5">
+              
+              <!-- Bhargav Rakhol -->
+              <div class="group flex flex-col items-center p-3 rounded-xl bg-[#080910] border border-slate-800/80 hover:border-purple-500/50 hover:bg-slate-900/50 transition-all text-center">
+                <div class="w-16 h-16 rounded-xl bg-slate-800/90 border border-slate-700/80 group-hover:border-purple-500/60 flex items-center justify-center font-bold text-sm text-slate-200 font-mono-code overflow-hidden shadow-inner transition-all group-hover:scale-105">
+                  <!-- Ready for photo: <img src="bhargav.jpg" alt="Bhargav Rakhol" class="w-full h-full object-cover" /> -->
+                  <span>BR</span>
+                </div>
+                <span class="mt-2.5 text-xs font-medium text-slate-200 group-hover:text-white transition-colors truncate max-w-full">Bhargav Rakhol</span>
+              </div>
+
+              <!-- Param Vadhadiya -->
+              <div class="group flex flex-col items-center p-3 rounded-xl bg-[#080910] border border-slate-800/80 hover:border-purple-500/50 hover:bg-slate-900/50 transition-all text-center">
+                <div class="w-16 h-16 rounded-xl bg-slate-800/90 border border-slate-700/80 group-hover:border-purple-500/60 flex items-center justify-center font-bold text-sm text-slate-200 font-mono-code overflow-hidden shadow-inner transition-all group-hover:scale-105">
+                  <!-- Ready for photo: <img src="param.jpg" alt="Param Vadhadiya" class="w-full h-full object-cover" /> -->
+                  <span>PV</span>
+                </div>
+                <span class="mt-2.5 text-xs font-medium text-slate-200 group-hover:text-white transition-colors truncate max-w-full">Param Vadhadiya</span>
+              </div>
+
+              <!-- Dev Jivani -->
+              <div class="group flex flex-col items-center p-3 rounded-xl bg-[#080910] border border-slate-800/80 hover:border-purple-500/50 hover:bg-slate-900/50 transition-all text-center">
+                <div class="w-16 h-16 rounded-xl bg-slate-800/90 border border-slate-700/80 group-hover:border-purple-500/60 flex items-center justify-center font-bold text-sm text-slate-200 font-mono-code overflow-hidden shadow-inner transition-all group-hover:scale-105">
+                  <!-- Ready for photo: <img src="dev.jpg" alt="Dev Jivani" class="w-full h-full object-cover" /> -->
+                  <span>DJ</span>
+                </div>
+                <span class="mt-2.5 text-xs font-medium text-slate-200 group-hover:text-white transition-colors truncate max-w-full">Dev Jivani</span>
+              </div>
+
+              <!-- Vansh Malani -->
+              <div class="group flex flex-col items-center p-3 rounded-xl bg-[#080910] border border-emerald-500/30 hover:border-emerald-500/60 hover:bg-emerald-950/20 transition-all text-center">
+                <div class="w-16 h-16 rounded-xl bg-emerald-500/10 border border-emerald-500/30 group-hover:border-emerald-500/70 flex items-center justify-center font-bold text-sm text-emerald-400 font-mono-code overflow-hidden shadow-inner transition-all group-hover:scale-105">
+                  <!-- Ready for photo: <img src="vansh.jpg" alt="Vansh Malani" class="w-full h-full object-cover" /> -->
+                  <span>VM</span>
+                </div>
+                <span class="mt-2.5 text-xs font-medium text-emerald-400 group-hover:text-emerald-300 transition-colors truncate max-w-full">Vansh Malani</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. WEB & PLATFORMS DIVISION (Emerald Green Accent) -->
+        <div class="bg-[#0c0d16] border border-slate-800 rounded-xl p-5 flex flex-col justify-between hover:border-emerald-500/40 transition-all">
+          <div>
+            <div class="flex items-center gap-2 pb-3 border-b border-slate-800">
+              <span class="text-base">🌐</span>
+              <h3 class="text-base font-semibold text-white">Web & Platforms</h3>
+            </div>
+
+            <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+              Builds and maintains community websites, event registration systems, documentation portals, and open repositories.
+            </p>
+
+            <!-- Student Members (Visual Photo Cards) -->
+            <div class="mt-4 grid grid-cols-2 gap-2.5">
+              
+              <!-- Manav Merja -->
+              <div class="group flex flex-col items-center p-3 rounded-xl bg-[#080910] border border-slate-800/80 hover:border-emerald-500/50 hover:bg-slate-900/50 transition-all text-center">
+                <div class="w-16 h-16 rounded-xl bg-slate-800/90 border border-slate-700/80 group-hover:border-emerald-500/60 flex items-center justify-center font-bold text-sm text-slate-200 font-mono-code overflow-hidden shadow-inner transition-all group-hover:scale-105">
+                  <!-- Ready for photo: <img src="manav.jpg" alt="Manav Merja" class="w-full h-full object-cover" /> -->
+                  <span>MM</span>
+                </div>
+                <span class="mt-2.5 text-xs font-medium text-slate-200 group-hover:text-white transition-colors truncate max-w-full">Manav Merja</span>
+              </div>
+
+              <!-- Vedant Bhatt -->
+              <div class="group flex flex-col items-center p-3 rounded-xl bg-[#080910] border border-slate-800/80 hover:border-emerald-500/50 hover:bg-slate-900/50 transition-all text-center">
+                <div class="w-16 h-16 rounded-xl bg-slate-800/90 border border-slate-700/80 group-hover:border-emerald-500/60 flex items-center justify-center font-bold text-sm text-slate-200 font-mono-code overflow-hidden shadow-inner transition-all group-hover:scale-105">
+                  <!-- Ready for photo: <img src="vedant_bhatt.jpg" alt="Vedant Bhatt" class="w-full h-full object-cover" /> -->
+                  <span>VB</span>
+                </div>
+                <span class="mt-2.5 text-xs font-medium text-slate-200 group-hover:text-white transition-colors truncate max-w-full">Vedant Bhatt</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. CREATIVE & DESIGN SYSTEMS -->
+        <div class="bg-[#0c0d16] border border-slate-800 rounded-xl p-5 flex flex-col justify-between hover:border-purple-500/40 transition-all">
+          <div>
+            <div class="flex items-center gap-2 pb-3 border-b border-slate-800">
+              <span class="text-base">🎨</span>
+              <h3 class="text-base font-semibold text-white">Creative & Design</h3>
+            </div>
+
+            <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+              Crafts visual identity, technical architecture diagrams, session posters, stage backdrops, and presentation slides.
+            </p>
+
+            <!-- Student Members (Visual Photo Cards) -->
+            <div class="mt-4 grid grid-cols-2 gap-2.5">
+              
+              <!-- Jiya Sadaria -->
+              <div class="group flex flex-col items-center p-3 rounded-xl bg-[#080910] border border-slate-800/80 hover:border-purple-500/50 hover:bg-slate-900/50 transition-all text-center">
+                <div class="w-16 h-16 rounded-xl bg-slate-800/90 border border-slate-700/80 group-hover:border-purple-500/60 flex items-center justify-center font-bold text-sm text-slate-200 font-mono-code overflow-hidden shadow-inner transition-all group-hover:scale-105">
+                  <!-- Ready for photo: <img src="jiya.jpg" alt="Jiya Sadaria" class="w-full h-full object-cover" /> -->
+                  <span>JS</span>
+                </div>
+                <span class="mt-2.5 text-xs font-medium text-slate-200 group-hover:text-white transition-colors truncate max-w-full">Jiya Sadaria</span>
+              </div>
+
+              <!-- Dipobithi Das -->
+              <div class="group flex flex-col items-center p-3 rounded-xl bg-[#080910] border border-slate-800/80 hover:border-purple-500/50 hover:bg-slate-900/50 transition-all text-center">
+                <div class="w-16 h-16 rounded-xl bg-slate-800/90 border border-slate-700/80 group-hover:border-purple-500/60 flex items-center justify-center font-bold text-sm text-slate-200 font-mono-code overflow-hidden shadow-inner transition-all group-hover:scale-105">
+                  <!-- Ready for photo: <img src="dipobithi.jpg" alt="Dipobithi Das" class="w-full h-full object-cover" /> -->
+                  <span>DD</span>
+                </div>
+                <span class="mt-2.5 text-xs font-medium text-slate-200 group-hover:text-white transition-colors truncate max-w-full">Dipobithi Das</span>
+              </div>
+
+              <!-- Hasti Borda (Centered in 2nd row) -->
+              <div class="col-span-2 flex justify-center">
+                <div class="group flex flex-col items-center p-3 rounded-xl bg-[#080910] border border-slate-800/80 hover:border-purple-500/50 hover:bg-slate-900/50 transition-all text-center w-full max-w-[calc(50%-0.3125rem)]">
+                  <div class="w-16 h-16 rounded-xl bg-slate-800/90 border border-slate-700/80 group-hover:border-purple-500/60 flex items-center justify-center font-bold text-sm text-slate-200 font-mono-code overflow-hidden shadow-inner transition-all group-hover:scale-105">
+                    <!-- Ready for photo: <img src="hasti.jpg" alt="Hasti Borda" class="w-full h-full object-cover" /> -->
+                    <span>HB</span>
+                  </div>
+                  <span class="mt-2.5 text-xs font-medium text-slate-200 group-hover:text-white transition-colors truncate max-w-full">Hasti Borda</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. COMMUNITY ENGAGEMENT DIVISION -->
+        <div class="bg-[#0c0d16] border border-slate-800 rounded-xl p-5 flex flex-col justify-between hover:border-violet-500/40 transition-all">
+          <div>
+            <div class="flex items-center gap-2 pb-3 border-b border-slate-800">
+              <span class="text-base">📡</span>
+              <h3 class="text-base font-semibold text-white">Community Engagement</h3>
+            </div>
+
+            <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+              Coordinates cross-department student registrations, handles newcomer queries, and runs community communication channels.
+            </p>
+
+            <!-- Student Members (Visual Photo Cards) -->
+            <div class="mt-4 grid grid-cols-2 gap-2.5">
+              
+              <!-- Jeet Vadhia -->
+              <div class="group flex flex-col items-center p-3 rounded-xl bg-[#080910] border border-slate-800/80 hover:border-violet-500/50 hover:bg-slate-900/50 transition-all text-center">
+                <div class="w-16 h-16 rounded-xl bg-slate-800/90 border border-slate-700/80 group-hover:border-violet-500/60 flex items-center justify-center font-bold text-sm text-slate-200 font-mono-code overflow-hidden shadow-inner transition-all group-hover:scale-105">
+                  <!-- Ready for photo: <img src="jeet.jpg" alt="Jeet Vadhia" class="w-full h-full object-cover" /> -->
+                  <span>JV</span>
+                </div>
+                <span class="mt-2.5 text-xs font-medium text-slate-200 group-hover:text-white transition-colors truncate max-w-full">Jeet Vadhia</span>
+              </div>
+
+              <!-- Bhakti Tank -->
+              <div class="group flex flex-col items-center p-3 rounded-xl bg-[#080910] border border-slate-800/80 hover:border-violet-500/50 hover:bg-slate-900/50 transition-all text-center">
+                <div class="w-16 h-16 rounded-xl bg-slate-800/90 border border-slate-700/80 group-hover:border-violet-500/60 flex items-center justify-center font-bold text-sm text-slate-200 font-mono-code overflow-hidden shadow-inner transition-all group-hover:scale-105">
+                  <!-- Ready for photo: <img src="bhakti.jpg" alt="Bhakti Tank" class="w-full h-full object-cover" /> -->
+                  <span>BT</span>
+                </div>
+                <span class="mt-2.5 text-xs font-medium text-slate-200 group-hover:text-white transition-colors truncate max-w-full">Bhakti Tank</span>
+              </div>
+
+              <!-- Dhanya Vala -->
+              <div class="group flex flex-col items-center p-3 rounded-xl bg-[#080910] border border-slate-800/80 hover:border-violet-500/50 hover:bg-slate-900/50 transition-all text-center">
+                <div class="w-16 h-16 rounded-xl bg-slate-800/90 border border-slate-700/80 group-hover:border-violet-500/60 flex items-center justify-center font-bold text-sm text-slate-200 font-mono-code overflow-hidden shadow-inner transition-all group-hover:scale-105">
+                  <!-- Ready for photo: <img src="dhanya.jpg" alt="Dhanya Vala" class="w-full h-full object-cover" /> -->
+                  <span>DV</span>
+                </div>
+                <span class="mt-2.5 text-xs font-medium text-slate-200 group-hover:text-white transition-colors truncate max-w-full">Dhanya Vala</span>
+              </div>
+
+              <!-- Naik Durva -->
+              <div class="group flex flex-col items-center p-3 rounded-xl bg-[#080910] border border-slate-800/80 hover:border-violet-500/50 hover:bg-slate-900/50 transition-all text-center">
+                <div class="w-16 h-16 rounded-xl bg-slate-800/90 border border-slate-700/80 group-hover:border-violet-500/60 flex items-center justify-center font-bold text-sm text-slate-200 font-mono-code overflow-hidden shadow-inner transition-all group-hover:scale-105">
+                  <!-- Ready for photo: <img src="durva.jpg" alt="Naik Durva" class="w-full h-full object-cover" /> -->
+                  <span>ND</span>
+                </div>
+                <span class="mt-2.5 text-xs font-medium text-slate-200 group-hover:text-white transition-colors truncate max-w-full">Naik Durva</span>
+              </div>
+
+              <!-- Kavya Shah (Centered in 3rd row) -->
+              <div class="col-span-2 flex justify-center">
+                <div class="group flex flex-col items-center p-3 rounded-xl bg-[#080910] border border-slate-800/80 hover:border-violet-500/50 hover:bg-slate-900/50 transition-all text-center w-full max-w-[calc(50%-0.3125rem)]">
+                  <div class="w-16 h-16 rounded-xl bg-slate-800/90 border border-slate-700/80 group-hover:border-violet-500/60 flex items-center justify-center font-bold text-sm text-slate-200 font-mono-code overflow-hidden shadow-inner transition-all group-hover:scale-105">
+                    <!-- Ready for photo: <img src="kavya.jpg" alt="Kavya Shah" class="w-full h-full object-cover" /> -->
+                    <span>KS</span>
+                  </div>
+                  <span class="mt-2.5 text-xs font-medium text-slate-200 group-hover:text-white transition-colors truncate max-w-full">Kavya Shah</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. MEDIA & OPERATIONS DIVISION (Span 2 cols on desktop) -->
+        <div class="bg-[#0c0d16] border border-slate-800 rounded-xl p-5 flex flex-col justify-between hover:border-purple-500/40 transition-all md:col-span-2 lg:col-span-2">
+          <div>
+            <div class="flex items-center gap-2 pb-3 border-b border-slate-800">
+              <span class="text-base">🎬</span>
+              <h3 class="text-base font-semibold text-white">Media & Operations</h3>
+            </div>
+
+            <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+              Manages workshop photography, event footage recording, auditorium audio/visual production, and social media reels.
+            </p>
+
+            <!-- Student Members (Visual Photo Cards) -->
+            <div class="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5">
+              
+              <!-- Ajay Kothari -->
+              <div class="group flex flex-col items-center p-3 rounded-xl bg-[#080910] border border-slate-800/80 hover:border-purple-500/50 hover:bg-slate-900/50 transition-all text-center">
+                <div class="w-16 h-16 rounded-xl bg-slate-800/90 border border-slate-700/80 group-hover:border-purple-500/60 flex items-center justify-center font-bold text-sm text-slate-200 font-mono-code overflow-hidden shadow-inner transition-all group-hover:scale-105">
+                  <!-- Ready for photo: <img src="ajay.jpg" alt="Ajay Kothari" class="w-full h-full object-cover" /> -->
+                  <span>AK</span>
+                </div>
+                <span class="mt-2.5 text-xs font-medium text-slate-200 group-hover:text-white transition-colors truncate max-w-full">Ajay Kothari</span>
+              </div>
+
+              <!-- Shah Devam -->
+              <div class="group flex flex-col items-center p-3 rounded-xl bg-[#080910] border border-slate-800/80 hover:border-purple-500/50 hover:bg-slate-900/50 transition-all text-center">
+                <div class="w-16 h-16 rounded-xl bg-slate-800/90 border border-slate-700/80 group-hover:border-purple-500/60 flex items-center justify-center font-bold text-sm text-slate-200 font-mono-code overflow-hidden shadow-inner transition-all group-hover:scale-105">
+                  <!-- Ready for photo: <img src="devam.jpg" alt="Shah Devam" class="w-full h-full object-cover" /> -->
+                  <span>SD</span>
+                </div>
+                <span class="mt-2.5 text-xs font-medium text-slate-200 group-hover:text-white transition-colors truncate max-w-full">Shah Devam</span>
+              </div>
+
+              <!-- Khushi Marathe -->
+              <div class="group flex flex-col items-center p-3 rounded-xl bg-[#080910] border border-slate-800/80 hover:border-purple-500/50 hover:bg-slate-900/50 transition-all text-center">
+                <div class="w-16 h-16 rounded-xl bg-slate-800/90 border border-slate-700/80 group-hover:border-purple-500/60 flex items-center justify-center font-bold text-sm text-slate-200 font-mono-code overflow-hidden shadow-inner transition-all group-hover:scale-105">
+                  <!-- Ready for photo: <img src="khushi.jpg" alt="Khushi Marathe" class="w-full h-full object-cover" /> -->
+                  <span>KM</span>
+                </div>
+                <span class="mt-2.5 text-xs font-medium text-slate-200 group-hover:text-white transition-colors truncate max-w-full">Khushi Marathe</span>
+              </div>
+
+              <!-- Jeel Mendpara -->
+              <div class="group flex flex-col items-center p-3 rounded-xl bg-[#080910] border border-slate-800/80 hover:border-purple-500/50 hover:bg-slate-900/50 transition-all text-center">
+                <div class="w-16 h-16 rounded-xl bg-slate-800/90 border border-slate-700/80 group-hover:border-purple-500/60 flex items-center justify-center font-bold text-sm text-slate-200 font-mono-code overflow-hidden shadow-inner transition-all group-hover:scale-105">
+                  <!-- Ready for photo: <img src="jeel.jpg" alt="Jeel Mendpara" class="w-full h-full object-cover" /> -->
+                  <span>JM</span>
+                </div>
+                <span class="mt-2.5 text-xs font-medium text-slate-200 group-hover:text-white transition-colors truncate max-w-full">Jeel Mendpara</span>
+              </div>
+
+              <!-- Vedant Kapadia -->
+              <div class="group flex flex-col items-center p-3 rounded-xl bg-[#080910] border border-slate-800/80 hover:border-purple-500/50 hover:bg-slate-900/50 transition-all text-center">
+                <div class="w-16 h-16 rounded-xl bg-slate-800/90 border border-slate-700/80 group-hover:border-purple-500/60 flex items-center justify-center font-bold text-sm text-slate-200 font-mono-code overflow-hidden shadow-inner transition-all group-hover:scale-105">
+                  <!-- Ready for photo: <img src="vedant_kapadia.jpg" alt="Vedant Kapadia" class="w-full h-full object-cover" /> -->
+                  <span>VK</span>
+                </div>
+                <span class="mt-2.5 text-xs font-medium text-slate-200 group-hover:text-white transition-colors truncate max-w-full">Vedant Kapadia</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 5: INDUSTRY MENTORS & ADVISORS (#mentors) -->
+    <!-- ========================================== -->
+    <section id="mentors" class="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-slate-900">
+      
+      <div class="max-w-2xl mb-10">
+        <span class="text-xs font-mono-code text-purple-400 uppercase tracking-wider">Ecosystem Advisory</span>
+        <h2 class="text-2xl sm:text-4xl font-bold text-white tracking-tight mt-1.5">
+          Industry Mentors & AWS Heroes
+        </h2>
+        <p class="mt-2 text-sm text-slate-400">
+          Experienced enterprise architects, AWS Heroes, and community builders who actively mentor our students, review architectures, and conduct campus sessions.
+        </p>
+      </div>
+
+      <!-- INDUSTRY MENTORS GRID (6 MENTORS) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+        <!-- 1. SHASHANK CHINCHLI -->
+        <div class="bg-[#0c0d16] border border-slate-800 hover:border-purple-500/50 rounded-xl p-5 flex flex-col justify-between transition-all">
+          <div>
+            <div class="flex items-center justify-between text-xs mb-3">
+              <span class="text-[10px] font-mono-code px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40 font-semibold">AWS GOLDEN JACKET</span>
+              <span class="text-[10px] font-mono-code px-2 py-0.5 rounded bg-slate-800 text-slate-400">Industry Mentor</span>
+            </div>
+            <h4 class="text-base font-bold text-white">Shashank Chinchli</h4>
+            <p class="text-xs text-purple-400 font-mono-code mt-0.5">Senior Solutions Architect, GitLab (Ex-AWS)</p>
+            <p class="text-xs text-slate-400 mt-2.5 leading-relaxed">
+              Lead architect and mentor for our Endowment Chair Masterclass & Cloud Architecture Showcase; guides students in enterprise architecture design and DevOps.
+            </p>
+          </div>
+          <div class="mt-5 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
+            <span class="text-slate-500 text-[11px]">GitLab // Ex-AWS</span>
+            <a href="https://linkedin.com" target="_blank" class="text-slate-400 hover:text-purple-300 font-medium">LinkedIn ↗</a>
+          </div>
+        </div>
+
+        <!-- 2. NILESH VAGHELA -->
+        <div class="bg-[#0c0d16] border border-slate-800 hover:border-purple-500/50 rounded-xl p-5 flex flex-col justify-between transition-all">
+          <div>
+            <div class="flex items-center justify-between text-xs mb-3">
+              <span class="text-[10px] font-mono-code px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40 font-semibold">AWS COMMUNITY HERO</span>
+              <span class="text-[10px] font-mono-code px-2 py-0.5 rounded bg-slate-800 text-slate-400">Industry Mentor</span>
+            </div>
+            <h4 class="text-base font-bold text-white">Nilesh Vaghela</h4>
+            <p class="text-xs text-purple-400 font-mono-code mt-0.5">Founder & CEO, ElectroMech Cloudtech</p>
+            <p class="text-xs text-slate-400 mt-2.5 leading-relaxed">
+              AWS Hero of the Year (APJ) & Founder of AWS User Group Ahmedabad. Dedicated to mentoring young cloud talent, organizing Community Days, and supporting CHARUSAT initiatives.
+            </p>
+          </div>
+          <div class="mt-5 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
+            <span class="text-slate-500 text-[11px]">AWS Hero since 2017</span>
+            <a href="https://linkedin.com" target="_blank" class="text-slate-400 hover:text-purple-300 font-medium">LinkedIn ↗</a>
+          </div>
+        </div>
+
+        <!-- 3. DIMPLE VAGHELA -->
+        <div class="bg-[#0c0d16] border border-slate-800 hover:border-purple-500/50 rounded-xl p-5 flex flex-col justify-between transition-all">
+          <div>
+            <div class="flex items-center justify-between text-xs mb-3">
+              <span class="text-[10px] font-mono-code px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40 font-semibold">AWS COMMUNITY HERO</span>
+              <span class="text-[10px] font-mono-code px-2 py-0.5 rounded bg-slate-800 text-slate-400">Industry Mentor</span>
+            </div>
+            <h4 class="text-base font-bold text-white">Dimple Vaghela</h4>
+            <p class="text-xs text-purple-400 font-mono-code mt-0.5">Leader, AWS UG Ahmedabad / Vadodara</p>
+            <p class="text-xs text-slate-400 mt-2.5 leading-relaxed">
+              Recipient of AWS User Group Leader Award (2024), Co-Founder of CloudKida, and Founder of "Cloud for Her". Keynote speaker and mentor at AWS Student Community Day CHARUSAT.
+            </p>
+          </div>
+          <div class="mt-5 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
+            <span class="text-slate-500 text-[11px]">Co-Founder CloudKida</span>
+            <a href="https://linkedin.com" target="_blank" class="text-slate-400 hover:text-purple-300 font-medium">LinkedIn ↗</a>
+          </div>
+        </div>
+
+        <!-- 4. OMSHREE BHUTANI -->
+        <div class="bg-[#0c0d16] border border-slate-800 hover:border-emerald-500/50 rounded-xl p-5 flex flex-col justify-between transition-all">
+          <div>
+            <div class="flex items-center justify-between text-xs mb-3">
+              <span class="text-[10px] font-mono-code px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-semibold">AWS COMMUNITY BUILDER</span>
+              <span class="text-[10px] font-mono-code px-2 py-0.5 rounded bg-slate-800 text-slate-400">Industry Mentor</span>
+            </div>
+            <h4 class="text-base font-bold text-white">Omshree Bhutani</h4>
+            <p class="text-xs text-emerald-400 font-mono-code mt-0.5">Senior FinOps Analyst / Cloud FinOps (Accenture)</p>
+            <p class="text-xs text-slate-400 mt-2.5 leading-relaxed">
+              Specialist in Cloud Financial Management (FinOps) and Kubernetes. Frequent speaker on "The Frugal Architect Mindset" and cost-efficient cloud engineering at AWS community events.
+            </p>
+          </div>
+          <div class="mt-5 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
+            <span class="text-slate-500 text-[11px]">FinOps & DevOps</span>
+            <a href="https://linkedin.com" target="_blank" class="text-slate-400 hover:text-emerald-300 font-medium">LinkedIn ↗</a>
+          </div>
+        </div>
+
+        <!-- 5. KEVAL HINGU -->
+        <div class="bg-[#0c0d16] border border-slate-800 hover:border-emerald-500/50 rounded-xl p-5 flex flex-col justify-between transition-all">
+          <div>
+            <div class="flex items-center justify-between text-xs mb-3">
+              <span class="text-[10px] font-mono-code px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-semibold">AWS COMMUNITY BUILDER</span>
+              <span class="text-[10px] font-mono-code px-2 py-0.5 rounded bg-slate-800 text-slate-400">Industry Mentor</span>
+            </div>
+            <h4 class="text-base font-bold text-white">Keval Hingu</h4>
+            <p class="text-xs text-emerald-400 font-mono-code mt-0.5">Cloud Developer & Technical Author</p>
+            <p class="text-xs text-slate-400 mt-2.5 leading-relaxed">
+              Speaker at AWS Student Community Day CHARUSAT on "Choosing the Right Compute on AWS: EC2 vs Containers vs Serverless"; active AWS community contributor and author.
+            </p>
+          </div>
+          <div class="mt-5 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
+            <span class="text-slate-500 text-[11px]">AWS Community Builder</span>
+            <a href="https://linkedin.com" target="_blank" class="text-slate-400 hover:text-emerald-300 font-medium">LinkedIn ↗</a>
+          </div>
+        </div>
+
+        <!-- 6. DHAVAL NAGAR -->
+        <div class="bg-[#0c0d16] border border-slate-800 hover:border-purple-500/50 rounded-xl p-5 flex flex-col justify-between transition-all">
+          <div>
+            <div class="flex items-center justify-between text-xs mb-3">
+              <span class="text-[10px] font-mono-code px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40 font-semibold">AWS COMMUNITY HERO</span>
+              <span class="text-[10px] font-mono-code px-2 py-0.5 rounded bg-slate-800 text-slate-400">Industry Mentor</span>
+            </div>
+            <h4 class="text-base font-bold text-white">Dhaval Nagar</h4>
+            <p class="text-xs text-purple-400 font-mono-code mt-0.5">Founder & CEO, AppGambit</p>
+            <p class="text-xs text-slate-400 mt-2.5 leading-relaxed">
+              AWS Community Hero and enterprise cloud architect. Delivered keynote on "Cloud + AI: The Builder's Playbook" at AWS Student Community Day at CHARUSAT.
+            </p>
+          </div>
+          <div class="mt-5 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
+            <span class="text-slate-500 text-[11px]">AWS Hero // AppGambit</span>
+            <a href="https://linkedin.com" target="_blank" class="text-slate-400 hover:text-purple-300 font-medium">LinkedIn ↗</a>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 5: WORKSHOPS & EVENTS (#events) -->
+    <!-- ========================================== -->
+    <section id="events" class="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-slate-900">
+      
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <span class="text-xs font-mono-code text-purple-400 uppercase tracking-wider">Events & Sessions</span>
+          <h2 class="text-2xl sm:text-4xl font-bold text-white tracking-tight mt-1.5">
+            Workshops & Past Highlights
+          </h2>
+          <p class="mt-2 text-sm text-slate-400">
+            A look at our past campus workshops and ongoing study initiatives.
+          </p>
+        </div>
+
+        <!-- SIMPLE TABS -->
+        <div class="flex items-center gap-2 bg-[#0c0d16] p-1 rounded-lg border border-slate-800 text-xs font-medium">
+          <button onclick="filterEvents('all')" id="btn-filter-all" class="px-3 py-1 rounded bg-purple-600 text-white font-semibold transition-all">All</button>
+          <button onclick="filterEvents('masterclass')" id="btn-filter-masterclass" class="px-3 py-1 rounded text-slate-400 hover:text-purple-300 transition-all">Masterclasses</button>
+          <button onclick="filterEvents('hands-on')" id="btn-filter-hands-on" class="px-3 py-1 rounded text-slate-400 hover:text-purple-300 transition-all">Labs</button>
+          <button onclick="filterEvents('roadmap')" id="btn-filter-roadmap" class="px-3 py-1 rounded text-slate-400 hover:text-purple-300 transition-all">Roadmaps</button>
+        </div>
+      </div>
+
+      <!-- CARDS -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-10">
+        
+        <!-- EVENT 1 -->
+        <div class="event-card masterclass bg-[#0c0d16] border border-slate-800 hover:border-purple-500/40 rounded-xl p-6 flex flex-col justify-between transition-all">
+          <div>
+            <div class="flex items-center justify-between text-xs text-slate-400 mb-3 font-mono-code">
+              <span class="px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 border border-purple-500/30">Masterclass</span>
+              <span>Past Event • 3 Days</span>
+            </div>
+            <h3 class="text-lg font-bold text-white">Endowment Chair Masterclass & Cloud Showcase</h3>
+            <p class="text-xs text-slate-400 mt-1">Speaker: Shashank Chinchli • CHARUSAT Auditorium & Labs</p>
+            <p class="text-xs sm:text-sm text-slate-400 mt-3 leading-relaxed">
+              A 3-day technical masterclass covering cloud architecture patterns, basics of Terraform for Infrastructure as Code, CI/CD pipelines, and practical AI workloads on AWS. Concluded with a student architecture showcase.
+            </p>
+          </div>
+          <div class="mt-6 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+            <span class="text-slate-500 font-mono-code">Completed</span>
+            <span class="text-purple-400 hover:text-purple-300">View Recap ↗</span>
+          </div>
+        </div>
+
+        <!-- EVENT 2 -->
+        <div class="event-card hands-on bg-[#0c0d16] border border-slate-800 hover:border-emerald-500/40 rounded-xl p-6 flex flex-col justify-between transition-all">
+          <div>
+            <div class="flex items-center justify-between text-xs text-slate-400 mb-3 font-mono-code">
+              <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-medium">Hands-on Lab</span>
+              <span>Past Event • 3 Hours</span>
+            </div>
+            <h3 class="text-lg font-bold text-white">Infrastructure as Code with Terraform & AWS</h3>
+            <p class="text-xs text-slate-400 mt-1">Led by Student Cloud Team • Campus Computer Labs</p>
+            <p class="text-xs sm:text-sm text-slate-400 mt-3 leading-relaxed">
+              A practical lab where attendees learned to write basic Terraform scripts to provision EC2 instances, S3 buckets, and security groups, followed by automated cleanup.
+            </p>
+          </div>
+          <div class="mt-6 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+            <span class="text-slate-500 font-mono-code">Completed</span>
+            <span class="text-emerald-400 hover:text-emerald-300">Workshop Resources ↗</span>
+          </div>
+        </div>
+
+        <!-- EVENT 3 -->
+        <div class="event-card hands-on bg-[#0c0d16] border border-slate-800 hover:border-emerald-500/40 rounded-xl p-6 flex flex-col justify-between transition-all">
+          <div>
+            <div class="flex items-center justify-between text-xs text-slate-400 mb-3 font-mono-code">
+              <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-medium">Orientation</span>
+              <span>Past Event</span>
+            </div>
+            <h3 class="text-lg font-bold text-white">AWS Roots: The Cloud Genesis</h3>
+            <p class="text-xs text-slate-400 mt-1">Community Team • Seminar Hall</p>
+            <p class="text-xs sm:text-sm text-slate-400 mt-3 leading-relaxed">
+              An onboarding session for newcomers to understand cloud computing basics, setup Free Tier accounts safely, enable Multi-Factor Authentication (MFA), and configure budget alarms.
+            </p>
+          </div>
+          <div class="mt-6 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+            <span class="text-slate-500 font-mono-code">Completed</span>
+            <span class="text-emerald-400 hover:text-emerald-300">Security Notes ↗</span>
+          </div>
+        </div>
+
+        <!-- EVENT 4 -->
+        <div class="event-card roadmap bg-[#0c0d16] border border-purple-500/30 hover:border-purple-500/60 rounded-xl p-6 flex flex-col justify-between transition-all">
+          <div>
+            <div class="flex items-center justify-between text-xs text-slate-400 mb-3 font-mono-code">
+              <span class="px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 border border-purple-500/30">Study Roadmap</span>
+              <span class="text-emerald-400 font-medium">● Ongoing Circle</span>
+            </div>
+            <h3 class="text-lg font-bold text-white">Peer Roadmap: Cloud & AI Practitioner</h3>
+            <p class="text-xs text-slate-400 mt-1">Student Study Circles • Hybrid / Discord</p>
+            <p class="text-xs sm:text-sm text-slate-400 mt-3 leading-relaxed">
+              Curated study checklists, exam domain breakdowns, and sample review questions to help students prepare for AWS Cloud Practitioner and AI Practitioner topics alongside CHARUSAT's AWS Academy.
+            </p>
+          </div>
+          <div class="mt-6 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+            <span class="text-purple-400 font-mono-code">Study Resources</span>
+            <a href="https://www.meetup.com/aws-sbg-at-charotar-university-of-science-and-technology/" target="_blank" rel="noopener noreferrer" class="text-emerald-400 hover:text-emerald-300 font-medium hover:underline">Join Circle ↗</a>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 6: GALLERY (#gallery) -->
+    <!-- ========================================== -->
+    <section id="gallery" class="py-20 border-t border-slate-900 overflow-hidden">
+      
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+        <span class="text-xs font-mono-code text-purple-400 uppercase tracking-wider">Campus Highlights</span>
+        <h2 class="text-2xl sm:text-4xl font-bold text-white tracking-tight mt-1.5">
+          Moments from Recent Events
+        </h2>
+        <p class="mt-2 text-sm text-slate-400">
+          Snapshots from auditorium keynotes, computer lab sessions, and student interactions.
+        </p>
+      </div>
+
+      <!-- MARQUEE STRIP 1 -->
+      <div class="relative w-full overflow-hidden mb-4">
+        <div class="animate-marquee gap-4 flex items-center">
+          
+          <div class="w-[320px] h-[190px] rounded-xl bg-[#0c0d16] border border-slate-800 hover:border-purple-500/40 transition-all p-3 shrink-0 flex flex-col justify-between">
+            <div class="h-[125px] rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-3xl">🏛️</div>
+            <div class="text-xs text-slate-400">Auditorium Keynote Session</div>
+          </div>
+
+          <div class="w-[320px] h-[190px] rounded-xl bg-[#0c0d16] border border-slate-800 hover:border-emerald-500/40 transition-all p-3 shrink-0 flex flex-col justify-between">
+            <div class="h-[125px] rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-3xl">🎖️</div>
+            <div class="text-xs text-slate-400">Faculty & Speaker Felicitation</div>
+          </div>
+
+          <div class="w-[320px] h-[190px] rounded-xl bg-[#0c0d16] border border-slate-800 hover:border-purple-500/40 transition-all p-3 shrink-0 flex flex-col justify-between">
+            <div class="h-[125px] rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-3xl">📊</div>
+            <div class="text-xs text-slate-400">Student Architecture Presentations</div>
+          </div>
+
+          <div class="w-[320px] h-[190px] rounded-xl bg-[#0c0d16] border border-slate-800 hover:border-emerald-500/40 transition-all p-3 shrink-0 flex flex-col justify-between">
+            <div class="h-[125px] rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-3xl">🤝</div>
+            <div class="text-xs text-slate-400">Community Photo with Attendees</div>
+          </div>
+
+          <!-- REPEAT FOR MARQUEE -->
+          <div class="w-[320px] h-[190px] rounded-xl bg-[#0c0d16] border border-slate-800 hover:border-purple-500/40 transition-all p-3 shrink-0 flex flex-col justify-between">
+            <div class="h-[125px] rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-3xl">🏛️</div>
+            <div class="text-xs text-slate-400">Auditorium Keynote Session</div>
+          </div>
+
+          <div class="w-[320px] h-[190px] rounded-xl bg-[#0c0d16] border border-slate-800 hover:border-emerald-500/40 transition-all p-3 shrink-0 flex flex-col justify-between">
+            <div class="h-[125px] rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-3xl">🎖️</div>
+            <div class="text-xs text-slate-400">Faculty & Speaker Felicitation</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- MARQUEE STRIP 2 -->
+      <div class="relative w-full overflow-hidden">
+        <div class="animate-marquee-reverse gap-4 flex items-center">
+          
+          <div class="w-[320px] h-[190px] rounded-xl bg-[#0c0d16] border border-slate-800 hover:border-emerald-500/40 transition-all p-3 shrink-0 flex flex-col justify-between">
+            <div class="h-[125px] rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-3xl">💻</div>
+            <div class="text-xs text-slate-400">Hands-on Labs in Campus Systems</div>
+          </div>
+
+          <div class="w-[320px] h-[190px] rounded-xl bg-[#0c0d16] border border-slate-800 hover:border-purple-500/40 transition-all p-3 shrink-0 flex flex-col justify-between">
+            <div class="h-[125px] rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-3xl">📐</div>
+            <div class="text-xs text-slate-400">Interactive Whiteboard Explanations</div>
+          </div>
+
+          <div class="w-[320px] h-[190px] rounded-xl bg-[#0c0d16] border border-slate-800 hover:border-emerald-500/40 transition-all p-3 shrink-0 flex flex-col justify-between">
+            <div class="h-[125px] rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-3xl">🎁</div>
+            <div class="text-xs text-slate-400">Swag Distribution & Recognition</div>
+          </div>
+
+          <div class="w-[320px] h-[190px] rounded-xl bg-[#0c0d16] border border-slate-800 hover:border-purple-500/40 transition-all p-3 shrink-0 flex flex-col justify-between">
+            <div class="h-[125px] rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-3xl">🎧</div>
+            <div class="text-xs text-slate-400">Student Volunteer Team at Work</div>
+          </div>
+
+          <!-- REPEAT FOR MARQUEE -->
+          <div class="w-[320px] h-[190px] rounded-xl bg-[#0c0d16] border border-slate-800 hover:border-emerald-500/40 transition-all p-3 shrink-0 flex flex-col justify-between">
+            <div class="h-[125px] rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-3xl">💻</div>
+            <div class="text-xs text-slate-400">Hands-on Labs in Campus Systems</div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 7: FAQ (#faq) -->
+    <!-- ========================================== -->
+    <section id="faq" class="py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto border-t border-slate-900">
+      
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-xs font-mono-code text-purple-400 uppercase tracking-wider">FAQ</span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight mt-1.5">
+          Common Questions
+        </h2>
+        <p class="mt-2 text-sm text-slate-400">
+          A few quick answers about our sessions, prerequisites, and membership.
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        
+        <div class="faq-item bg-[#0c0d16] border border-slate-800 hover:border-purple-500/40 rounded-xl overflow-hidden transition-all">
+          <button onclick="toggleFaq(this)" class="w-full p-4 text-left flex items-center justify-between text-sm font-semibold text-white hover:text-purple-300 transition-colors">
+            <span>Who can join the AWS Student Builder Group at CHARUSAT?</span>
+            <span class="faq-icon text-purple-400 font-mono-code text-base">+</span>
+          </button>
+          <div class="faq-body hidden px-4 pb-4 text-xs sm:text-sm text-slate-400 leading-relaxed border-t border-slate-800/60 pt-3">
+            Any registered student at CHARUSAT! Whether you are a first-year student just starting with programming or a senior exploring distributed systems, students from all engineering and computer application departments are welcome.
+          </div>
+        </div>
+
+        <div class="faq-item bg-[#0c0d16] border border-slate-800 hover:border-purple-500/40 rounded-xl overflow-hidden transition-all">
+          <button onclick="toggleFaq(this)" class="w-full p-4 text-left flex items-center justify-between text-sm font-semibold text-white hover:text-purple-300 transition-colors">
+            <span>Do I need to pay any membership or workshop fee?</span>
+            <span class="faq-icon text-purple-400 font-mono-code text-base">+</span>
+          </button>
+          <div class="faq-body hidden px-4 pb-4 text-xs sm:text-sm text-slate-400 leading-relaxed border-t border-slate-800/60 pt-3">
+            No. All our campus workshops, community sessions, peer study circles, and masterclasses are 100% free of charge.
+          </div>
+        </div>
+
+        <div class="faq-item bg-[#0c0d16] border border-slate-800 hover:border-purple-500/40 rounded-xl overflow-hidden transition-all">
+          <button onclick="toggleFaq(this)" class="w-full p-4 text-left flex items-center justify-between text-sm font-semibold text-white hover:text-purple-300 transition-colors">
+            <span>How is this club related to CHARUSAT's AWS Academy?</span>
+            <span class="faq-icon text-purple-400 font-mono-code text-base">+</span>
+          </button>
+          <div class="faq-body hidden px-4 pb-4 text-xs sm:text-sm text-slate-400 leading-relaxed border-t border-slate-800/60 pt-3">
+            CHARUSAT has an official AWS Academy that offers institutional courses and formal exam vouchers. The AWS Student Builder Group is the student-led club that complements this by running hands-on workshops, peer study circles, and project discussions.
+          </div>
+        </div>
+
+        <div class="faq-item bg-[#0c0d16] border border-slate-800 hover:border-purple-500/40 rounded-xl overflow-hidden transition-all">
+          <button onclick="toggleFaq(this)" class="w-full p-4 text-left flex items-center justify-between text-sm font-semibold text-white hover:text-purple-300 transition-colors">
+            <span>Do I need prior cloud or AWS experience to attend?</span>
+            <span class="faq-icon text-purple-400 font-mono-code text-base">+</span>
+          </button>
+          <div class="faq-body hidden px-4 pb-4 text-xs sm:text-sm text-slate-400 leading-relaxed border-t border-slate-800/60 pt-3">
+            Not at all. We specifically organize beginner sessions covering basic computing, terminal navigation, and setting up Free Tier accounts safely with zero-cost billing alerts before moving to intermediate topics.
+          </div>
+        </div>
+
+        <div class="faq-item bg-[#0c0d16] border border-slate-800 hover:border-purple-500/40 rounded-xl overflow-hidden transition-all">
+          <button onclick="toggleFaq(this)" class="w-full p-4 text-left flex items-center justify-between text-sm font-semibold text-white hover:text-purple-300 transition-colors">
+            <span>How can I get involved in the organizing team?</span>
+            <span class="faq-icon text-purple-400 font-mono-code text-base">+</span>
+          </button>
+          <div class="faq-body hidden px-4 pb-4 text-xs sm:text-sm text-slate-400 leading-relaxed border-t border-slate-800/60 pt-3">
+            We announce volunteer and team recruitment forms at the start of academic terms. Coming to our campus workshops and being active in community sessions is the best way to get involved!
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- SECTION 8: GLOBAL FOOTER (#footer) -->
+  <!-- ========================================== -->
+  <footer class="border-t border-slate-800/80 bg-[#05060a] py-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        
+        <div class="md:col-span-2">
+          <div class="flex items-center gap-2.5">
+            <div class="w-7 h-7 rounded-lg bg-purple-500/20 border border-purple-500/30 flex items-center justify-center font-bold text-emerald-400 text-xs">
+              ☁
+            </div>
+            <div>
+              <span class="font-bold text-white text-sm">AWS Student Builder Group</span>
+              <span class="text-xs text-purple-400 block font-mono-code">CHARUSAT</span>
+            </div>
+          </div>
+          <p class="mt-3 text-xs text-slate-400 max-w-sm leading-relaxed">
+            The student cloud computing community at Charotar University of Science and Technology. Dedicated to hands-on learning, system building, and collaborative tech exploration.
+          </p>
+          <div class="mt-3 text-[11px] text-slate-500">
+            Charotar University of Science and Technology (CHARUSAT), Changa, Anand, Gujarat — 388421
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-semibold text-white uppercase tracking-wider mb-3">Quick Links</h4>
+          <ul class="space-y-1.5 text-xs text-slate-400">
+            <li><a href="#about" class="hover:text-purple-300 transition-colors">About Us</a></li>
+            <li><a href="#leadership" class="hover:text-purple-300 transition-colors">Advisors & Leadership</a></li>
+            <li><a href="#teams" class="hover:text-purple-300 transition-colors">Sub-Teams</a></li>
+            <li><a href="#events" class="hover:text-purple-300 transition-colors">Events & Workshops</a></li>
+            <li><a href="#gallery" class="hover:text-purple-300 transition-colors">Campus Gallery</a></li>
+            <li><a href="#faq" class="hover:text-purple-300 transition-colors">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-semibold text-white uppercase tracking-wider mb-3">Community Links</h4>
+          <ul class="space-y-1.5 text-xs text-slate-400">
+            <li><a href="https://linkedin.com" target="_blank" class="hover:text-emerald-400 transition-colors">LinkedIn Community ↗</a></li>
+            <li><a href="https://meetup.com" target="_blank" class="hover:text-emerald-400 transition-colors">Meetup Chapter ↗</a></li>
+            <li><a href="https://github.com" target="_blank" class="hover:text-emerald-400 transition-colors">GitHub ↗</a></li>
+            <li><a href="https://instagram.com" target="_blank" class="hover:text-emerald-400 transition-colors">Instagram ↗</a></li>
+            <li><a href="https://discord.com" target="_blank" class="hover:text-emerald-400 transition-colors">Discord ↗</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="mt-10 pt-6 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+        <div>
+          © 2026 AWS Student Builder Group – CHARUSAT. All rights reserved.
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          <span>Charotar University of Science and Technology</span>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    // Mobile Menu
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileBtn && mobileMenu) {
+      mobileBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+
+    // Event Filters
+    function filterEvents(category) {
+      const cards = document.querySelectorAll('.event-card');
+      const buttons = [
+        document.getElementById('btn-filter-all'),
+        document.getElementById('btn-filter-masterclass'),
+        document.getElementById('btn-filter-hands-on'),
+        document.getElementById('btn-filter-roadmap')
+      ];
+
+      buttons.forEach(btn => {
+        if (!btn) return;
+        btn.classList.remove('bg-purple-600', 'text-white', 'font-semibold');
+        btn.classList.add('text-slate-400');
+      });
+
+      const activeBtn = document.getElementById(`btn-filter-${category}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-400');
+        activeBtn.classList.add('bg-purple-600', 'text-white', 'font-semibold');
+      }
+
+      cards.forEach(card => {
+        if (category === 'all' || card.classList.contains(category)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // FAQ Accordion
+    function toggleFaq(button) {
+      const faqItem = button.closest('.faq-item');
+      const body = faqItem.querySelector('.faq-body');
+      const icon = button.querySelector('.faq-icon');
+      const isHidden = body.classList.contains('hidden');
+
+      document.querySelectorAll('.faq-body').forEach(b => b.classList.add('hidden'));
+      document.querySelectorAll('.faq-icon').forEach(i => i.textContent = '+');
+
+      if (isHidden) {
+        body.classList.remove('hidden');
+        icon.textContent = '−';
+      } else {
+        body.classList.add('hidden');
+        icon.textContent = '+';
+      }
+    }
+  </script>
+
+</body>
+</html>

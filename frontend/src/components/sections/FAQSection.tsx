@@ -2,7 +2,8 @@
 
 import React from "react"
 import Image from "next/image"
-import { IconCloud } from "@/components/ui/icon-cloud"
+import { AWSOrbitingCircles } from "@/components/ui/aws-orbiting-circles"
+import { Ripple } from "@/components/ui/ripple"
 import {
   Accordion,
   AccordionItem,
@@ -11,71 +12,36 @@ import {
 } from "@/components/animate-ui/components/headless/accordion"
 
 const awsServiceSlugs = [
-  // AWS Compute & Serverless
+  // Ring 1 (5) - Core AWS Compute
   "amazonwebservices",
   "amazonec2",
   "awslambda",
   "awsfargate",
-  "amazonecs",
   "amazoneks",
-  "awselasticbeanstalk",
-  "amazonlightsail",
-
-  // AWS Storage & Database
+  
+  // Ring 2 (8) - Storage, DB, Network, Security
   "amazons3",
   "amazondynamodb",
   "amazonrds",
-  "amazonaurora",
-  "amazondocumentdb",
-  "amazonredshift",
-  "amazonefs",
-  "amazontranscribe",
-
-  // AWS Security, Identity & Governance
-  "awsiam",
-  "awssecretsmanager",
-  "awswaf",
-  "amazoncognito",
-  "amazonsnowball",
-  "awscloudtrail",
-  "awsbackup",
-  "awsorganizations",
-  
-
-  // AWS Management, DNS & Networking
   "amazonroute53",
   "amazonapigateway",
   "amazoncloudwatch",
   "amazoncloudformation",
-  "jenkins",
-  "cloudflare",
-  "github",
-  "amazontimestream",
-  "amazonmanagedblockchain",
-  
+  "awsiam",
 
-
-  // AWS Messaging, App Integration & Analytics
-  "amazonsqs",
-  "amazonsns",
-  "amazonappflow",
-  "awsamplify",
-  "amazonsagemaker",
-  "amazonathena",
-  "amazonkinesis",
-  "amazonquicksight",
-  "amazonglue",
-
-  // Cloud & DevOps Architecture Core
-  "terraform",
+  // Ring 3 (12) - DevOps & Stack
+  "awswaf",
+  "amazoncognito",
   "docker",
   "kubernetes",
+  "terraform",
   "ansible",
-  "linux",
+  "jenkins",
+  "github",
   "git",
-  "amazonopensearchservice",
+  "linux",
   "redis",
-  "awsiot",
+  "cloudflare",
 ]
 
 const faqs = [
@@ -137,25 +103,30 @@ export function FAQSection() {
       <div className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-8 lg:gap-0 relative z-10">
         {/* Left Side: 3D AWS Icon Cloud with Center CHARUSAT Logo */}
         <div className="flex-1 flex items-center justify-center py-4 lg:py-0 w-full">
-          <div className="relative flex items-center justify-center w-full max-w-[20rem] sm:max-w-[26rem] lg:max-w-[30rem]">
+          <div className="relative flex items-center justify-center w-full max-w-[20rem] sm:max-w-[26rem] lg:max-w-[30rem] min-h-[500px]">
             
+            {/* Background Ripple Effect */}
+            <div className="absolute inset-0 z-0 flex items-center justify-center">
+              <Ripple mainCircleSize={150} numCircles={8} color="0, 230, 118" />
+            </div>
+
             {/* Center Logo with Emerald Glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 h-20 w-20 sm:h-24 sm:w-24 rounded-full flex items-center justify-center bg-black/90 border border-[#00e676]/30 shadow-[0_0_60px_rgba(0,230,118,0.35)] backdrop-blur-md">
-              <div className="relative h-12 w-12 sm:h-16 sm:w-16">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-[#F4F7F5] border border-white/[0.12] shadow-[0_0_60px_rgba(0,230,118,0.3)] backdrop-blur-md flex items-center justify-center">
+              <div className="absolute inset-[10%] rounded-full overflow-hidden">
                 <Image
-                  src="/image.png"
+                  src="/image.svg"
                   alt="AWS Student Builder Group CHARUSAT"
                   fill
-                  className="object-contain"
-                  sizes="(max-width: 768px) 48px, 64px"
+                  className="object-contain scale-[1.15]"
+                  sizes="(max-width: 768px) 64px, 80px"
                   priority
                 />
               </div>
             </div>
 
-            {/* Interactive 3D Icon Cloud */}
-            <div className="scale-[0.85] sm:scale-100 w-full flex items-center justify-center">
-              <IconCloud iconSlugs={awsServiceSlugs} />
+            {/* Orbiting Circles */}
+            <div className="scale-[0.85] sm:scale-100 w-full flex items-center justify-center relative z-20">
+              <AWSOrbitingCircles iconSlugs={awsServiceSlugs} />
             </div>
 
           </div>

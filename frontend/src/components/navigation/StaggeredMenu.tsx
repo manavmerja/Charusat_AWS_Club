@@ -409,27 +409,28 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       >
         {/* Left Side: Clean Brand Card with Official Square Logo */}
         <a
-          href="#home"
-          className="pointer-events-auto flex items-center gap-3.5 px-3 py-2 rounded-2xl bg-[#0e1526]/80 backdrop-blur-xl border border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.5)] hover:border-emerald-500/40 hover:shadow-[0_0_20px_rgba(0,230,118,0.25)] transition-all select-none group"
+          href="/"
+          aria-label="AWS Student Builder Group Home"
+          className="pointer-events-auto flex items-center gap-2.5 p-1.5 pr-4 sm:pr-5 rounded-2xl bg-white/[0.03] backdrop-blur-md border border-white/10 hover:border-white/[0.16] hover:bg-white/[0.05] transition-all duration-200 ease-out select-none group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00e676]/50"
         >
           {/* Logo Container */}
-          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center p-1 bg-slate-900 border border-emerald-500/30 shadow-[0_0_12px_rgba(0,230,118,0.2)] group-hover:scale-105 transition-transform">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-[10px] overflow-hidden flex-shrink-0 flex items-center justify-center bg-[#F4F7F5] border border-white/[0.08] group-hover:scale-[1.03] transition-transform duration-200 ease-out">
             <Image
-              src="/image.png"
+              src="/image.svg"
               alt="AWS Student Builder Group Logo"
               width={40}
               height={40}
-              className="object-contain"
+              className="object-contain w-full h-full scale-[1.15]"
               priority
             />
           </div>
 
           {/* Clean Typography Branding */}
-          <div className="flex flex-col text-left pr-2">
-            <span className="text-xs sm:text-sm font-extrabold tracking-wider text-white uppercase leading-none">
+          <div className="flex flex-col text-left font-[family-name:var(--font-geist-sans)] justify-center">
+            <span className="text-[10px] sm:text-[11.5px] font-semibold tracking-[0.02em] text-[#F5F5F5] uppercase leading-tight">
               AWS Student Builder Group
             </span>
-            <span className="text-[10px] sm:text-[11px] text-[#00e676] font-semibold tracking-wide leading-tight mt-1">
+            <span className="hidden sm:block text-[9.5px] text-[#00e676]/75 font-medium tracking-wide leading-tight mt-0.5">
               CHARUSAT University
             </span>
           </div>
