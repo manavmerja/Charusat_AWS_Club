@@ -411,16 +411,16 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
         <a
           href="/"
           aria-label="AWS Student Builder Group Home"
-          className="pointer-events-auto flex items-center gap-2.5 p-1.5 pr-4 sm:pr-5 rounded-2xl bg-[#050505]/40 backdrop-blur-md border border-white/[0.08] shadow-[0_4px_16px_rgba(0,0,0,0.2)] hover:border-white/[0.16] hover:bg-[#050505]/50 transition-all duration-200 ease-out select-none group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00e676]/50"
+          className="pointer-events-auto flex items-center gap-2.5 p-1.5 pr-4 sm:pr-5 rounded-2xl bg-white/[0.03] backdrop-blur-md border border-white/10 hover:border-white/[0.16] hover:bg-white/[0.05] transition-all duration-200 ease-out select-none group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00e676]/50"
         >
           {/* Logo Container */}
-          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-[10px] flex-shrink-0 flex items-center justify-center p-1.5 bg-white border border-white/[0.08] group-hover:scale-[1.03] transition-transform duration-200 ease-out">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-[10px] overflow-hidden flex-shrink-0 flex items-center justify-center bg-[#F4F7F5] border border-white/[0.08] group-hover:scale-[1.03] transition-transform duration-200 ease-out">
             <Image
               src="/image.svg"
               alt="AWS Student Builder Group Logo"
               width={40}
               height={40}
-              className="object-contain w-full h-full"
+              className="object-contain w-full h-full scale-[1.15]"
               priority
             />
           </div>
