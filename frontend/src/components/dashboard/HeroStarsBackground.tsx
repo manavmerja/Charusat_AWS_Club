@@ -1,6 +1,7 @@
 "use client";
 
 import { StarsBackground } from "@/components/animate-ui/components/backgrounds/stars";
+import { TechText } from "@/components/ui/TechText";
 
 export function HeroStarsBackground() {
   return (
@@ -23,10 +24,37 @@ export function HeroStarsBackground() {
 
       {/* Hero Content */}
       <div className="relative z-20 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-28 pb-20 flex flex-col items-start justify-center">
-        <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-serif font-bold leading-[1.05] tracking-tight max-w-5xl mb-8">
-          AWS SBG<br />
-          Community<br />
-          Charusat
+        <h1 
+          className="text-white text-5xl md:text-7xl lg:text-8xl font-bold leading-[1.05] tracking-tight max-w-5xl mb-8 flex flex-col items-start"
+          style={{ fontFamily: "'Playfair Display', Georgia, Cambria, serif" }}
+        >
+          <span className="tracking-tight font-bold">AWS SBG</span>
+          <span className="tracking-tight font-bold">Community</span>
+          <div className="relative w-full h-[75px] sm:h-[110px] md:h-[140px] lg:h-[175px] max-w-[500px] sm:max-w-[720px] -ml-1 sm:-ml-2 mt-1">
+            <TechText
+              text="Charusat"
+              fontWeight={700}
+              fontSize={150}
+              reveal="letter"
+              dashLength={15}
+              dashGap={2}
+              specks={16}
+              fontFamily="'Playfair Display', Georgia, Cambria, serif"
+              color="#19b380"
+              accentColor="#ffffff"
+              letterSpacing={-0.05}
+              reach={200}
+              softness={0.7}
+              strokeWidth={1.5}
+              speed={1}
+              lineStyle="dashed"
+              selection={true}
+              labels={true}
+              draggable={true}
+              sweep={true}
+              align="left"
+            />
+          </div>
         </h1>
 
         <p className="text-gray-300 text-lg md:text-xl max-w-2xl mb-12 font-sans font-light leading-relaxed">
