@@ -23,7 +23,7 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <main className="min-h-screen bg-[#0b0f19] text-white relative selection:bg-[#00e676] selection:text-[#0b0f19] font-[var(--font-space-grotesk)]">
+      <main className="min-h-screen bg-black text-white relative selection:bg-[#00e676] selection:text-[#0b0f19] font-[var(--font-space-grotesk)]">
       {/* Top Staggered Menu Navigation */}
       <StaggeredMenu
         colors={["#0f172a", "#064e3b", "#00e676"]}
