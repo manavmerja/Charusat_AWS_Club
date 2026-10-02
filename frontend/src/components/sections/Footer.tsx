@@ -41,7 +41,7 @@ export function Footer() {
       <BackgroundBeamsWithCollision className="pt-14 pb-8 sm:pt-16 sm:pb-10 w-full h-auto min-h-auto bg-black">
         
         {/* Background Dot Pattern matching portfolio (centered subtle circle with soft opacity) */}
-        <div className="absolute inset-0 z-0 h-full w-full bg-black pointer-events-none">
+        <div className="absolute inset-0 z-0 h-full w-full pointer-events-none">
           <DotPattern 
             className="opacity-40 [mask-image:radial-gradient(600px_circle_at_center,white,transparent)]" 
             width={20} 
