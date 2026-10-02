@@ -1,3 +1,8 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
+import { WordsPreloader } from "@/components/ui/WordsPreloader";
 import { HeroStarsBackground } from "@/components/dashboard/HeroStarsBackground";
 import { StaggeredMenu } from "@/components/navigation/StaggeredMenu";
 import { AboutSection } from "@/components/sections/AboutSection";
@@ -5,10 +10,20 @@ import { EventsSection } from "@/components/sections/EventsSection";
 import { TeamSection } from "@/components/sections/TeamSection";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { ContactSection } from "@/components/sections/ContactSection";
+import { Footer } from "@/components/sections/Footer";
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(true);
+
   return (
-    <main className="min-h-screen bg-[#0b0f19] text-white relative selection:bg-[#00e676] selection:text-[#0b0f19] font-[var(--font-space-grotesk)]">
+    <>
+      <AnimatePresence mode="wait">
+        {isLoading && (
+          <WordsPreloader onComplete={() => setIsLoading(false)} />
+        )}
+      </AnimatePresence>
+
+      <main className="min-h-screen bg-[#0b0f19] text-white relative selection:bg-[#00e676] selection:text-[#0b0f19] font-[var(--font-space-grotesk)]">
       {/* Top Staggered Menu Navigation */}
       <StaggeredMenu
         colors={["#0f172a", "#064e3b", "#00e676"]}
@@ -30,7 +45,7 @@ export default function Home() {
       />
 
       {/* 1. HERO SECTION */}
-      <section id="home" className="relative min-h-screen w-full flex items-center justify-center">
+      <section id="home" className="relative w-full min-h-screen">
         <HeroStarsBackground />
       </section>
 
@@ -50,6 +65,10 @@ export default function Home() {
 
       {/* 6. CONTACTS SECTION */}
       <ContactSection />
+
+      {/* 7. FOOTER */}
+      <Footer />
     </main>
+    </>
   );
 }
