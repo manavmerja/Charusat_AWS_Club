@@ -275,7 +275,7 @@ export function EventsSection() {
   return (
     <section
       id="events"
-      className="relative w-full min-h-screen flex flex-col items-center px-6 sm:px-12 py-24 border-t border-white/10 bg-black overflow-hidden"
+      className="relative w-full min-h-screen flex flex-col items-center px-6 sm:px-12 py-24 bg-black overflow-hidden"
     >
       {/* Subtle Aceternity Grid Background (ultra-subtle texture) */}
       <div
