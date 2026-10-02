@@ -37,10 +37,9 @@ export default function Home() {
           { label: "Contacts", ariaLabel: "Contact Us", link: "#contacts" },
         ]}
         socialItems={[
+          { label: "Meetup", link: "https://www.meetup.com/pro/aws-student-community" },
           { label: "LinkedIn", link: "https://linkedin.com" },
           { label: "Instagram", link: "https://instagram.com" },
-          { label: "GitHub", link: "https://github.com" },
-          { label: "Discord", link: "https://discord.com" },
         ]}
       />
 
