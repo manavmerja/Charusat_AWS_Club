@@ -26,6 +26,7 @@ export function WordsPreloader({
   speed = 190,
 }: WordsPreloaderProps) {
   const [index, setIndex] = useState(0);
+  const [isExiting, setIsExiting] = useState(false);
   const [dimension, setDimension] = useState<{ width: number; height: number }>({
     width: 0,
     height: 0,
@@ -62,6 +63,7 @@ export function WordsPreloader({
   useEffect(() => {
     if (index === words.length - 1) {
       const exitTimer = setTimeout(() => {
+        setIsExiting(true);
         onComplete?.();
       }, speed + 220);
       return () => clearTimeout(exitTimer);
@@ -77,11 +79,13 @@ export function WordsPreloader({
     return () => clearTimeout(timeout);
   }, [index, words.length, speed, onComplete]);
 
-  const w = dimension.width;
-  const h = dimension.height;
+  const w = dimension.width || (typeof window !== "undefined" ? window.innerWidth : 1920);
+  const h = dimension.height || (typeof window !== "undefined" ? window.innerHeight : 1080);
 
+  // Initial curve extends below screen
   const initialPath = `M0 0 L${w} 0 L${w} ${h} Q${w / 2} ${h + 300} 0 ${h} L0 0`;
-  const targetPath = `M0 0 L${w} 0 L${w} ${h} Q${w / 2} ${h} 0 ${h} L0 0`;
+  // Target curve arches upwards in the center (concave arch matching photo 2 & 3)
+  const targetPath = `M0 0 L${w} 0 L${w} ${h} Q${w / 2} ${h - 220} 0 ${h} L0 0`;
 
   const EASE_CURVE = [0.76, 0, 0.24, 1] as const;
 
@@ -91,7 +95,7 @@ export function WordsPreloader({
     },
     exit: {
       top: "-100vh",
-      transition: { duration: 0.85, ease: EASE_CURVE, delay: 0.2 },
+      transition: { duration: 0.85, ease: EASE_CURVE, delay: 0.15 },
     },
   };
 
@@ -102,7 +106,7 @@ export function WordsPreloader({
     },
     exit: {
       d: targetPath,
-      transition: { duration: 0.75, ease: EASE_CURVE, delay: 0.3 },
+      transition: { duration: 0.75, ease: EASE_CURVE, delay: 0.2 },
     },
   };
 
@@ -111,7 +115,9 @@ export function WordsPreloader({
       variants={slideUp}
       initial="initial"
       exit="exit"
-      className="fixed inset-0 z-[99999] flex items-center justify-center bg-[#f4f4f4] cursor-wait select-none"
+      className={`fixed inset-0 z-[99999] flex items-center justify-center cursor-wait select-none ${
+        isExiting ? "bg-transparent" : "bg-[#f4f4f4]"
+      }`}
     >
       {/* Centered Clean Modern Typography */}
       <motion.div
@@ -125,7 +131,7 @@ export function WordsPreloader({
         {words[index]}
       </motion.div>
 
-      {/* Smooth Morphing SVG Curved Bottom (Rendered after client dimensions are measured to prevent SSR mismatch) */}
+      {/* Smooth Morphing SVG Curved Bottom (Visible when isExiting is true) */}
       {dimension.width > 0 && (
         <svg className="absolute top-0 left-0 w-full h-[calc(100%+300px)] pointer-events-none fill-[#f4f4f4]">
           <motion.path
