@@ -1,6 +1,7 @@
 import { HeroStarsBackground } from "@/components/dashboard/HeroStarsBackground";
 import { StaggeredMenu } from "@/components/navigation/StaggeredMenu";
 import { AboutSection } from "@/components/sections/AboutSection";
+import { EventsSection } from "@/components/sections/EventsSection";
 import { TeamSection } from "@/components/sections/TeamSection";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { ContactSection } from "@/components/sections/ContactSection";
@@ -39,22 +40,7 @@ export default function Home() {
       </section>
 
       {/* 3. EVENTS & WORKSHOPS SECTION */}
-      <section
-        id="events"
-        className="relative min-h-screen w-full flex flex-col items-center justify-center px-6 sm:px-12 py-24 border-t border-white/[0.06] bg-[#0d121f]"
-      >
-        <div className="max-w-4xl mx-auto text-center space-y-4">
-          <span className="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/10 text-[#00e676] border border-emerald-500/20">
-            Programs & Workshops
-          </span>
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-            Upcoming Events & Hackathons
-          </h2>
-          <p className="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-            Stay tuned for upcoming bootcamps, speaker sessions, cloud architecting workshops, and community hackathons.
-          </p>
-        </div>
-      </section>
+      <EventsSection />
 
       {/* 4. CORE TEAMS SECTION */}
       <TeamSection />
