@@ -43,10 +43,9 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     { label: 'Contacts', ariaLabel: 'Contact Us', link: '#contacts' }
   ],
   socialItems = [
+    { label: 'Meetup', link: 'https://www.meetup.com/pro/aws-student-community' },
     { label: 'LinkedIn', link: 'https://linkedin.com' },
-    { label: 'Instagram', link: 'https://instagram.com' },
-    { label: 'GitHub', link: 'https://github.com' },
-    { label: 'Discord', link: 'https://discord.com' }
+    { label: 'Instagram', link: 'https://instagram.com' }
   ],
   displaySocials = true,
   displayItemNumbering = true,
@@ -70,14 +69,9 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   const plusVRef = useRef<HTMLSpanElement | null>(null);
   const iconRef = useRef<HTMLSpanElement | null>(null);
 
-  const textInnerRef = useRef<HTMLSpanElement | null>(null);
-  const textWrapRef = useRef<HTMLSpanElement | null>(null);
-  const [textLines, setTextLines] = useState<string[]>(['Menu', 'Close']);
-
   const openTlRef = useRef<gsap.core.Timeline | null>(null);
   const closeTweenRef = useRef<gsap.core.Tween | null>(null);
   const spinTweenRef = useRef<gsap.core.Timeline | null>(null);
-  const textCycleAnimRef = useRef<gsap.core.Tween | null>(null);
   const colorTweenRef = useRef<gsap.core.Tween | null>(null);
 
   const toggleBtnRef = useRef<HTMLButtonElement | null>(null);
@@ -93,9 +87,8 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       const plusH = plusHRef.current;
       const plusV = plusVRef.current;
       const icon = iconRef.current;
-      const textInner = textInnerRef.current;
 
-      if (!panel || !plusH || !plusV || !icon || !textInner) return;
+      if (!panel || !plusH || !plusV || !icon) return;
 
       let preLayers: HTMLElement[] = [];
       if (preContainer) {
@@ -112,8 +105,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       gsap.set(plusH, { transformOrigin: '50% 50%', rotate: 0, force3D: true });
       gsap.set(plusV, { transformOrigin: '50% 50%', rotate: 90, force3D: true });
       gsap.set(icon, { rotate: 0, transformOrigin: '50% 50%', force3D: true });
-
-      gsap.set(textInner, { yPercent: 0, force3D: true });
 
       if (toggleBtnRef.current) gsap.set(toggleBtnRef.current, { color: menuButtonColor });
     });
@@ -315,39 +306,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     [openMenuButtonColor, menuButtonColor, changeMenuColorOnOpen]
   );
 
-  const animateText = useCallback((opening: boolean) => {
-    const inner = textInnerRef.current;
-    if (!inner) return;
-
-    textCycleAnimRef.current?.kill();
-
-    const currentLabel = opening ? 'Menu' : 'Close';
-    const targetLabel = opening ? 'Close' : 'Menu';
-    const cycles = 2;
-
-    const seq: string[] = [currentLabel];
-    let last = currentLabel;
-    for (let i = 0; i < cycles; i++) {
-      last = last === 'Menu' ? 'Close' : 'Menu';
-      seq.push(last);
-    }
-    if (last !== targetLabel) seq.push(targetLabel);
-    seq.push(targetLabel);
-
-    setTextLines(seq);
-    gsap.set(inner, { yPercent: 0, force3D: true });
-
-    const lineCount = seq.length;
-    const finalShift = ((lineCount - 1) / lineCount) * 100;
-
-    textCycleAnimRef.current = gsap.to(inner, {
-      yPercent: -finalShift,
-      duration: 0.35 + lineCount * 0.05,
-      ease: 'power3.out',
-      force3D: true
-    });
-  }, []);
-
   const toggleMenu = useCallback(() => {
     const target = !openRef.current;
     openRef.current = target;
@@ -363,8 +321,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
     animateIcon(target);
     animateColor(target);
-    animateText(target);
-  }, [playOpen, playClose, animateIcon, animateColor, animateText, onMenuOpen, onMenuClose]);
+  }, [playOpen, playClose, animateIcon, animateColor, onMenuOpen, onMenuClose]);
 
   const closeMenu = useCallback(() => {
     if (openRef.current) {
@@ -374,9 +331,8 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       playClose();
       animateIcon(false);
       animateColor(false);
-      animateText(false);
     }
-  }, [playClose, animateIcon, animateColor, animateText, onMenuClose]);
+  }, [playClose, animateIcon, animateColor, onMenuClose]);
 
   React.useEffect(() => {
     if (!closeOnClickAway || !open) return;
@@ -436,28 +392,22 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           </div>
         </a>
 
-        {/* Right Side: Staggered Menu Toggle Button */}
+        {/* Right Side: Navbar Toggle Button */}
         <button
           ref={toggleBtnRef}
-          className="pointer-events-auto relative inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-[#0e1526]/85 hover:bg-[#0e1526] border border-white/15 backdrop-blur-xl cursor-pointer font-bold text-xs uppercase tracking-wider transition-all shadow-[0_4px_20px_rgba(0,0,0,0.5)] text-white active:scale-95 touch-manipulation hover:border-emerald-500/40"
-          aria-label={open ? 'Close menu' : 'Open menu'}
+          className="pointer-events-auto relative inline-flex items-center gap-2.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-[#0e1526]/90 hover:bg-[#141b2d] border border-white/20 backdrop-blur-xl cursor-pointer font-bold text-xs uppercase tracking-wider transition-all shadow-[0_4px_20px_rgba(0,0,0,0.5)] text-white active:scale-95 touch-manipulation hover:border-emerald-500/50"
+          aria-label={open ? 'Close navbar' : 'Open navbar'}
           aria-expanded={open}
           aria-controls="staggered-menu-panel"
           onClick={toggleMenu}
           type="button"
         >
-          <span
-            ref={textWrapRef}
-            className="relative inline-block h-[1em] overflow-hidden whitespace-nowrap"
-            aria-hidden="true"
-          >
-            <span ref={textInnerRef} className="flex flex-col leading-none">
-              {textLines.map((l, i) => (
-                <span className="block h-[1em] leading-none text-white font-bold" key={i}>
-                  {l}
-                </span>
-              ))}
-            </span>
+          {/* Subtle live indicator dot for students to easily notice */}
+          <span className="w-2 h-2 rounded-full bg-[#00e676] animate-pulse" />
+
+          {/* Label Text */}
+          <span className="font-bold text-xs uppercase tracking-wider text-white select-none">
+            {open ? 'CLOSE' : 'NAVBAR'}
           </span>
 
           <span
