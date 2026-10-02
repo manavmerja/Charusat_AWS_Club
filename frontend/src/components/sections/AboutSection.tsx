@@ -63,7 +63,7 @@ export function AboutSection({ className }: AboutSectionProps) {
           {/* Body Paragraphs */}
           <div className="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl font-normal">
             <p>
-              <strong className="text-white font-semibold">AWS Student Builder Group at CHARUSAT</strong> is a student-led community where aspiring developers, cloud engineers, AI enthusiasts, and builders come together to learn by building.
+              <strong className="text-white font-semibold">AWS Student Builder Group Charusat at CHARUSAT</strong> is a student-led community where aspiring developers, cloud engineers, AI enthusiasts, and builders come together to learn by building.
             </p>
             <p className="text-slate-400">
               Instead of only attending sessions, members create real-world applications, deploy production-ready projects on AWS, contribute to open-source, prepare for certifications, participate in hackathons, and collaborate with builders across the global AWS community.

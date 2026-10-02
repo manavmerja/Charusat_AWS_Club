@@ -133,10 +133,10 @@ export function Footer() {
           <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 font-mono">
             <p className="flex items-center gap-2">
               <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              Designed & Built with passion by AWS Club CHARUSAT Team.
+              Designed & Built with passion by AWS Student builder Group at Charusat.
             </p>
             <p>
-              &copy; {currentYear} AWS Club CHARUSAT. All rights reserved.
+              &copy; {currentYear} AWS Student builder Group at Charusat. All rights reserved.
             </p>
           </div>
 

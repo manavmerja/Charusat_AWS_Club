@@ -30,7 +30,15 @@ function GitHubIcon({ className }: { className?: string }) {
   )
 }
 
-function SocialLinks({ name, socials }: { name: string; socials?: Socials }) {
+function SocialLinks({
+  name,
+  socials,
+  hideGithub,
+}: {
+  name: string
+  socials?: Socials
+  hideGithub?: boolean
+}) {
   return (
     <div className="flex items-center gap-2">
       {socials?.linkedin ? (
@@ -49,7 +57,7 @@ function SocialLinks({ name, socials }: { name: string; socials?: Socials }) {
         </span>
       )}
 
-      {socials?.github ? (
+      {hideGithub ? null : socials?.github ? (
         <a
           href={socials.github}
           target="_blank"
@@ -132,8 +140,10 @@ function CategoryHeading({ children }: { children: React.ReactNode }) {
 
 function Member3DCard({
   person,
+  hideGithub,
 }: {
   person: { name: string; role: string; image?: string; socials?: Socials }
+  hideGithub?: boolean
 }) {
   return (
     <CardContainer containerClassName="w-full h-full py-1" className="w-full h-full">
@@ -165,7 +175,7 @@ function Member3DCard({
           translateZ="20"
           className="mt-auto flex items-center justify-between gap-3 border-t border-white/[0.06] bg-[#07070d]/60 px-5 py-4 w-full"
         >
-          <SocialLinks name={person.name} socials={person.socials} />
+          <SocialLinks name={person.name} socials={person.socials} hideGithub={hideGithub} />
         </CardItem>
       </CardBody>
     </CardContainer>
@@ -235,6 +245,7 @@ export function TeamSection() {
                       image: person.image,
                       socials: person.socials,
                     }}
+                    hideGithub
                   />
                 </motion.div>
               ))}

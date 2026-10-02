@@ -287,8 +287,7 @@ export function EventsSection() {
           Programs & Workshops
         </span>
         <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-          Upcoming Events &{" "}
-          <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">Hackathons</span>
+          Upcoming Events
         </h2>
         <p className="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
           Stay tuned for upcoming bootcamps, speaker sessions, cloud architecting workshops, and community hackathons.
