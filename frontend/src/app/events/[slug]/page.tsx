@@ -11,7 +11,11 @@ export function generateStaticParams() {
   return EVENTS.map((event) => ({ slug: event.slug }))
 }
 
-export async function generateMetadata(props: PageProps<"/events/[slug]">): Promise<Metadata> {
+interface EventPageProps {
+  params: Promise<{ slug: string }>
+}
+
+export async function generateMetadata(props: EventPageProps): Promise<Metadata> {
   const { slug } = await props.params
   const event = getEvent(slug)
   if (!event) return {}
@@ -79,7 +83,7 @@ function SpeakerCard({ speaker }: { speaker: Speaker }) {
   )
 }
 
-export default async function EventPage(props: PageProps<"/events/[slug]">) {
+export default async function EventPage(props: EventPageProps) {
   const { slug } = await props.params
   const event = getEvent(slug)
   if (!event) notFound()
