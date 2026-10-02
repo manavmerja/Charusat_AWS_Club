@@ -93,11 +93,11 @@ export function HeroStarsBackground() {
         className="absolute inset-0 z-0 bg-[#0b0f19]"
       />
 
-      {/* Vibrant Soft Green Ambient Glow */}
+      {/* Vibrant Soft Green Ambient Glow - Tuned for all screens */}
       <div 
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[550px] pointer-events-none z-10 opacity-70"
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[600px] pointer-events-none z-10 opacity-90"
         style={{
-          background: "radial-gradient(ellipse 85% 65% at 50% 100%, rgba(0, 230, 118, 0.28) 0%, rgba(16, 185, 129, 0.12) 50%, transparent 85%)"
+          background: "radial-gradient(ellipse 90% 70% at 50% 100%, rgba(0, 230, 118, 0.45) 0%, rgba(16, 185, 129, 0.24) 45%, rgba(6, 78, 59, 0.12) 70%, transparent 90%)"
         }}
       />
 
@@ -145,9 +145,9 @@ export function HeroStarsBackground() {
           className="text-white text-5xl md:text-7xl lg:text-8xl font-bold leading-[1.05] tracking-tight max-w-5xl mb-8 flex flex-col items-start"
           style={{ fontFamily: "'Playfair Display', Georgia, Cambria, serif" }}
         >
-          {/* Row 1: AWS SBG + AWS Card Box (Matching Cloudflare style, subtle glow, no tooltip) */}
+          {/* Row 1: AWS + Floating AWS Badge */}
           <div className="flex items-center gap-3 sm:gap-6 flex-wrap">
-            <span className="tracking-tight font-bold">AWS SBG</span>
+            <span className="tracking-tight font-bold">AWS</span>
             
             <FloatingIconCard
               icon={<FaAws className="w-7 h-7 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#ff9900]" />}
@@ -161,37 +161,42 @@ export function HeroStarsBackground() {
             />
           </div>
 
-          <span className="tracking-tight font-bold">Community</span>
+          {/* Row 2: Student Builder Group */}
+          <span className="tracking-tight font-bold">Student Builder Group</span>
           
-          <div className="relative w-full h-[75px] sm:h-[110px] md:h-[140px] lg:h-[175px] max-w-[500px] sm:max-w-[720px] -ml-1 sm:-ml-2 mt-1">
-            <TechText
-              text="Charusat"
-              fontWeight={700}
-              fontSize={150}
-              reveal="letter"
-              dashLength={15}
-              dashGap={2}
-              specks={16}
-              fontFamily="'Playfair Display', Georgia, Cambria, serif"
-              color="#19b380"
-              accentColor="#ffffff"
-              letterSpacing={-0.05}
-              reach={200}
-              softness={0.7}
-              strokeWidth={1.5}
-              speed={1}
-              lineStyle="dashed"
-              selection={true}
-              labels={true}
-              draggable={true}
-              sweep={true}
-              align="left"
-            />
+          {/* Row 3: at + Charusat TechText */}
+          <div className="flex items-center gap-3 sm:gap-4 flex-wrap w-full mt-1">
+            <span className="tracking-tight font-bold text-gray-200">at</span>
+            <div className="relative w-full h-[65px] sm:h-[95px] md:h-[120px] lg:h-[150px] max-w-[420px] sm:max-w-[580px] -ml-1 sm:-ml-2">
+              <TechText
+                text="Charusat"
+                fontWeight={700}
+                fontSize={130}
+                reveal="letter"
+                dashLength={15}
+                dashGap={2}
+                specks={16}
+                fontFamily="'Playfair Display', Georgia, Cambria, serif"
+                color="#19b380"
+                accentColor="#ffffff"
+                letterSpacing={-0.05}
+                reach={200}
+                softness={0.7}
+                strokeWidth={1.5}
+                speed={1}
+                lineStyle="dashed"
+                selection={true}
+                labels={true}
+                draggable={true}
+                sweep={true}
+                align="left"
+              />
+            </div>
           </div>
         </h1>
 
         <p className="text-gray-300 text-lg md:text-xl max-w-2xl mb-12 font-sans font-light leading-relaxed">
-          AWS Student Builder Group (SBG) Charusat is a student-led community empowering the next generation of cloud builders through hands-on learning, technical events and global community collaboration.
+          AWS Student Builder Group at CHARUSAT is a student-led community empowering the next generation of cloud builders through hands-on learning, technical events, and global community collaboration.
         </p>
 
         <div className="flex flex-wrap items-center gap-4 sm:gap-6">
