@@ -214,7 +214,7 @@ export function HeroStarsBackground() {
       </div>
 
       {/* Seamless Fade Transition to About Section */}
-      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent via-[#0b0f19]/80 to-[#0b0f19] pointer-events-none z-10" />
+      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent via-black/80 to-black pointer-events-none z-10" />
     </div>
   );
 }
