@@ -10,11 +10,8 @@ export function ScrollToTop() {
   useEffect(() => {
     const handleScroll = () => {
       // Show button after scrolling down 300px
-      if (window.scrollY > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+      const shouldShow = window.scrollY > 300;
+      setIsVisible((prev) => (prev !== shouldShow ? shouldShow : prev));
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
