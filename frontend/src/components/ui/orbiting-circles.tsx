@@ -83,9 +83,12 @@ export function OrbitingCircles({
             width: iconSize,
             height: iconSize,
             position: "absolute",
+            top: `calc(50% - ${iconSize / 2}px)`,
+            left: `calc(50% - ${iconSize / 2}px)`,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            transformOrigin: "center center",
             animation: `${keyPrefix}-${index} ${calculatedDuration}s linear infinite`,
           }}
           className={cn("transform-gpu rounded-full", className)}
