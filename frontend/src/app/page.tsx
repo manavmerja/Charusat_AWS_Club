@@ -11,6 +11,7 @@ import { TeamSection } from "@/components/sections/TeamSection";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { Footer } from "@/components/sections/Footer";
+import { ScrollToTop } from "@/components/ui/scroll-to-top";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -67,6 +68,9 @@ export default function Home() {
 
       {/* 7. FOOTER */}
       <Footer />
+
+      {/* Floating Smooth Scroll to Top Button */}
+      <ScrollToTop />
     </main>
     </>
   );
