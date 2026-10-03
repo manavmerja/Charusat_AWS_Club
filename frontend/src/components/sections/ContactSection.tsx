@@ -1,43 +1,8 @@
 "use client"
 
 import React, { useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
-import { MacbookPro } from "@/components/ui/macbook-pro"
-import { AppleHelloEffectEnglish } from "@/components/ui/apple-hello-effect/apple-hello-effect-english"
-import { AppleHelloEffectHindi } from "@/components/ui/apple-hello-effect/apple-hello-effect-hindi"
-import { AppleHelloEffectGujarati } from "@/components/ui/apple-hello-effect/apple-hello-effect-gujarati"
-import { AppleHelloEffectRajasthani } from "@/components/ui/apple-hello-effect/apple-hello-effect-rajasthani"
-import { AppleHelloEffectSpanish } from "@/components/ui/apple-hello-effect/apple-hello-effect-spanish"
-import { AppleHelloEffectVietnamese } from "@/components/ui/apple-hello-effect/apple-hello-effect-vietnamese"
-
-// Language cycling component shown inside MacBook screen ─
-
-function HelloCycler({ resetTrigger }: { resetTrigger?: number }) {
-  const [index, setIndex] = useState(0)
-
-  React.useEffect(() => {
-    setIndex(0)
-  }, [resetTrigger])
-
-  const handleAnimationEnd = () => {
-    setIndex((prev) => (prev + 1) % 6)
-  }
-
-  const demos = [
-    <AppleHelloEffectEnglish key="english" onAnimationComplete={handleAnimationEnd} />,
-    <AppleHelloEffectHindi key="hindi" onAnimationComplete={handleAnimationEnd} />,
-    <AppleHelloEffectGujarati key="gujarati" durationScale={1.7} onAnimationComplete={handleAnimationEnd} />,
-    <AppleHelloEffectRajasthani key="rajasthani" durationScale={1.7} onAnimationComplete={handleAnimationEnd} />,
-    <AppleHelloEffectSpanish key="spanish" durationScale={0.8} onAnimationComplete={handleAnimationEnd} />,
-    <AppleHelloEffectVietnamese key="vietnamese" durationScale={0.8} onAnimationComplete={handleAnimationEnd} />,
-  ]
-
-  return (
-    <div className="flex items-center justify-center w-full h-full text-indigo-400 select-none">
-      <AnimatePresence mode="wait">{demos[index]}</AnimatePresence>
-    </div>
-  )
-}
+import { motion } from "framer-motion"
+import { CobeGlobe } from "@/components/ui/cobe-globe"
 
 // Subject options ─
 
@@ -245,19 +210,15 @@ export function ContactSection() {
       {/* Two-column layout */}
       <div className="relative z-10 w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
-        {/* ── LEFT: MacBook ── */}
+        {/* ── LEFT: Interactive 3D COBE Globe ── */}
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
           className="w-full flex items-center justify-center"
         >
-          <div className="w-full max-w-[560px] text-[#09090D] flex items-center justify-center">
-            <MacbookPro className="w-full h-auto drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
-              <HelloCycler />
-            </MacbookPro>
-          </div>
+          <CobeGlobe className="w-full max-w-[480px]" />
         </motion.div>
 
         {/* ── RIGHT: Contact Form ── */}
