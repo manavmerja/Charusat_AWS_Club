@@ -298,7 +298,7 @@ export function TeamSection() {
 
         {/* 2. Cloud Captain (Always visible on mobile & desktop) */}
         {STUDENT_LEADERSHIP.length > 0 && (
-          <div>
+          <div id="cloud-captain-section">
             <CategoryHeading>Cloud Captain</CategoryHeading>
             <div className="max-w-xs mx-auto">
               {STUDENT_LEADERSHIP.map((person, i) => (
