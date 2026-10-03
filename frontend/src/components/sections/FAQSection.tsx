@@ -93,9 +93,6 @@ export function FAQSection() {
       <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent via-black/70 to-black pointer-events-none z-20" />
 
       <div className="text-center mb-16 space-y-3 relative z-10">
-        <span className="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/10 text-[#00e676] border border-emerald-500/20">
-          Have Questions?
-        </span>
         <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
           Frequently Asked Questions
         </h2>
@@ -149,7 +146,7 @@ export function FAQSection() {
         <div className="flex-1 w-full max-w-xl lg:pl-12">
           <Accordion>
             {faqs.map((faq, index) => (
-              <AccordionItem key={index} defaultOpen={index === 0}>
+              <AccordionItem key={index} defaultOpen={false}>
                 <AccordionButton showArrow>{faq.question}</AccordionButton>
                 <AccordionPanel>{faq.answer}</AccordionPanel>
               </AccordionItem>
