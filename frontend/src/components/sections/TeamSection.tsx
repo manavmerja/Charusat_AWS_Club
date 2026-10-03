@@ -9,7 +9,6 @@ import {
   FOUNDING_DIVISIONS,
   type Socials,
 } from "@/data/team"
-import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card"
 import { cn } from "@/lib/utils"
 
 // Icons
@@ -136,49 +135,88 @@ function CategoryHeading({ children }: { children: React.ReactNode }) {
   )
 }
 
-// 3D Card with generous aspect-[4/5] dimensions and clean text overlay
+// 3D Flip Card with picture-only hover rotation and persistent bottom socials
 
-function Member3DCard({
+function MemberCard({
   person,
   hideGithub,
 }: {
-  person: { name: string; role: string; image?: string; socials?: Socials }
+  person: { name: string; role: string; department?: string; image?: string; socials?: Socials }
   hideGithub?: boolean
 }) {
   return (
-    <CardContainer containerClassName="w-full h-full py-1" className="w-full h-full">
-      <CardBody className="group relative w-full h-full overflow-hidden rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.045] to-white/[0.01] backdrop-blur-sm flex flex-col transition-[border-color,box-shadow] duration-300 hover:border-emerald-500/40 hover:shadow-[0_0_35px_-10px_rgba(0,230,118,0.35)] cursor-default">
-        {/* Photo Container with 4:5 Aspect Ratio */}
-        <CardItem translateZ="30" className="relative aspect-[4/5] w-full overflow-hidden bg-[#0d121f]">
-          <ProfilePhoto
-            name={person.name}
-            image={person.image}
-            sizes="(min-width: 1024px) 280px, (min-width: 640px) 45vw, 100vw"
-          />
+    <div className="group relative w-full h-full overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-white/[0.045] to-white/[0.01] backdrop-blur-sm flex flex-col transition-[border-color,box-shadow] duration-300 hover:border-emerald-500/40 hover:shadow-[0_0_35px_-10px_rgba(0,230,118,0.35)]">
+      {/* ── Flippable Photo Container (Flips 180° on hovering the picture) ── */}
+      <div className="group/flip relative aspect-[4/5] w-full [perspective:1000px] cursor-pointer select-none">
+        <div className="relative w-full h-full duration-700 [transform-style:preserve-3d] transition-transform ease-in-out group-hover/flip:[transform:rotateY(180deg)]">
+          
+          {/* FRONT FACE (Photo + Name + Role) */}
+          <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] overflow-hidden bg-[#0a0d14]">
+            <ProfilePhoto
+              name={person.name}
+              image={person.image}
+              sizes="(min-width: 1024px) 280px, (min-width: 640px) 45vw, 100vw"
+            />
 
-          {/* Deep dark gradient overlay for crystal clear text */}
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-[#07070d] via-[#07070d]/80 to-transparent" />
+            {/* Deep dark gradient overlay for crystal clear text */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-[#07070d] via-[#07070d]/85 to-transparent" />
 
-          {/* Member Name and Role Overlay with 3D Float */}
-          <div className="absolute inset-x-0 bottom-0 p-5 z-10">
-            <h3 className="text-lg sm:text-xl font-bold text-white leading-snug drop-shadow-sm">
+            {/* Member Name and Role Overlay */}
+            <div className="absolute inset-x-0 bottom-0 p-5 z-10">
+              <h3 className="text-lg sm:text-xl font-bold text-white leading-snug drop-shadow-sm">
+                {person.name}
+              </h3>
+              <p className="mt-1 text-xs sm:text-sm font-semibold text-[#00e676] leading-tight">
+                {person.role}
+              </p>
+            </div>
+          </div>
+
+          {/* BACK FACE (180deg Flip - Sleek Handcrafted Obsidian Glass) */}
+          <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] overflow-hidden bg-[#090b10] border-b border-white/[0.06] p-6 flex flex-col items-center justify-center text-center">
+            {/* Subtle Clean Tech Dot Pattern */}
+            <div className="absolute inset-0 bg-[radial-gradient(#ffffff12_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
+            
+            {/* Top Subtle Emerald Highlight Line */}
+            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent pointer-events-none" />
+
+            {/* Member Name */}
+            <h3 className="text-lg sm:text-xl font-bold text-white mb-4 relative z-10">
               {person.name}
             </h3>
-            <p className="mt-1 text-xs sm:text-sm font-semibold text-[#00e676] leading-tight">
-              {person.role}
-            </p>
-          </div>
-        </CardItem>
 
-        {/* Bottom Socials Bar */}
-        <CardItem
-          translateZ="20"
-          className="mt-auto flex items-center justify-between gap-3 border-t border-white/[0.06] bg-[#07070d]/60 px-5 py-4 w-full"
-        >
-          <SocialLinks name={person.name} socials={person.socials} hideGithub={hideGithub} />
-        </CardItem>
-      </CardBody>
-    </CardContainer>
+            {/* Division / Team Section */}
+            <div className="mb-4 relative z-10 w-full max-w-[200px]">
+              <span className="block text-[10px] font-mono uppercase tracking-[0.2em] text-slate-400 mb-1">
+                Role / Team
+              </span>
+              <p className="text-sm font-bold text-white px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/10 shadow-sm">
+                {person.role}
+              </p>
+            </div>
+
+            {/* Subtle Divider */}
+            <div className="w-12 h-px bg-white/10 mb-4 relative z-10" />
+
+            {/* Department Section */}
+            <div className="relative z-10 w-full max-w-[200px]">
+              <span className="block text-[10px] font-mono uppercase tracking-[0.2em] text-slate-400 mb-1">
+                Department
+              </span>
+              <p className="text-xs sm:text-sm font-semibold font-mono text-[#00e676] px-3 py-1.5 rounded-lg bg-emerald-500/[0.08] border border-emerald-500/25 shadow-sm">
+                {person.department || "CHARUSAT"}
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* ── Stable Bottom Socials Bar (Outside flip area to prevent accidental flips on link click) ── */}
+      <div className="mt-auto flex items-center justify-between gap-3 border-t border-white/[0.06] bg-[#07070d]/60 px-5 py-4 w-full relative z-20">
+        <SocialLinks name={person.name} socials={person.socials} hideGithub={hideGithub} />
+      </div>
+    </div>
   )
 }
 
@@ -242,10 +280,11 @@ export function TeamSection() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
               {ACADEMIC_MENTORS.map((person, i) => (
                 <motion.div key={`${person.name}-${person.role}`} {...reveal(i * 0.08)}>
-                  <Member3DCard
+                  <MemberCard
                     person={{
                       name: person.name,
                       role: person.role,
+                      department: person.department,
                       image: person.image,
                       socials: person.socials,
                     }}
@@ -257,17 +296,18 @@ export function TeamSection() {
           </div>
         )}
 
-        {/* 2. Student Leadership (Always visible on mobile & desktop) */}
+        {/* 2. Cloud Captain (Always visible on mobile & desktop) */}
         {STUDENT_LEADERSHIP.length > 0 && (
           <div>
-            <CategoryHeading>Student Leadership</CategoryHeading>
+            <CategoryHeading>Cloud Captain</CategoryHeading>
             <div className="max-w-xs mx-auto">
               {STUDENT_LEADERSHIP.map((person, i) => (
                 <motion.div key={`${person.name}-${person.role}`} {...reveal(i * 0.08)}>
-                  <Member3DCard
+                  <MemberCard
                     person={{
                       name: person.name,
                       role: person.role,
+                      department: person.department,
                       image: person.image,
                       socials: person.socials,
                     }}
@@ -297,10 +337,11 @@ export function TeamSection() {
               >
                 {division.members.map((person, i) => (
                   <motion.div key={`${person.name}-${person.role}`} {...reveal((i % 5) * 0.05)}>
-                    <Member3DCard
+                    <MemberCard
                       person={{
                         name: person.name,
                         role: person.role,
+                        department: person.department,
                         image: person.image,
                         socials: person.socials,
                       }}
