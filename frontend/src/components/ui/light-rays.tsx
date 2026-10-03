@@ -466,19 +466,47 @@ void main() {
   ]);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current || !rendererRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = (e.clientY - rect.top) / rect.height;
-      mouseRef.current = { x, y };
+    if (!followMouse || !isVisible) return;
+
+    let rect: DOMRect | null = null;
+    let rafId: number | null = null;
+    let pendingMouse: { clientX: number; clientY: number } | null = null;
+
+    const updateRect = () => {
+      if (containerRef.current) {
+        rect = containerRef.current.getBoundingClientRect();
+      }
     };
 
-    if (followMouse) {
-      window.addEventListener("mousemove", handleMouseMove);
-      return () => window.removeEventListener("mousemove", handleMouseMove);
-    }
-  }, [followMouse]);
+    updateRect();
+    window.addEventListener("resize", updateRect);
+    window.addEventListener("scroll", updateRect, { passive: true });
+
+    const processMouseMove = () => {
+      if (pendingMouse && rect && rect.width > 0 && rect.height > 0) {
+        const x = (pendingMouse.clientX - rect.left) / rect.width;
+        const y = (pendingMouse.clientY - rect.top) / rect.height;
+        mouseRef.current = { x, y };
+      }
+      rafId = null;
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      pendingMouse = { clientX: e.clientX, clientY: e.clientY };
+      if (!rafId) {
+        rafId = requestAnimationFrame(processMouseMove);
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("resize", updateRect);
+      window.removeEventListener("scroll", updateRect);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [followMouse, isVisible]);
 
   return (
     <div
