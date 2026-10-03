@@ -12,6 +12,19 @@ export const BackgroundBeamsWithCollision = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const parentRef = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    if (!parentRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { rootMargin: "200px" }
+    );
+    observer.observe(parentRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   const beams = [
     {
@@ -80,6 +93,7 @@ export const BackgroundBeamsWithCollision = ({
           beamOptions={beam}
           containerRef={containerRef}
           parentRef={parentRef}
+          isInView={isInView}
         />
       ))}
 
@@ -97,6 +111,7 @@ const CollisionMechanism = React.forwardRef<
   {
     containerRef: React.RefObject<HTMLDivElement | null>;
     parentRef: React.RefObject<HTMLDivElement | null>;
+    isInView?: boolean;
     beamOptions?: {
       initialX?: number;
       translateX?: number;
@@ -109,7 +124,7 @@ const CollisionMechanism = React.forwardRef<
       repeatDelay?: number;
     };
   }
->(({ parentRef, containerRef, beamOptions = {} }, ref) => {
+>(({ parentRef, containerRef, isInView = true, beamOptions = {} }, ref) => {
   const beamRef = useRef<HTMLDivElement>(null);
   const [collision, setCollision] = useState<{
     detected: boolean;
@@ -122,38 +137,52 @@ const CollisionMechanism = React.forwardRef<
   const [cycleCollisionDetected, setCycleCollisionDetected] = useState(false);
 
   useEffect(() => {
-    const checkCollision = () => {
-      if (
-        beamRef.current &&
-        containerRef.current &&
-        parentRef.current &&
-        !cycleCollisionDetected
-      ) {
-        const beamRect = beamRef.current.getBoundingClientRect();
-        const containerRect = containerRef.current.getBoundingClientRect();
-        const parentRect = parentRef.current.getBoundingClientRect();
+    if (!isInView || cycleCollisionDetected) return;
 
-        if (beamRect.bottom >= containerRect.top) {
-          const relativeX =
-            beamRect.left - parentRect.left + beamRect.width / 2;
-          const relativeY = beamRect.bottom - parentRect.top;
+    let rafId: number | null = null;
+    let lastCheck = 0;
 
-          setCollision({
-            detected: true,
-            coordinates: {
-              x: relativeX,
-              y: relativeY,
-            },
-          });
-          setCycleCollisionDetected(true);
+    const checkCollision = (timestamp: number) => {
+      // Throttle collision check to every ~80ms using requestAnimationFrame
+      if (timestamp - lastCheck > 80) {
+        lastCheck = timestamp;
+        if (
+          beamRef.current &&
+          containerRef.current &&
+          parentRef.current &&
+          !cycleCollisionDetected
+        ) {
+          const beamRect = beamRef.current.getBoundingClientRect();
+          const containerRect = containerRef.current.getBoundingClientRect();
+          const parentRect = parentRef.current.getBoundingClientRect();
+
+          if (beamRect.bottom >= containerRect.top) {
+            const relativeX =
+              beamRect.left - parentRect.left + beamRect.width / 2;
+            const relativeY = beamRect.bottom - parentRect.top;
+
+            setCollision({
+              detected: true,
+              coordinates: {
+                x: relativeX,
+                y: relativeY,
+              },
+            });
+            setCycleCollisionDetected(true);
+            return;
+          }
         }
       }
+
+      rafId = requestAnimationFrame(checkCollision);
     };
 
-    const animationInterval = setInterval(checkCollision, 50);
+    rafId = requestAnimationFrame(checkCollision);
 
-    return () => clearInterval(animationInterval);
-  }, [cycleCollisionDetected, containerRef]);
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [cycleCollisionDetected, containerRef, parentRef, isInView]);
 
   useEffect(() => {
     if (collision.detected && collision.coordinates) {
