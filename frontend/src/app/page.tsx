@@ -1,29 +1,39 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { WordsPreloader } from "@/components/ui/WordsPreloader";
 import { HeroStarsBackground } from "@/components/dashboard/HeroStarsBackground";
 import { StaggeredMenu } from "@/components/navigation/StaggeredMenu";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { EventsSection } from "@/components/sections/EventsSection";
+import { MeetupSection } from "@/components/sections/MeetupSection";
 import { TeamSection } from "@/components/sections/TeamSection";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { Footer } from "@/components/sections/Footer";
+import { ScrollToTop } from "@/components/ui/scroll-to-top";
+import { FloatingEventToast } from "@/components/ui/FloatingEventToast";
+
+let hasShownPreloader = false;
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!hasShownPreloader);
+
+  const handlePreloaderComplete = () => {
+    hasShownPreloader = true;
+    setIsLoading(false);
+  };
 
   return (
     <>
       <AnimatePresence mode="wait">
         {isLoading && (
-          <WordsPreloader onComplete={() => setIsLoading(false)} />
+          <WordsPreloader onComplete={handlePreloaderComplete} />
         )}
       </AnimatePresence>
 
-      <main className="min-h-screen bg-[#0b0f19] text-white relative selection:bg-[#00e676] selection:text-[#0b0f19] font-[var(--font-space-grotesk)]">
+      <main className="min-h-screen bg-black text-white relative selection:bg-[#00e676] selection:text-[#0b0f19] font-[var(--font-space-grotesk)]">
       {/* Top Staggered Menu Navigation */}
       <StaggeredMenu
         colors={["#0f172a", "#064e3b", "#00e676"]}
@@ -37,10 +47,9 @@ export default function Home() {
           { label: "Contacts", ariaLabel: "Contact Us", link: "#contacts" },
         ]}
         socialItems={[
+          { label: "Meetup", link: "https://www.meetup.com/pro/aws-student-community" },
           { label: "LinkedIn", link: "https://linkedin.com" },
           { label: "Instagram", link: "https://instagram.com" },
-          { label: "GitHub", link: "https://github.com" },
-          { label: "Discord", link: "https://discord.com" },
         ]}
       />
 
@@ -57,6 +66,9 @@ export default function Home() {
       {/* 3. EVENTS & WORKSHOPS SECTION */}
       <EventsSection />
 
+      {/* 3.5. MEETUP COMMUNITY HUB SECTION */}
+      <MeetupSection />
+
       {/* 4. CORE TEAMS SECTION */}
       <TeamSection />
 
@@ -68,6 +80,12 @@ export default function Home() {
 
       {/* 7. FOOTER */}
       <Footer />
+
+      {/* Floating Smooth Scroll to Top Button */}
+      <ScrollToTop />
+
+      {/* Subtle Floating Event Announcement Card */}
+      <FloatingEventToast />
     </main>
     </>
   );

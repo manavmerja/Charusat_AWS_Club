@@ -93,11 +93,11 @@ export function HeroStarsBackground() {
         className="absolute inset-0 z-0 bg-[#0b0f19]"
       />
 
-      {/* Vibrant Soft Green Ambient Glow */}
+      {/* Vibrant Soft Green Ambient Glow - Tuned for all screens */}
       <div 
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[550px] pointer-events-none z-10 opacity-70"
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[600px] pointer-events-none z-10 opacity-90"
         style={{
-          background: "radial-gradient(ellipse 85% 65% at 50% 100%, rgba(0, 230, 118, 0.28) 0%, rgba(16, 185, 129, 0.12) 50%, transparent 85%)"
+          background: "radial-gradient(ellipse 90% 70% at 50% 100%, rgba(0, 230, 118, 0.45) 0%, rgba(16, 185, 129, 0.24) 45%, rgba(6, 78, 59, 0.12) 70%, transparent 90%)"
         }}
       />
 
@@ -139,15 +139,21 @@ export function HeroStarsBackground() {
         glowColor="rgba(132, 79, 186, 0.2)"
       />
 
-      {/* Hero Content */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-28 pb-20 flex flex-col items-start justify-center">
+      {/* Hero Content with Smooth Viewport Arrival Animation */}
+      <motion.div
+        initial={{ opacity: 0.88, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.2 }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-20 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-28 pb-20 flex flex-col items-start justify-center"
+      >
         <h1 
           className="text-white text-5xl md:text-7xl lg:text-8xl font-bold leading-[1.05] tracking-tight max-w-5xl mb-8 flex flex-col items-start"
           style={{ fontFamily: "'Playfair Display', Georgia, Cambria, serif" }}
         >
-          {/* Row 1: AWS SBG + AWS Card Box (Matching Cloudflare style, subtle glow, no tooltip) */}
+          {/* Row 1: AWS + Floating AWS Badge */}
           <div className="flex items-center gap-3 sm:gap-6 flex-wrap">
-            <span className="tracking-tight font-bold">AWS SBG</span>
+            <span className="tracking-tight font-bold">AWS</span>
             
             <FloatingIconCard
               icon={<FaAws className="w-7 h-7 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#ff9900]" />}
@@ -161,55 +167,88 @@ export function HeroStarsBackground() {
             />
           </div>
 
-          <span className="tracking-tight font-bold">Community</span>
+          {/* Row 2: Student Builder Group */}
+          <span className="tracking-tight font-bold">Student Builder Group</span>
           
-          <div className="relative w-full h-[75px] sm:h-[110px] md:h-[140px] lg:h-[175px] max-w-[500px] sm:max-w-[720px] -ml-1 sm:-ml-2 mt-1">
-            <TechText
-              text="Charusat"
-              fontWeight={700}
-              fontSize={150}
-              reveal="letter"
-              dashLength={15}
-              dashGap={2}
-              specks={16}
-              fontFamily="'Playfair Display', Georgia, Cambria, serif"
-              color="#19b380"
-              accentColor="#ffffff"
-              letterSpacing={-0.05}
-              reach={200}
-              softness={0.7}
-              strokeWidth={1.5}
-              speed={1}
-              lineStyle="dashed"
-              selection={true}
-              labels={true}
-              draggable={true}
-              sweep={true}
-              align="left"
-            />
+          {/* Row 3: at + Charusat TechText */}
+          <div className="flex items-center gap-3 sm:gap-4 flex-wrap w-full mt-1">
+            <span className="tracking-tight font-bold text-gray-200">at</span>
+            <div className="relative w-full h-[65px] sm:h-[95px] md:h-[120px] lg:h-[150px] max-w-[420px] sm:max-w-[580px] -ml-1 sm:-ml-2">
+              <TechText
+                text="Charusat"
+                fontWeight={700}
+                fontSize={130}
+                reveal="letter"
+                dashLength={15}
+                dashGap={2}
+                specks={16}
+                fontFamily="'Playfair Display', Georgia, Cambria, serif"
+                color="#19b380"
+                accentColor="#ffffff"
+                letterSpacing={-0.05}
+                reach={200}
+                softness={0.7}
+                strokeWidth={1.5}
+                speed={1}
+                lineStyle="dashed"
+                selection={true}
+                labels={true}
+                draggable={true}
+                sweep={true}
+                align="left"
+              />
+            </div>
           </div>
         </h1>
 
         <p className="text-gray-300 text-lg md:text-xl max-w-2xl mb-12 font-sans font-light leading-relaxed">
-          AWS Student Builder Group (SBG) Charusat is a student-led community empowering the next generation of cloud builders through hands-on learning, technical events and global community collaboration.
+          AWS Student Builder Group at CHARUSAT is a student-led community empowering the next generation of cloud builders through hands-on learning, technical events, and global community collaboration.
         </p>
 
         <div className="flex flex-wrap items-center gap-4 sm:gap-6">
-          <Link href="#contacts" className="inline-block">
+          <a
+            href="#contacts"
+            onClick={(e) => {
+              e.preventDefault();
+              const element = document.getElementById("contacts");
+              const lenis = (window as unknown as { lenis?: { scrollTo: (target: HTMLElement, opts?: { duration?: number; easing?: (t: number) => number }) => void } }).lenis;
+              if (lenis && element) {
+                lenis.scrollTo(element, { duration: 1.7, easing: (t) => 1 - Math.pow(1 - t, 3.5) });
+              } else if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+              }
+              window.history.pushState(null, "", "#contacts");
+            }}
+            className="inline-block cursor-pointer"
+          >
             <LiquidButton size="default">
               JOIN COMMUNITY
             </LiquidButton>
-          </Link>
-          <Link href="#events" className="inline-block">
+          </a>
+          <a
+            href="#events"
+            onClick={(e) => {
+              e.preventDefault();
+              const element = document.getElementById("events");
+              const lenis = (window as unknown as { lenis?: { scrollTo: (target: HTMLElement, opts?: { duration?: number; easing?: (t: number) => number }) => void } }).lenis;
+              if (lenis && element) {
+                lenis.scrollTo(element, { duration: 1.7, easing: (t) => 1 - Math.pow(1 - t, 3.5) });
+              } else if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+              }
+              window.history.pushState(null, "", "#events");
+            }}
+            className="inline-block cursor-pointer"
+          >
             <LiquidButton size="default" variant="secondary">
               EXPLORE EVENTS
             </LiquidButton>
-          </Link>
+          </a>
         </div>
-      </div>
+      </motion.div>
 
       {/* Seamless Fade Transition to About Section */}
-      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent via-[#0b0f19]/80 to-[#0b0f19] pointer-events-none z-10" />
+      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent via-black/80 to-black pointer-events-none z-10" />
     </div>
   );
 }

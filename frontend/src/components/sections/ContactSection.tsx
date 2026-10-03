@@ -1,43 +1,9 @@
 "use client"
 
 import React, { useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
-import { MacbookPro } from "@/components/ui/macbook-pro"
-import { AppleHelloEffectEnglish } from "@/components/ui/apple-hello-effect/apple-hello-effect-english"
-import { AppleHelloEffectHindi } from "@/components/ui/apple-hello-effect/apple-hello-effect-hindi"
-import { AppleHelloEffectGujarati } from "@/components/ui/apple-hello-effect/apple-hello-effect-gujarati"
-import { AppleHelloEffectRajasthani } from "@/components/ui/apple-hello-effect/apple-hello-effect-rajasthani"
-import { AppleHelloEffectSpanish } from "@/components/ui/apple-hello-effect/apple-hello-effect-spanish"
-import { AppleHelloEffectVietnamese } from "@/components/ui/apple-hello-effect/apple-hello-effect-vietnamese"
-
-// Language cycling component shown inside MacBook screen ─
-
-function HelloCycler({ resetTrigger }: { resetTrigger?: number }) {
-  const [index, setIndex] = useState(0)
-
-  React.useEffect(() => {
-    setIndex(0)
-  }, [resetTrigger])
-
-  const handleAnimationEnd = () => {
-    setIndex((prev) => (prev + 1) % 6)
-  }
-
-  const demos = [
-    <AppleHelloEffectEnglish key="english" onAnimationComplete={handleAnimationEnd} />,
-    <AppleHelloEffectHindi key="hindi" onAnimationComplete={handleAnimationEnd} />,
-    <AppleHelloEffectGujarati key="gujarati" durationScale={1.7} onAnimationComplete={handleAnimationEnd} />,
-    <AppleHelloEffectRajasthani key="rajasthani" durationScale={1.7} onAnimationComplete={handleAnimationEnd} />,
-    <AppleHelloEffectSpanish key="spanish" durationScale={0.8} onAnimationComplete={handleAnimationEnd} />,
-    <AppleHelloEffectVietnamese key="vietnamese" durationScale={0.8} onAnimationComplete={handleAnimationEnd} />,
-  ]
-
-  return (
-    <div className="flex items-center justify-center w-full h-full text-indigo-400 select-none">
-      <AnimatePresence mode="wait">{demos[index]}</AnimatePresence>
-    </div>
-  )
-}
+import { motion } from "framer-motion"
+import { CobeGlobe } from "@/components/ui/cobe-globe"
+import { Highlight } from "@/components/ui/hero-highlight"
 
 // Subject options ─
 
@@ -92,7 +58,7 @@ function ContactForm() {
         </div>
         <h3 className="text-2xl font-bold text-white">Message Dispatched!</h3>
         <p className="text-slate-400 text-sm max-w-xs">
-          Thank you for reaching out. We&apos;ll get back to you within 24–48 hours.
+          Thank you for reaching out. We will get back to you soon.
         </p>
         <button
           onClick={() => { setSubmitted(false); setFormData({ fullName: "", email: "", subject: "", message: "" }) }}
@@ -150,9 +116,9 @@ function ContactForm() {
           required
           className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/50 focus:bg-white/[0.06] focus:shadow-[0_0_0_2px_rgba(0,230,118,0.08)] transition-all appearance-none cursor-pointer"
         >
-          <option value="" className="bg-[#0b0f19] text-slate-500">Workshop Inquiry / Partnership</option>
+          <option value="" className="bg-black text-slate-500">Workshop Inquiry / Partnership</option>
           {SUBJECT_OPTIONS.map((opt) => (
-            <option key={opt} value={opt} className="bg-[#0b0f19] text-white">
+            <option key={opt} value={opt} className="bg-black text-white">
               {opt}
             </option>
           ))}
@@ -179,12 +145,9 @@ function ContactForm() {
       <motion.button
         type="submit"
         disabled={loading}
-        whileHover={{ scale: loading ? 1 : 1.02 }}
-        whileTap={{ scale: loading ? 1 : 0.98 }}
-        className="relative mt-1 w-full py-4 rounded-xl font-black text-sm uppercase tracking-[0.2em] text-black overflow-hidden disabled:opacity-60 disabled:cursor-not-allowed"
-        style={{
-          background: "linear-gradient(135deg, #00e676 0%, #00c853 50%, #69f0ae 100%)",
-        }}
+        whileHover={{ scale: loading ? 1 : 1.01 }}
+        whileTap={{ scale: loading ? 1 : 0.99 }}
+        className="relative mt-1 w-full py-4 rounded-xl font-bold text-sm uppercase tracking-[0.18em] text-slate-950 overflow-hidden bg-gradient-to-r from-emerald-500 via-emerald-400 to-teal-400 hover:from-emerald-400 hover:to-teal-300 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed shadow-md"
       >
         {loading ? (
           <span className="flex items-center justify-center gap-2">
@@ -208,64 +171,52 @@ export function ContactSection() {
   return (
     <section
       id="contacts"
-      className="relative w-full min-h-screen flex flex-col items-center justify-center px-6 sm:px-12 py-24 bg-[#0b0f19] border-t border-white/[0.06] overflow-hidden"
+      className="relative w-full min-h-screen flex flex-col items-center justify-center px-6 sm:px-12 py-24 bg-black overflow-hidden"
     >
+      {/* Seamless Blend Transitions */}
+      <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-black via-black/70 to-transparent pointer-events-none z-20" />
+      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent via-black/70 to-black pointer-events-none z-20" />
+
       {/* Subtle radial glow background */}
       <div className="pointer-events-none absolute inset-0 z-0">
         <div className="absolute left-1/4 top-1/3 w-[600px] h-[600px] rounded-full bg-emerald-500/[0.04] blur-[100px]" />
         <div className="absolute right-1/4 bottom-1/4 w-[400px] h-[400px] rounded-full bg-indigo-500/[0.04] blur-[80px]" />
       </div>
 
-      {/* Section header */}
-      <div className="relative z-10 text-center mb-16 space-y-3">
-        <motion.span
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/10 text-[#00e676] border border-emerald-500/20"
-        >
-          Get In Touch
-        </motion.span>
-        <motion.h2
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55, delay: 0.08 }}
-          className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white"
-        >
-          Connect with{" "}
-          <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
-            AWS Student builder Group at Charusat
+      {/* Section header (Left-aligned title + Right-aligned paragraph like Events/TeamSection) */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 w-full max-w-6xl mx-auto flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-16"
+      >
+        <div className="max-w-xl">
+          <span className="text-xs font-mono font-bold uppercase tracking-[0.25em] text-[#00e676]">
+            CONTACT
           </span>
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55, delay: 0.14 }}
-          className="text-slate-400 text-sm sm:text-base max-w-xl mx-auto leading-relaxed"
-        >
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mt-2 leading-tight">
+            Connect <Highlight className="text-white bg-gradient-to-r from-emerald-500/30 via-[#00e676]/30 to-teal-400/30">With Us</Highlight>
+          </h2>
+        </div>
+
+        <p className="text-slate-400 text-sm sm:text-base max-w-md leading-relaxed lg:pb-1">
           Have an idea, want to collaborate, or curious about our workshops? We&apos;d love to hear from you.
-        </motion.p>
-      </div>
+        </p>
+      </motion.div>
 
       {/* Two-column layout */}
       <div className="relative z-10 w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
-        {/* ── LEFT: MacBook ── */}
+        {/* ── LEFT: Interactive 3D COBE Globe ── */}
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
           className="w-full flex items-center justify-center"
         >
-          <div className="w-full max-w-[560px] text-[#09090D] flex items-center justify-center">
-            <MacbookPro className="w-full h-auto drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
-              <HelloCycler />
-            </MacbookPro>
-          </div>
+          <CobeGlobe className="w-full max-w-[480px]" />
         </motion.div>
 
         {/* ── RIGHT: Contact Form ── */}
@@ -282,8 +233,7 @@ export function ContactSection() {
             <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent rounded-full" />
 
             <div className="mb-7">
-              <h3 className="text-xl font-bold text-white mb-1">Send us a Message</h3>
-              <p className="text-slate-500 text-xs">Usually responds within 24–48 hours.</p>
+              <h3 className="text-xl font-bold text-white">Send us a Message</h3>
             </div>
 
             <ContactForm />

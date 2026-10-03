@@ -36,6 +36,7 @@ export type DivisionMember = {
   role: string;
   initials: string;
   image?: string;
+  department?: string;
   specialty?: string;
   socials?: Socials;
 };
@@ -104,6 +105,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Bhargav Rakholiya",
         role: "Cloud Team",
+        department: "DEPSTAR - IT",
         initials: "BR",
         image: "/team/Bhargav_Rakholiya.png",
         specialty: "AWS Architecture & Security",
@@ -115,6 +117,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Param Vadhadiya",
         role: "Cloud Team",
+        department: "DEPSTAR - CE",
         initials: "PV",
         image: "/team/Param Vadhadiya Cloud-Team.jpg",
         specialty: "Infrastructure & Networking",
@@ -126,6 +129,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Dev Jivani",
         role: "Cloud Team",
+        department: "CSPIT - IT",
         initials: "DJ",
         image: "/team/Dev_Cloud-Team.jpeg",
         specialty: "Compute & Serverless",
@@ -137,6 +141,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Vansh Malani",
         role: "Cloud Team",
+        department: "CSPIT - CE",
         initials: "VM",
         image: "/team/Vansh_Malani_cloud.jpg",
         specialty: "Linux & Cloud DevOps",
@@ -158,6 +163,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Manav Merja",
         role: "Web Team",
+        department: "DEPSTAR - CE",
         initials: "MM",
         image: "/team/Manav_Merja_card.jpg",
         specialty: "Full Stack & Cloud Deployments",
@@ -169,6 +175,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Vedant Bhatt",
         role: "Web Team",
+        department: "DEPSTAR - CE",
         initials: "VB",
         image: "/team/Vedant Bhatt_Web_Team.png",
         specialty: "Frontend Systems & UI Engineering",
@@ -190,6 +197,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Jiya Sadaria",
         role: "Creative Team",
+        department: "DEPSTAR - CE",
         initials: "JS",
         image: "/team/jiya sadaria.png",
         specialty: "Visual Identity & Brand Systems",
@@ -201,6 +209,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Dipobithi Das",
         role: "Creative Team",
+        department: "CSPIT - IT",
         initials: "DD",
         image: "/team/Dipobithi Das.jpg",
         specialty: "UI/UX & Workshop Creatives",
@@ -212,6 +221,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Hasti Borda",
         role: "Creative Team",
+        department: "DEPSTAR - IT",
         initials: "HB",
         image: "/team/Hasti_Borda_card.jpg",
         specialty: "Graphics & Digital Media",
@@ -234,6 +244,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Jeet Vadhia",
         role: "Community Team",
+        department: "DEPSTAR - CE",
         initials: "JV",
         image: "/team/Jeet_Vadhia.png",
         specialty: "Campus Outreach",
@@ -245,6 +256,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Bhakti Tank",
         role: "Community Team",
+        department: "CSPIT - IT",
         initials: "BT",
         image: "/team/BHAKTI_TANK_COMMUNITY_TEAM.jpeg",
         specialty: "Student Onboarding & Queries",
@@ -257,6 +269,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Dhanya Vala",
         role: "Community Team",
+        department: "DEPSTAR - CE",
         initials: "DV",
         image: "",
         specialty: "Peer Networking & Support",
@@ -269,6 +282,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Naik Durva",
         role: "Community Team",
+        department: "CSPIT - IT",
         initials: "ND",
         image: "/team/Durva_Naik_card.jpg",
         specialty: "Event Communications",
@@ -281,6 +295,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Kavya Shah",
         role: "Community Team",
+        department: "DEPSTAR - IT",
         initials: "KS",
         image: "/team/Kavya shah-communityteam.png",
         specialty: "Engagement & Member Relations",
@@ -303,6 +318,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Ajay Kothari",
         role: "Media Team",
+        department: "DEPSTAR - CE",
         initials: "AK",
         image: "/team/AjayKothari_MediaTeam.jpg",
         specialty: "Event Production & Video",
@@ -315,6 +331,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Shah Devam",
         role: "Media Team",
+        department: "CSPIT - CE",
         initials: "SD",
         image: "/team/devamshah_media_team.jpg",
         specialty: "Photography & Post-Production",
@@ -327,6 +344,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Khushi Marathe",
         role: "Media Team",
+        department: "DEPSTAR - IT",
         initials: "KM",
         image: "/team/Khushi marathe media team.jpg",
         specialty: "Event Logistics & Production",
@@ -338,6 +356,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Jeel Mendpara",
         role: "Media Team",
+        department: "DEPSTAR - CE",
         initials: "JM",
         image: "/team/Jeel Mendpara.jpeg",
         specialty: "Social Media & Content Captures",
@@ -350,6 +369,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Vedant Kapadia",
         role: "Media Team",
+        department: "CSPIT - IT",
         initials: "VK",
         image: "/team/Vedant-Kapadia-MediaTeam.jpg",
         specialty: "Lab & Stage Coordination",

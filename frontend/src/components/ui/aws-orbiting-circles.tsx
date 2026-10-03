@@ -21,6 +21,11 @@ const customColors: Record<string, string> = {
   awsiam: "#DD344C",
   awswaf: "#DD344C",
   amazoncognito: "#DD344C",
+  amazonecs: "#FF9900",
+  amazonredshift: "#8C4FFF",
+  amazondocumentdb: "#C925D1",
+  amazonsqs: "#FF4F8B",
+  amazon: "#FF9900",
   github: "#FFFFFF",
   linux: "#FFFFFF",
   git: "#F05032",
@@ -39,33 +44,35 @@ export function AWSOrbitingCircles({ iconSlugs }: { iconSlugs: string[] }) {
   useEffect(() => {
     if (iconSlugs && iconSlugs.length > 0) {
       fetchSimpleIcons({ slugs: iconSlugs }).then((res) => {
-        const fetchedIcons = Object.values(res.simpleIcons).map((icon) => {
-          let color =
-            customColors[icon.slug] ||
-            (icon.hex === "232F3E" ? "#FF9900" : `#${icon.hex}`);
+        const fetchedIcons = Object.values(res.simpleIcons)
+          .filter((icon) => icon.path && (icon.path.startsWith("M") || icon.path.startsWith("m")))
+          .map((icon) => {
+            let color =
+              customColors[icon.slug] ||
+              (icon.hex === "232F3E" ? "#FF9900" : `#${icon.hex}`);
 
-          // Fix icons that default to black so they don't disappear on dark background
-          if (
-            color.toLowerCase() === "#000" ||
-            color.toLowerCase() === "#000000" ||
-            color.toLowerCase() === "#1d1d1d"
-          ) {
-            color = "#FFFFFF";
-          }
+            // Fix icons that default to black so they don't disappear on dark background
+            if (
+              color.toLowerCase() === "#000" ||
+              color.toLowerCase() === "#000000" ||
+              color.toLowerCase() === "#1d1d1d"
+            ) {
+              color = "#FFFFFF";
+            }
 
-          return (
-            <div key={icon.slug} className="flex flex-col items-center justify-center relative w-full h-full group">
-              <svg
-                viewBox="0 0 24 24"
-                width="100%"
-                height="100%"
-                fill={color}
-              >
-                <path d={icon.path} />
-              </svg>
-            </div>
-          );
-        });
+            return (
+              <div key={icon.slug} className="flex flex-col items-center justify-center relative w-full h-full group">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="100%"
+                  height="100%"
+                  fill={color}
+                >
+                  <path d={icon.path} />
+                </svg>
+              </div>
+            );
+          });
 
         setIcons(fetchedIcons);
       });
@@ -86,17 +93,17 @@ export function AWSOrbitingCircles({ iconSlugs }: { iconSlugs: string[] }) {
   return (
     <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-visible">
       {ring1.length > 0 && (
-        <OrbitingCircles iconSize={36} radius={90} speed={1.5}>
+        <OrbitingCircles iconSize={36} radius={95} speed={1.5}>
           {ring1}
         </OrbitingCircles>
       )}
       {ring2.length > 0 && (
-        <OrbitingCircles iconSize={32} radius={150} speed={2} reverse>
+        <OrbitingCircles iconSize={32} radius={160} speed={2} reverse>
           {ring2}
         </OrbitingCircles>
       )}
       {ring3.length > 0 && (
-        <OrbitingCircles iconSize={28} radius={220} speed={2.5}>
+        <OrbitingCircles iconSize={28} radius={230} speed={2.5}>
           {ring3}
         </OrbitingCircles>
       )}

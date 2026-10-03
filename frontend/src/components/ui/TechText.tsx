@@ -44,7 +44,7 @@ export interface TechTextProps {
 
 type Settings = Required<Omit<TechTextProps, 'className' | 'style'>>;
 
-const LABEL_FONT = '10px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace';
+const LABEL_FONT = 'bold 11px Consolas, Monaco, monospace';
 const FALLOFF_STEPS = 8;
 const SPRING = 320;
 const DAMPING = 22;
@@ -513,14 +513,17 @@ export const TechText = ({
 
       if (!s.labels) return;
       ctx.font = LABEL_FONT;
+      if ('letterSpacing' in ctx) {
+        ctx.letterSpacing = '0px';
+      }
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
-      ctx.fillStyle = rgba(s.accentColor, 0.62 * a);
+      ctx.fillStyle = rgba(s.accentColor || '#ffffff', 0.95 * a);
       const label =
         moved > 1
           ? `${signed(Math.round(glyph.offset.x))}, ${signed(Math.round(-glyph.offset.y))}`
           : `${glyph.char}  ${Math.round(glyph.box.x2 - glyph.box.x1)} × ${Math.round(glyph.box.y2 - glyph.box.y1)}`;
-      ctx.fillText(label, Math.round(frame.x1), Math.round(frame.y1) - 7);
+      ctx.fillText(label, Math.round(frame.x1), Math.round(frame.y1) - 6);
     };
 
     const tick = (now: number) => {

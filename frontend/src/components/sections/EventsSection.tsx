@@ -7,6 +7,8 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
 import { ArrowUpRight, CalendarClock, CalendarDays, MapPin, Video } from "lucide-react"
 import { MotionCarousel } from "@/components/animate-ui/components/community/motion-carousel"
 import { formatEventDate, splitEvents, type ClubEvent } from "@/data/events"
+import { Highlight } from "@/components/ui/hero-highlight"
+import { cn } from "@/lib/utils"
 
 type Filter = "upcoming" | "past"
 
@@ -82,21 +84,21 @@ function FilterTabs({
             aria-controls={`${idPrefix}-panel`}
             tabIndex={selected ? 0 : -1}
             onClick={() => onChange(key)}
-            className={`relative z-0 inline-flex min-h-11 items-center gap-2 rounded-full px-5 sm:px-6 text-sm font-semibold cursor-pointer transition-colors duration-200 ${focusRing} ${
-              selected ? "text-[#0b0f19]" : "text-slate-300 hover:text-white"
+            className={`relative z-0 inline-flex min-h-11 items-center gap-2 rounded-full px-5 sm:px-6 text-sm font-bold cursor-pointer transition-colors duration-200 ${focusRing} ${
+              selected ? "text-slate-950" : "text-slate-300 hover:text-white"
             }`}
           >
             {selected && (
               <motion.span
                 layoutId={`${idPrefix}-active-pill`}
-                className="absolute inset-0 -z-10 rounded-full bg-[#00e676] shadow-[0_0_25px_-5px_rgba(0,230,118,0.6)]"
+                className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-[#00e676] via-emerald-400 to-teal-400"
                 transition={{ type: "spring", stiffness: 380, damping: 32 }}
               />
             )}
             {label}
             <span
               className={`inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[11px] font-bold tabular-nums ${
-                selected ? "bg-[#0b0f19]/15 text-[#0b0f19]" : "bg-white/[0.08] text-slate-300"
+                selected ? "bg-black/15 text-slate-950" : "bg-white/[0.08] text-slate-300"
               }`}
             >
               {counts[key]}
@@ -273,28 +275,45 @@ export function EventsSection() {
   return (
     <section
       id="events"
-      className="relative w-full min-h-screen flex flex-col items-center px-6 sm:px-12 py-24 border-t border-white/[0.06] bg-[#0d121f] overflow-hidden"
+      className="relative w-full min-h-screen flex flex-col items-center px-6 sm:px-12 py-24 bg-black overflow-hidden"
     >
+      {/* Subtle Aceternity Grid Background (ultra-subtle texture) */}
+      <div
+        className={cn(
+          "absolute inset-0 pointer-events-none z-0 opacity-[0.15]",
+          "[background-size:40px_40px]",
+          "[background-image:linear-gradient(to_right,rgba(255,255,255,0.3)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.3)_1px,transparent_1px)]",
+          "[mask-image:radial-gradient(ellipse_75%_60%_at_50%_40%,#000_20%,transparent_100%)]"
+        )}
+      />
+
       {/* Subtle radial glow background */}
       <div className="pointer-events-none absolute inset-0 z-0">
-        <div className="absolute left-1/2 top-16 -translate-x-1/2 w-[700px] h-[380px] rounded-full bg-emerald-500/[0.05] blur-[110px]" />
-        <div className="absolute left-0 bottom-1/4 w-[380px] h-[380px] rounded-full bg-teal-500/[0.04] blur-[90px]" />
+        <div className="absolute left-1/2 top-16 -translate-x-1/2 w-[700px] h-[380px] rounded-full bg-emerald-500/[0.04] blur-[140px]" />
+        <div className="absolute left-0 bottom-1/4 w-[380px] h-[380px] rounded-full bg-teal-500/[0.03] blur-[120px]" />
       </div>
 
-      {/* Section header */}
-      <motion.div {...reveal} className="relative z-10 max-w-4xl mx-auto text-center space-y-4 mb-10">
-        <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/10 text-[#00e676] border border-emerald-500/20">
-          Programs & Workshops
-        </span>
-        <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-          Upcoming Events
-        </h2>
-        <p className="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+      {/* Section header (Left-aligned title + Right-aligned paragraph like TeamSection) */}
+      <motion.div
+        {...reveal}
+        className="relative z-10 w-full max-w-6xl mx-auto flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12"
+      >
+        <div className="max-w-xl">
+          <span className="text-xs font-mono font-bold uppercase tracking-[0.25em] text-[#00e676]">
+            EVENTS
+          </span>
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mt-2 leading-tight">
+            Upcoming <Highlight className="text-white bg-gradient-to-r from-emerald-500/30 via-[#00e676]/30 to-teal-400/30">Events</Highlight>
+          </h2>
+        </div>
+
+        <p className="text-slate-400 text-sm sm:text-base max-w-md leading-relaxed lg:pb-1">
           Stay tuned for upcoming bootcamps, speaker sessions, cloud architecting workshops, and community hackathons.
         </p>
       </motion.div>
 
-      <motion.div {...reveal} className="relative z-10 mb-10">
+      {/* Filter Tabs aligned with section */}
+      <motion.div {...reveal} className="relative z-10 w-full max-w-6xl mx-auto flex justify-start mb-10">
         <FilterTabs
           value={filter}
           onChange={setFilter}
@@ -319,7 +338,35 @@ export function EventsSection() {
               )}
             </motion.div>
           ) : (
-            <motion.div key="past" {...panelMotion}>
+            <motion.div key="past" {...panelMotion} className="relative py-4">
+              {/* Dynamic Past Events Atmospheric Background Blend */}
+              <div className="pointer-events-none absolute -inset-x-8 -inset-y-12 -z-10 overflow-hidden rounded-3xl">
+                {/* 1. Overhead Ambient Spotlight Beam */}
+                <div className="absolute left-1/2 -top-24 -translate-x-1/2 w-[600px] h-[350px] bg-gradient-to-b from-emerald-400/[0.12] via-teal-500/[0.04] to-transparent blur-[80px] rounded-full" />
+                
+                {/* 2. Cyber Horizon Glow */}
+                <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-emerald-950/20 via-transparent to-transparent" />
+
+                {/* 3. Perspective Cyber Grid Floor with Radial Falloff */}
+                <div
+                  className="absolute inset-x-0 bottom-0 h-48 opacity-25"
+                  style={{
+                    backgroundImage: `linear-gradient(to right, rgba(0, 230, 118, 0.25) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 230, 118, 0.25) 1px, transparent 1px)`,
+                    backgroundSize: "48px 48px",
+                    transform: "perspective(500px) rotateX(60deg)",
+                    transformOrigin: "bottom center",
+                    maskImage: "linear-gradient(to top, rgba(0,0,0,1) 15%, transparent 95%)",
+                    WebkitMaskImage: "linear-gradient(to top, rgba(0,0,0,1) 15%, transparent 95%)",
+                  }}
+                />
+
+                {/* 4. Ambient Starlight Nebula particles */}
+                <div className="absolute left-12 top-10 w-2 h-2 rounded-full bg-emerald-400/40 blur-[1px] animate-pulse" />
+                <div className="absolute right-16 top-16 w-1.5 h-1.5 rounded-full bg-teal-300/30 blur-[1px] animate-pulse" style={{ animationDelay: "1s" }} />
+                <div className="absolute left-1/4 bottom-14 w-2 h-2 rounded-full bg-emerald-300/30 blur-[1px] animate-pulse" style={{ animationDelay: "1.5s" }} />
+                <div className="absolute right-1/3 bottom-20 w-1.5 h-1.5 rounded-full bg-[#00e676]/40 blur-[1px] animate-pulse" style={{ animationDelay: "2s" }} />
+              </div>
+
               {past.length > 0 ? (
                 <MotionCarousel
                   slides={past}

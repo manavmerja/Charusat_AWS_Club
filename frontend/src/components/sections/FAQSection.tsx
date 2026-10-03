@@ -10,6 +10,7 @@ import {
   AccordionButton,
   AccordionPanel,
 } from "@/components/animate-ui/components/headless/accordion"
+import { LightRays } from "@/components/ui/light-rays"
 
 const awsServiceSlugs = [
   // Ring 1 (5) - Core AWS Compute
@@ -19,18 +20,18 @@ const awsServiceSlugs = [
   "awsfargate",
   "amazoneks",
   
-  // Ring 2 (8) - Storage, DB, Network, Security
+  // Ring 2 (8) - Storage, DB, Analytics, Network
   "amazons3",
   "amazondynamodb",
   "amazonrds",
   "amazonroute53",
   "amazonapigateway",
   "amazoncloudwatch",
-  "amazoncloudformation",
-  "awsiam",
+  "amazonecs",
+  "amazonredshift",
 
-  // Ring 3 (12) - DevOps & Stack
-  "awswaf",
+  // Ring 3 (12) - Cloud Architecture, DevOps & Stack
+  "amazonsqs",
   "amazoncognito",
   "docker",
   "kubernetes",
@@ -88,10 +89,30 @@ export function FAQSection() {
       id="faq"
       className="relative w-full min-h-screen bg-black flex flex-col items-center justify-center px-6 sm:px-12 py-24 overflow-hidden"
     >
+      {/* Seamless Blend Transitions */}
+      <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-black via-black/70 to-transparent pointer-events-none z-20" />
+      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent via-black/70 to-black pointer-events-none z-20" />
+
+      {/* Light Rays Background (Top-Center God Rays) */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-65">
+        <LightRays
+          raysOrigin="top-center"
+          raysColor="#ffffff"
+          raysSpeed={0.8}
+          lightSpread={0.8}
+          rayLength={2.5}
+          followMouse={true}
+          mouseInfluence={0.08}
+          noiseAmount={0.04}
+          distortion={0.04}
+          pulsating={false}
+          fadeDistance={1.2}
+          saturation={1}
+          className="w-full h-full"
+        />
+      </div>
+
       <div className="text-center mb-16 space-y-3 relative z-10">
-        <span className="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/10 text-[#00e676] border border-emerald-500/20">
-          Have Questions?
-        </span>
         <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
           Frequently Asked Questions
         </h2>
@@ -145,7 +166,7 @@ export function FAQSection() {
         <div className="flex-1 w-full max-w-xl lg:pl-12">
           <Accordion>
             {faqs.map((faq, index) => (
-              <AccordionItem key={index} defaultOpen={index === 0}>
+              <AccordionItem key={index} defaultOpen={false}>
                 <AccordionButton showArrow>{faq.question}</AccordionButton>
                 <AccordionPanel>{faq.answer}</AccordionPanel>
               </AccordionItem>
