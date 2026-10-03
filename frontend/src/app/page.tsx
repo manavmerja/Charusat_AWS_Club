@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { WordsPreloader } from "@/components/ui/WordsPreloader";
 import { HeroStarsBackground } from "@/components/dashboard/HeroStarsBackground";
@@ -14,14 +14,21 @@ import { ContactSection } from "@/components/sections/ContactSection";
 import { Footer } from "@/components/sections/Footer";
 import { ScrollToTop } from "@/components/ui/scroll-to-top";
 
+let hasShownPreloader = false;
+
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!hasShownPreloader);
+
+  const handlePreloaderComplete = () => {
+    hasShownPreloader = true;
+    setIsLoading(false);
+  };
 
   return (
     <>
       <AnimatePresence mode="wait">
         {isLoading && (
-          <WordsPreloader onComplete={() => setIsLoading(false)} />
+          <WordsPreloader onComplete={handlePreloaderComplete} />
         )}
       </AnimatePresence>
 
