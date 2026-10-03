@@ -7,6 +7,7 @@ import { HeroStarsBackground } from "@/components/dashboard/HeroStarsBackground"
 import { StaggeredMenu } from "@/components/navigation/StaggeredMenu";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { EventsSection } from "@/components/sections/EventsSection";
+import { MeetupSection } from "@/components/sections/MeetupSection";
 import { TeamSection } from "@/components/sections/TeamSection";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { ContactSection } from "@/components/sections/ContactSection";
@@ -56,6 +57,9 @@ export default function Home() {
 
       {/* 3. EVENTS & WORKSHOPS SECTION */}
       <EventsSection />
+
+      {/* 3.5. MEETUP COMMUNITY HUB SECTION */}
+      <MeetupSection />
 
       {/* 4. CORE TEAMS SECTION */}
       <TeamSection />
