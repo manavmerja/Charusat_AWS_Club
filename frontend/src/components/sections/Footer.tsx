@@ -34,12 +34,23 @@ export function Footer() {
     if (href.startsWith("#")) {
       e.preventDefault();
       const targetId = href.replace("#", "");
+      const lenis = (window as unknown as { lenis?: { scrollTo: (target: number | HTMLElement, opts?: { duration?: number; easing?: (t: number) => number; offset?: number }) => void } }).lenis;
+      const smoothEasing = (t: number) => 1 - Math.pow(1 - t, 3.5);
+
       if (targetId === "home") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (lenis && typeof lenis.scrollTo === "function") {
+          lenis.scrollTo(0, { duration: 1.8, easing: smoothEasing });
+        } else {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
       } else {
         const element = document.getElementById(targetId);
         if (element) {
-          element.scrollIntoView({ behavior: "smooth", block: "start" });
+          if (lenis && typeof lenis.scrollTo === "function") {
+            lenis.scrollTo(element, { duration: 1.7, easing: smoothEasing, offset: 0 });
+          } else {
+            element.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
         }
       }
       window.history.pushState(null, "", href);
