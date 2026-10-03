@@ -88,6 +88,10 @@ export function FAQSection() {
       id="faq"
       className="relative w-full min-h-screen bg-black flex flex-col items-center justify-center px-6 sm:px-12 py-24 overflow-hidden"
     >
+      {/* Seamless Blend Transitions */}
+      <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-black via-black/70 to-transparent pointer-events-none z-20" />
+      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent via-black/70 to-black pointer-events-none z-20" />
+
       <div className="text-center mb-16 space-y-3 relative z-10">
         <span className="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/10 text-[#00e676] border border-emerald-500/20">
           Have Questions?
