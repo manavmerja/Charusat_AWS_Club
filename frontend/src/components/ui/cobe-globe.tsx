@@ -101,17 +101,19 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
     if (!canvasRef.current) return;
 
     const currentWidth = width || 500;
-    const dpr = Math.min(typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1, isMobile ? 1.5 : 2);
+    // Optimal DPR for crisp edges without 4x bloated WebGL raster buffer
+    const dpr = Math.min(typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1, isMobile ? 1.25 : 1.5);
+    let cachedWidth = currentWidth;
 
     const globe = createGlobe(canvasRef.current, {
       devicePixelRatio: dpr,
-      width: currentWidth * 2,
-      height: currentWidth * 2,
+      width: currentWidth * dpr,
+      height: currentWidth * dpr,
       phi: 0,
       theta: 0.22,
       dark: 1,
       diffuse: 1.2,
-      mapSamples: isMobile ? 9000 : 16000,
+      mapSamples: isMobile ? 7000 : 12000,
       mapBrightness: 5.5,
       baseColor: [0.04, 0.06, 0.09],
       markerColor: [0.15, 0.65, 0.4],
@@ -191,12 +193,20 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
       const currentTheta = rotation.current.theta;
       const cWidth = containerRef.current?.offsetWidth || currentWidth;
 
-      globe.update({
-        phi: currentPhi,
-        theta: currentTheta,
-        width: cWidth * 2,
-        height: cWidth * 2,
-      });
+      if (cWidth !== cachedWidth) {
+        cachedWidth = cWidth;
+        globe.update({
+          phi: currentPhi,
+          theta: currentTheta,
+          width: cWidth * dpr,
+          height: cWidth * dpr,
+        });
+      } else {
+        globe.update({
+          phi: currentPhi,
+          theta: currentTheta,
+        });
+      }
 
       // Update 3D projected city tags
       tagElementsRef.current.forEach((el, index) => {
