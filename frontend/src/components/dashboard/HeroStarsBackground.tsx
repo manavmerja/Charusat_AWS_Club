@@ -139,8 +139,14 @@ export function HeroStarsBackground() {
         glowColor="rgba(132, 79, 186, 0.2)"
       />
 
-      {/* Hero Content */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-28 pb-20 flex flex-col items-start justify-center">
+      {/* Hero Content with Smooth Viewport Arrival Animation */}
+      <motion.div
+        initial={{ opacity: 0.88, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.2 }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-20 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-28 pb-20 flex flex-col items-start justify-center"
+      >
         <h1 
           className="text-white text-5xl md:text-7xl lg:text-8xl font-bold leading-[1.05] tracking-tight max-w-5xl mb-8 flex flex-col items-start"
           style={{ fontFamily: "'Playfair Display', Georgia, Cambria, serif" }}
@@ -200,18 +206,46 @@ export function HeroStarsBackground() {
         </p>
 
         <div className="flex flex-wrap items-center gap-4 sm:gap-6">
-          <Link href="#contacts" className="inline-block">
+          <a
+            href="#contacts"
+            onClick={(e) => {
+              e.preventDefault();
+              const element = document.getElementById("contacts");
+              const lenis = (window as unknown as { lenis?: { scrollTo: (target: HTMLElement, opts?: { duration?: number; easing?: (t: number) => number }) => void } }).lenis;
+              if (lenis && element) {
+                lenis.scrollTo(element, { duration: 1.7, easing: (t) => 1 - Math.pow(1 - t, 3.5) });
+              } else if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+              }
+              window.history.pushState(null, "", "#contacts");
+            }}
+            className="inline-block cursor-pointer"
+          >
             <LiquidButton size="default">
               JOIN COMMUNITY
             </LiquidButton>
-          </Link>
-          <Link href="#events" className="inline-block">
+          </a>
+          <a
+            href="#events"
+            onClick={(e) => {
+              e.preventDefault();
+              const element = document.getElementById("events");
+              const lenis = (window as unknown as { lenis?: { scrollTo: (target: HTMLElement, opts?: { duration?: number; easing?: (t: number) => number }) => void } }).lenis;
+              if (lenis && element) {
+                lenis.scrollTo(element, { duration: 1.7, easing: (t) => 1 - Math.pow(1 - t, 3.5) });
+              } else if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+              }
+              window.history.pushState(null, "", "#events");
+            }}
+            className="inline-block cursor-pointer"
+          >
             <LiquidButton size="default" variant="secondary">
               EXPLORE EVENTS
             </LiquidButton>
-          </Link>
+          </a>
         </div>
-      </div>
+      </motion.div>
 
       {/* Seamless Fade Transition to About Section */}
       <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent via-black/80 to-black pointer-events-none z-10" />
