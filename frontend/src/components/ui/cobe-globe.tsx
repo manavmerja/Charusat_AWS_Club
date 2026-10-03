@@ -100,53 +100,60 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
 
     if (!canvasRef.current) return;
 
+    let isDisposed = false;
     const currentWidth = width || 500;
     // Optimal DPR for crisp edges without 4x bloated WebGL raster buffer
     const dpr = Math.min(typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1, isMobile ? 1.25 : 1.5);
     let cachedWidth = currentWidth;
 
-    const globe = createGlobe(canvasRef.current, {
-      devicePixelRatio: dpr,
-      width: currentWidth * dpr,
-      height: currentWidth * dpr,
-      phi: 0,
-      theta: 0.22,
-      dark: 1,
-      diffuse: 1.2,
-      mapSamples: isMobile ? 7000 : 12000,
-      mapBrightness: 5.5,
-      baseColor: [0.04, 0.06, 0.09],
-      markerColor: [0.15, 0.65, 0.4],
-      glowColor: [0.02, 0.12, 0.08],
-      markerElevation: 0.05,
-      markers: CITIES.map((c) => ({
-        location: [c.lat, c.lng] as [number, number],
-        size: c.isPrimary ? 0.07 : 0.04,
-      })),
-      arcs: [
-        // San Francisco ↔ New York
-        { from: [37.7749, -122.4194], to: [40.7128, -74.006] },
-        // New York ↔ London
-        { from: [40.7128, -74.006], to: [51.5074, -0.1278] },
-        // London ↔ Frankfurt
-        { from: [51.5074, -0.1278], to: [50.1109, 8.6821] },
-        // Frankfurt ↔ CHARUSAT (Gujarat)
-        { from: [50.1109, 8.6821], to: [22.5996, 72.8205] },
-        // CHARUSAT (Gujarat) ↔ Singapore
-        { from: [22.5996, 72.8205], to: [1.3521, 103.8198] },
-        // Singapore ↔ Tokyo
-        { from: [1.3521, 103.8198], to: [35.6762, 139.6503] },
-        // Tokyo ↔ San Francisco
-        { from: [35.6762, 139.6503], to: [37.7749, -122.4194] },
-        // Singapore ↔ Sydney
-        { from: [1.3521, 103.8198], to: [-33.8688, 151.2093] },
-        // New York ↔ São Paulo
-        { from: [40.7128, -74.006], to: [-23.5505, -46.6333] },
-      ],
-      arcColor: [0.15, 0.6, 0.38],
-      arcWidth: 0.35,
-      arcHeight: 0.22,
-    });
+    let globe: { update: (opts: Record<string, unknown>) => void; destroy: () => void } | null = null;
+
+    try {
+      globe = createGlobe(canvasRef.current, {
+        devicePixelRatio: dpr,
+        width: currentWidth * dpr,
+        height: currentWidth * dpr,
+        phi: 0,
+        theta: 0.22,
+        dark: 1,
+        diffuse: 1.2,
+        mapSamples: isMobile ? 7000 : 12000,
+        mapBrightness: 5.5,
+        baseColor: [0.04, 0.06, 0.09],
+        markerColor: [0.15, 0.65, 0.4],
+        glowColor: [0.02, 0.12, 0.08],
+        markerElevation: 0.05,
+        markers: CITIES.map((c) => ({
+          location: [c.lat, c.lng] as [number, number],
+          size: c.isPrimary ? 0.07 : 0.04,
+        })),
+        arcs: [
+          // San Francisco ↔ New York
+          { from: [37.7749, -122.4194], to: [40.7128, -74.006] },
+          // New York ↔ London
+          { from: [40.7128, -74.006], to: [51.5074, -0.1278] },
+          // London ↔ Frankfurt
+          { from: [51.5074, -0.1278], to: [50.1109, 8.6821] },
+          // Frankfurt ↔ CHARUSAT (Gujarat)
+          { from: [50.1109, 8.6821], to: [22.5996, 72.8205] },
+          // CHARUSAT (Gujarat) ↔ Singapore
+          { from: [22.5996, 72.8205], to: [1.3521, 103.8198] },
+          // Singapore ↔ Tokyo
+          { from: [1.3521, 103.8198], to: [35.6762, 139.6503] },
+          // Tokyo ↔ San Francisco
+          { from: [35.6762, 139.6503], to: [37.7749, -122.4194] },
+          // Singapore ↔ Sydney
+          { from: [1.3521, 103.8198], to: [-33.8688, 151.2093] },
+          // New York ↔ São Paulo
+          { from: [40.7128, -74.006], to: [-23.5505, -46.6333] },
+        ],
+        arcColor: [0.15, 0.6, 0.38],
+        arcWidth: 0.35,
+        arcHeight: 0.22,
+      });
+    } catch (err) {
+      console.warn("COBE initialization error:", err);
+    }
 
     // ── Performance Optimization: Pause rendering when offscreen ──
     const observer = new IntersectionObserver(
@@ -161,6 +168,8 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
     }
 
     const animate = () => {
+      if (isDisposed) return;
+
       if (!isVisibleRef.current) {
         // Paused offscreen — wait and re-check without running shader calculations
         animationFrameId = requestAnimationFrame(animate);
@@ -193,19 +202,21 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
       const currentTheta = rotation.current.theta;
       const cWidth = containerRef.current?.offsetWidth || currentWidth;
 
-      if (cWidth !== cachedWidth) {
-        cachedWidth = cWidth;
-        globe.update({
-          phi: currentPhi,
-          theta: currentTheta,
-          width: cWidth * dpr,
-          height: cWidth * dpr,
-        });
-      } else {
-        globe.update({
-          phi: currentPhi,
-          theta: currentTheta,
-        });
+      if (globe) {
+        if (cWidth !== cachedWidth) {
+          cachedWidth = cWidth;
+          globe.update({
+            phi: currentPhi,
+            theta: currentTheta,
+            width: cWidth * dpr,
+            height: cWidth * dpr,
+          });
+        } else {
+          globe.update({
+            phi: currentPhi,
+            theta: currentTheta,
+          });
+        }
       }
 
       // Update 3D projected city tags
@@ -244,9 +255,14 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
     }, 80);
 
     return () => {
+      isDisposed = true;
       cancelAnimationFrame(animationFrameId);
       observer.disconnect();
-      globe.destroy();
+      if (globe) {
+        try {
+          globe.destroy();
+        } catch {}
+      }
       window.removeEventListener("resize", onResize);
     };
   }, []);
