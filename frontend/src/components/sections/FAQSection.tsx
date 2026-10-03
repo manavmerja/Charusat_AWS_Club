@@ -20,18 +20,18 @@ const awsServiceSlugs = [
   "awsfargate",
   "amazoneks",
   
-  // Ring 2 (8) - Storage, DB, Network, Security
+  // Ring 2 (8) - Storage, DB, Analytics, Network
   "amazons3",
   "amazondynamodb",
   "amazonrds",
   "amazonroute53",
   "amazonapigateway",
   "amazoncloudwatch",
-  "amazoncloudformation",
-  "awsiam",
+  "amazonecs",
+  "amazonredshift",
 
-  // Ring 3 (12) - DevOps & Stack
-  "awswaf",
+  // Ring 3 (12) - Cloud Architecture, DevOps & Stack
+  "amazonsqs",
   "amazoncognito",
   "docker",
   "kubernetes",
