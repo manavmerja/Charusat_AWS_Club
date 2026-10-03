@@ -200,8 +200,12 @@ export function TeamSection() {
   return (
     <section
       id="teams"
-      className="relative w-full min-h-screen flex flex-col items-center px-4 sm:px-8 lg:px-12 py-24 border-t border-white/[0.06] bg-[#07070d] text-slate-200 overflow-hidden"
+      className="relative w-full min-h-screen flex flex-col items-center px-4 sm:px-8 lg:px-12 py-24 bg-black text-slate-200 overflow-hidden"
     >
+      {/* Seamless Blend Transitions */}
+      <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-black via-black/70 to-transparent pointer-events-none z-20" />
+      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent via-black/70 to-black pointer-events-none z-20" />
+
       {/* Background Subtle Ambience */}
       <div className="pointer-events-none absolute inset-0 z-0">
         <div className="absolute left-1/2 top-20 -translate-x-1/2 w-[700px] h-[350px] rounded-full bg-purple-900/[0.04] blur-[140px]" />
