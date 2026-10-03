@@ -37,7 +37,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative z-30 bg-black text-gray-400 border-t border-white/10 overflow-hidden">
+    <footer className="relative z-30 bg-black text-gray-400 overflow-hidden">
       <BackgroundBeamsWithCollision className="pt-14 pb-8 sm:pt-16 sm:pb-10 w-full h-auto min-h-auto bg-black">
         
         {/* Background Dot Pattern matching portfolio (centered subtle circle with soft opacity) */}
