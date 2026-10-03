@@ -89,7 +89,7 @@ export const EVENTS: ClubEvent[] = [
       "/The Golden Stack/WhatsApp Image 2026-09-30 at 12.47.15 PM.jpeg",
       "/The Golden Stack/WhatsApp Image 2026-09-30 at 12.47.13 PM.jpeg",
     ],
-    registerUrl: "https://www.meetup.com/pro/aws-student-community",
+    registerUrl: "https://www.meetup.com/aws-sbg-at-charotar-university-of-science-and-technology/",
   },
   {
     slug: "the-golden-stack",

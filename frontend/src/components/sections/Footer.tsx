@@ -22,7 +22,7 @@ const linksExplore = [
 ];
 
 const socialLinks = [
-  { name: "Meetup", href: "https://www.meetup.com/pro/aws-student-community", icon: FaMeetup },
+  { name: "Meetup", href: "https://www.meetup.com/aws-sbg-at-charotar-university-of-science-and-technology/", icon: FaMeetup },
   { name: "LinkedIn", href: "https://linkedin.com", icon: IconBrandLinkedin },
   { name: "Instagram", href: "https://instagram.com", icon: IconBrandInstagram },
 ];

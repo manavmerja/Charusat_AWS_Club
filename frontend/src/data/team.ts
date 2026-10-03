@@ -82,9 +82,9 @@ export const STUDENT_LEADERSHIP: StudentLeader[] = [
     name: "Diya Prajapati",
     role: "Student Builder Group Leader( Cloud Captain )",
     badges: ["AWS Cloud Captain", "Chapter Lead"],
-    department: "CHARUSAT",
+    department: "DEPSTAR-CSE",
     initials: "DP",
-    image: "/team/Diya_Group_Leader.png",
+    image: "/team/Diya_Group_Leader_card.jpg",
     bio: "Leads the AWS Student Builder Group at CHARUSAT. Sets the semester roadmap, coordinates founding student teams, and acts as the official liaison to AWS Student Programs.",
     socials: {
       linkedin: "https://www.linkedin.com/in/diya-h-prajapati",
@@ -105,7 +105,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Bhargav Rakholiya",
         role: "Cloud Team",
-        department: "DEPSTAR - IT",
+        department: "DEPSTAR - CSE",
         initials: "BR",
         image: "/team/Bhargav_Rakholiya.png",
         specialty: "AWS Architecture & Security",
@@ -117,7 +117,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Param Vadhadiya",
         role: "Cloud Team",
-        department: "DEPSTAR - CE",
+        department: "DEPSTAR - CSE",
         initials: "PV",
         image: "/team/Param Vadhadiya Cloud-Team.jpg",
         specialty: "Infrastructure & Networking",
@@ -129,7 +129,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Dev Jivani",
         role: "Cloud Team",
-        department: "CSPIT - IT",
+        department: "CSPIT - CE",
         initials: "DJ",
         image: "/team/Dev_Cloud-Team.jpeg",
         specialty: "Compute & Serverless",
@@ -141,7 +141,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Vansh Malani",
         role: "Cloud Team",
-        department: "CSPIT - CE",
+        department: "DEPSTAR-CSE",
         initials: "VM",
         image: "/team/Vansh_Malani_cloud.jpg",
         specialty: "Linux & Cloud DevOps",
@@ -175,7 +175,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Vedant Bhatt",
         role: "Web Team",
-        department: "DEPSTAR - CE",
+        department: "CSPIT - CE",
         initials: "VB",
         image: "/team/Vedant Bhatt_Web_Team.png",
         specialty: "Frontend Systems & UI Engineering",
@@ -197,7 +197,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Jiya Sadaria",
         role: "Creative Team",
-        department: "DEPSTAR - CE",
+        department: "CSPIT - AIML",
         initials: "JS",
         image: "/team/jiya sadaria.png",
         specialty: "Visual Identity & Brand Systems",
@@ -209,7 +209,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Dipobithi Das",
         role: "Creative Team",
-        department: "CSPIT - IT",
+        department: "DEPSTAR - IT",
         initials: "DD",
         image: "/team/Dipobithi Das.jpg",
         specialty: "UI/UX & Workshop Creatives",
@@ -221,7 +221,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Hasti Borda",
         role: "Creative Team",
-        department: "DEPSTAR - IT",
+        department: "DEPSTAR - CSE",
         initials: "HB",
         image: "/team/Hasti_Borda_card.jpg",
         specialty: "Graphics & Digital Media",
@@ -244,7 +244,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Jeet Vadhia",
         role: "Community Team",
-        department: "DEPSTAR - CE",
+        department: "DEPSTAR - IT",
         initials: "JV",
         image: "/team/Jeet_Vadhia.png",
         specialty: "Campus Outreach",
@@ -269,7 +269,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Dhanya Vala",
         role: "Community Team",
-        department: "DEPSTAR - CE",
+        department: "CSPIT - CSE",
         initials: "DV",
         image: "",
         specialty: "Peer Networking & Support",
@@ -295,7 +295,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Kavya Shah",
         role: "Community Team",
-        department: "DEPSTAR - IT",
+        department: "DEPSTAR - CSE",
         initials: "KS",
         image: "/team/Kavya shah-communityteam.png",
         specialty: "Engagement & Member Relations",
@@ -318,7 +318,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Ajay Kothari",
         role: "Media Team",
-        department: "DEPSTAR - CE",
+        department: "CMPICA - BCA",
         initials: "AK",
         image: "/team/AjayKothari_MediaTeam.jpg",
         specialty: "Event Production & Video",
@@ -331,7 +331,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Shah Devam",
         role: "Media Team",
-        department: "CSPIT - CE",
+        department: "CSPIT - EC",
         initials: "SD",
         image: "/team/devamshah_media_team.jpg",
         specialty: "Photography & Post-Production",
@@ -344,19 +344,19 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Khushi Marathe",
         role: "Media Team",
-        department: "DEPSTAR - IT",
+        department: "DEPSTAR - CSE",
         initials: "KM",
         image: "/team/Khushi marathe media team.jpg",
         specialty: "Event Logistics & Production",
         socials: {
-          linkedin: "https://linkedin.com",
-          github: "https://github.com",
+          linkedin: "https://www.linkedin.com/in/khushi-marathe-938322320?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+          github: "https://github.com/khushixmarathe",
         },
       },
       {
         name: "Jeel Mendpara",
         role: "Media Team",
-        department: "DEPSTAR - CE",
+        department: "CMPICA - BCA",
         initials: "JM",
         image: "/team/Jeel Mendpara.jpeg",
         specialty: "Social Media & Content Captures",
@@ -369,7 +369,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
       {
         name: "Vedant Kapadia",
         role: "Media Team",
-        department: "CSPIT - IT",
+        department: "DEPSTAR - CE",
         initials: "VK",
         image: "/team/Vedant-Kapadia-MediaTeam.jpg",
         specialty: "Lab & Stage Coordination",
