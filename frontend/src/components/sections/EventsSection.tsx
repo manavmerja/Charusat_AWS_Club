@@ -338,7 +338,35 @@ export function EventsSection() {
               )}
             </motion.div>
           ) : (
-            <motion.div key="past" {...panelMotion}>
+            <motion.div key="past" {...panelMotion} className="relative py-4">
+              {/* Dynamic Past Events Atmospheric Background Blend */}
+              <div className="pointer-events-none absolute -inset-x-8 -inset-y-12 -z-10 overflow-hidden rounded-3xl">
+                {/* 1. Overhead Ambient Spotlight Beam */}
+                <div className="absolute left-1/2 -top-24 -translate-x-1/2 w-[600px] h-[350px] bg-gradient-to-b from-emerald-400/[0.12] via-teal-500/[0.04] to-transparent blur-[80px] rounded-full" />
+                
+                {/* 2. Cyber Horizon Glow */}
+                <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-emerald-950/20 via-transparent to-transparent" />
+
+                {/* 3. Perspective Cyber Grid Floor with Radial Falloff */}
+                <div
+                  className="absolute inset-x-0 bottom-0 h-48 opacity-25"
+                  style={{
+                    backgroundImage: `linear-gradient(to right, rgba(0, 230, 118, 0.25) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 230, 118, 0.25) 1px, transparent 1px)`,
+                    backgroundSize: "48px 48px",
+                    transform: "perspective(500px) rotateX(60deg)",
+                    transformOrigin: "bottom center",
+                    maskImage: "linear-gradient(to top, rgba(0,0,0,1) 15%, transparent 95%)",
+                    WebkitMaskImage: "linear-gradient(to top, rgba(0,0,0,1) 15%, transparent 95%)",
+                  }}
+                />
+
+                {/* 4. Ambient Starlight Nebula particles */}
+                <div className="absolute left-12 top-10 w-2 h-2 rounded-full bg-emerald-400/40 blur-[1px] animate-pulse" />
+                <div className="absolute right-16 top-16 w-1.5 h-1.5 rounded-full bg-teal-300/30 blur-[1px] animate-pulse" style={{ animationDelay: "1s" }} />
+                <div className="absolute left-1/4 bottom-14 w-2 h-2 rounded-full bg-emerald-300/30 blur-[1px] animate-pulse" style={{ animationDelay: "1.5s" }} />
+                <div className="absolute right-1/3 bottom-20 w-1.5 h-1.5 rounded-full bg-[#00e676]/40 blur-[1px] animate-pulse" style={{ animationDelay: "2s" }} />
+              </div>
+
               {past.length > 0 ? (
                 <MotionCarousel
                   slides={past}
