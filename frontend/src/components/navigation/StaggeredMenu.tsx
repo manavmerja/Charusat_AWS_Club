@@ -356,6 +356,41 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     };
   }, [closeOnClickAway, open, closeMenu]);
 
+  const handleSmoothNavigation = useCallback((e: React.MouseEvent<HTMLAnchorElement>, link: string) => {
+    if (link.startsWith('#')) {
+      e.preventDefault();
+      const targetId = link.replace('#', '');
+      
+      closeMenu();
+
+      // Luxurious smooth glide (longer duration, relaxed deceleration curve)
+      const smoothEasing = (t: number) => 1 - Math.pow(1 - t, 3.5);
+
+      setTimeout(() => {
+        const lenis = (window as unknown as { lenis?: { scrollTo: (target: number | HTMLElement, opts?: { duration?: number; easing?: (t: number) => number; offset?: number }) => void } }).lenis;
+        
+        if (targetId === 'home') {
+          if (lenis && typeof lenis.scrollTo === 'function') {
+            lenis.scrollTo(0, { duration: 1.8, easing: smoothEasing });
+          } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        } else {
+          const element = document.getElementById(targetId);
+          if (element) {
+            if (lenis && typeof lenis.scrollTo === 'function') {
+              lenis.scrollTo(element, { duration: 1.7, easing: smoothEasing, offset: 0 });
+            } else {
+              element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }
+        }
+      }, 100);
+
+      window.history.pushState(null, '', link);
+    }
+  }, [closeMenu]);
+
   return (
     <>
       {/* Top Floating Glass Header: Clean dark card brand on the left + Menu button on the right */}
@@ -365,9 +400,10 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       >
         {/* Left Side: Clean Brand Card with Official Square Logo */}
         <a
-          href="/"
+          href="#home"
+          onClick={(e) => handleSmoothNavigation(e, '#home')}
           aria-label="AWS Student Builder Group Home"
-          className="pointer-events-auto flex items-center gap-2.5 p-1.5 pr-4 sm:pr-5 rounded-2xl bg-white/[0.03] backdrop-blur-md border border-white/10 hover:border-white/[0.16] hover:bg-white/[0.05] transition-all duration-200 ease-out select-none group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00e676]/50"
+          className="pointer-events-auto flex items-center gap-2.5 p-1.5 pr-4 sm:pr-5 rounded-2xl bg-white/[0.03] backdrop-blur-md border border-white/10 hover:border-white/[0.16] hover:bg-white/[0.05] transition-all duration-200 ease-out select-none group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00e676]/50 cursor-pointer"
         >
           {/* Logo Container */}
           <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-[10px] overflow-hidden flex-shrink-0 flex items-center justify-center bg-[#F4F7F5] border border-white/[0.08] group-hover:scale-[1.03] transition-transform duration-200 ease-out">
@@ -487,7 +523,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                       className="group flex items-center justify-between w-full text-slate-100 font-bold text-[2.2rem] sm:text-[2.8rem] md:text-[3.2rem] cursor-pointer leading-none tracking-tight uppercase hover:text-[#00e676] active:text-[#00e676] transition-colors no-underline py-1.5 touch-manipulation"
                       href={it.link}
                       aria-label={it.ariaLabel}
-                      onClick={closeMenu}
+                      onClick={(e) => handleSmoothNavigation(e, it.link)}
                     >
                       <span className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform">
                         {it.label}
