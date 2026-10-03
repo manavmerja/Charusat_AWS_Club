@@ -3,6 +3,7 @@
 import React, { useState } from "react"
 import { motion } from "framer-motion"
 import { CobeGlobe } from "@/components/ui/cobe-globe"
+import { Highlight } from "@/components/ui/hero-highlight"
 
 // Subject options ─
 
@@ -57,7 +58,7 @@ function ContactForm() {
         </div>
         <h3 className="text-2xl font-bold text-white">Message Dispatched!</h3>
         <p className="text-slate-400 text-sm max-w-xs">
-          Thank you for reaching out. We&apos;ll get back to you within 24–48 hours.
+          Thank you for reaching out. We will get back to you soon.
         </p>
         <button
           onClick={() => { setSubmitted(false); setFormData({ fullName: "", email: "", subject: "", message: "" }) }}
@@ -144,12 +145,9 @@ function ContactForm() {
       <motion.button
         type="submit"
         disabled={loading}
-        whileHover={{ scale: loading ? 1 : 1.02 }}
-        whileTap={{ scale: loading ? 1 : 0.98 }}
-        className="relative mt-1 w-full py-4 rounded-xl font-black text-sm uppercase tracking-[0.2em] text-black overflow-hidden disabled:opacity-60 disabled:cursor-not-allowed"
-        style={{
-          background: "linear-gradient(135deg, #00e676 0%, #00c853 50%, #69f0ae 100%)",
-        }}
+        whileHover={{ scale: loading ? 1 : 1.01 }}
+        whileTap={{ scale: loading ? 1 : 0.99 }}
+        className="relative mt-1 w-full py-4 rounded-xl font-bold text-sm uppercase tracking-[0.18em] text-slate-950 overflow-hidden bg-gradient-to-r from-emerald-500 via-emerald-400 to-teal-400 hover:from-emerald-400 hover:to-teal-300 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed shadow-md"
       >
         {loading ? (
           <span className="flex items-center justify-center gap-2">
@@ -198,7 +196,7 @@ export function ContactSection() {
             CONTACT
           </span>
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mt-2 leading-tight">
-            Connect With Us
+            Connect <Highlight className="text-white bg-gradient-to-r from-emerald-500/30 via-[#00e676]/30 to-teal-400/30">With Us</Highlight>
           </h2>
         </div>
 
@@ -235,8 +233,7 @@ export function ContactSection() {
             <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent rounded-full" />
 
             <div className="mb-7">
-              <h3 className="text-xl font-bold text-white mb-1">Send us a Message</h3>
-              <p className="text-slate-500 text-xs">Usually responds within 24–48 hours.</p>
+              <h3 className="text-xl font-bold text-white">Send us a Message</h3>
             </div>
 
             <ContactForm />
