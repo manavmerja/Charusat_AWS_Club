@@ -6,6 +6,7 @@ import { FaMeetup } from "react-icons/fa6";
 import { IconArrowUpRight } from "@tabler/icons-react";
 
 import { DotPattern } from "@/components/ui/dot-pattern";
+import { LightRays } from "@/components/ui/light-rays";
 
 export function MeetupSection() {
   const reduceMotion = useReducedMotion();
@@ -26,7 +27,26 @@ export function MeetupSection() {
       <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black via-black/80 to-transparent pointer-events-none z-20" />
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent via-black/80 to-black pointer-events-none z-20" />
 
-      {/* ── 1. Subtle Cyber Dot Matrix Background with Radial Fade ── */}
+      {/* ── 1. Angled Spotlight Light Rays from Top-Left over the Cosmic Globe ── */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-40">
+        <LightRays
+          raysOrigin="top-left"
+          raysColor="#ffffff"
+          raysSpeed={0.6}
+          lightSpread={0.9}
+          rayLength={2.8}
+          followMouse={true}
+          mouseInfluence={0.06}
+          noiseAmount={0.03}
+          distortion={0.03}
+          pulsating={false}
+          fadeDistance={1.3}
+          saturation={1}
+          className="w-full h-full"
+        />
+      </div>
+
+      {/* ── 2. Subtle Cyber Dot Matrix Background with Radial Fade ── */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <DotPattern
           className="opacity-25 [mask-image:radial-gradient(800px_circle_at_35%_50%,white,transparent_80%)]"
@@ -38,7 +58,7 @@ export function MeetupSection() {
         />
       </div>
 
-      {/* ── 2. Ambient Deep-Space Emerald Nebula Glow ── */}
+      {/* ── 3. Ambient Deep-Space Emerald Nebula Glow ── */}
       <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
         <div className="w-[600px] h-[350px] rounded-full bg-emerald-500/[0.04] blur-[150px] -translate-x-24" />
       </div>
