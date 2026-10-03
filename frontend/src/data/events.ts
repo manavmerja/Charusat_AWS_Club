@@ -51,6 +51,47 @@ export type ClubEvent = {
 
 export const EVENTS: ClubEvent[] = [
   {
+    slug: "cloud-innovate-genai",
+    title: "Cloud Innovate: GenAI & Serverless",
+    tagline: "Building Next-Gen AI Applications on AWS",
+    date: "2026-10-09", 
+    time: "02:00 PM – 04:30 PM",
+    mode: "In-person",
+    venue: "CHARUSAT Campus",
+    category: "Hands-on Workshop",
+    cover: "/The Golden Stack/WhatsApp Image 2026-09-30 at 12.47.15 PM.jpeg",
+    coverPosition: "center 40%",
+    poster: "/The Golden Stack/WhatsApp Image 2026-09-30 at 12.47.15 PM (1).jpeg",
+    description: [
+      "Join the AWS Cloud Club CHARUSAT for an immersive hands-on session delving into Generative AI, Amazon Bedrock, and modern serverless architectures.",
+      "Learn how to build and deploy intelligent cloud applications, connect foundation models with proprietary data via RAG, and master cloud-native AI engineering.",
+    ],
+    highlights: [
+      "Deep dive into Amazon Bedrock & Foundation Models",
+      "Hands-on RAG (Retrieval Augmented Generation) pipeline walkthrough",
+      "Serverless architecture patterns with AWS Lambda & DynamoDB",
+      "Live Q&A, certificates, and exclusive AWS Cloud Club swags",
+    ],
+    tags: ["GenAI", "Serverless", "Amazon Bedrock", "Hands-on"],
+    speakers: [
+      {
+        name: "Mr. Shashank Chinchli",
+        title: "AWS Expert & Cloud Architect",
+        image: "/The Golden Stack/WhatsApp Image 2026-09-30 at 12.47.13 PM.jpeg",
+      },
+    ],
+    organizers: [
+      { name: "Dr. Purvi Prajapati", role: "Convenor · HOD, CSPIT IT" },
+      { name: "Dr. Sanket Suthar", role: "Faculty Coordinator · CSPIT IT" },
+      { name: "Jiya Thakkar", role: "Student Coordinator · Cloud Captain" },
+    ],
+    gallery: [
+      "/The Golden Stack/WhatsApp Image 2026-09-30 at 12.47.15 PM.jpeg",
+      "/The Golden Stack/WhatsApp Image 2026-09-30 at 12.47.13 PM.jpeg",
+    ],
+    registerUrl: "https://www.meetup.com/pro/aws-student-community",
+  },
+  {
     slug: "the-golden-stack",
     title: "The Golden Stack",
     tagline: "Skills, Certs & Cloud Leadership",
