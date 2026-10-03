@@ -13,6 +13,7 @@ import { FAQSection } from "@/components/sections/FAQSection";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { Footer } from "@/components/sections/Footer";
 import { ScrollToTop } from "@/components/ui/scroll-to-top";
+import { FloatingEventToast } from "@/components/ui/FloatingEventToast";
 
 let hasShownPreloader = false;
 
@@ -82,6 +83,9 @@ export default function Home() {
 
       {/* Floating Smooth Scroll to Top Button */}
       <ScrollToTop />
+
+      {/* Subtle Floating Event Announcement Card */}
+      <FloatingEventToast />
     </main>
     </>
   );
