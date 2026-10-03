@@ -27,9 +27,11 @@ export function ScrollToTop() {
 
   const scrollToTop = () => {
     if (typeof window !== "undefined") {
-      const lenis = (window as unknown as { lenis?: { scrollTo: (target: number, opts?: { duration: number }) => void } }).lenis;
+      const lenis = (window as unknown as { lenis?: { scrollTo: (target: number, opts?: { duration?: number; easing?: (t: number) => number }) => void } }).lenis;
+      const smoothEasing = (t: number) => 1 - Math.pow(1 - t, 3.5);
+
       if (lenis && typeof lenis.scrollTo === "function") {
-        lenis.scrollTo(0, { duration: 1.2 });
+        lenis.scrollTo(0, { duration: 1.8, easing: smoothEasing });
       } else {
         window.scrollTo({
           top: 0,
