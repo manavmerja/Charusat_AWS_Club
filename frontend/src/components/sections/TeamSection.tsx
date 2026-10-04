@@ -154,7 +154,7 @@ function MemberCard({
   const [flipped, setFlipped] = useState(false)
 
   return (
-    <div className="group relative w-full h-full overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-white/[0.045] to-white/[0.01] backdrop-blur-sm flex flex-col transition-[border-color,box-shadow] duration-300 hover:border-emerald-500/40 hover:shadow-[0_0_35px_-10px_rgba(0,230,118,0.35)]">
+    <div className="group relative w-full h-full overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0a0d14] md:bg-gradient-to-b md:from-white/[0.045] md:to-white/[0.01] md:backdrop-blur-sm flex flex-col transition-[border-color,box-shadow] duration-300 hover:border-emerald-500/40 hover:shadow-[0_0_35px_-10px_rgba(0,230,118,0.35)]">
       {/* ── Flippable Photo Container (hover on desktop, tap on touch devices) ── */}
       <div
         role="button"
