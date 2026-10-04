@@ -147,10 +147,10 @@ export function Footer() {
           {/* ── Fluid Gradient Text Watermark ── */}
           <div className="w-full my-6 sm:my-8 pt-4 border-t border-white/10">
             <FluidGradientText 
-              text="AWS ✕ CHARUSAT" 
+              text="AWS SBG ✕ CHARUSAT" 
               svgViewBoxWidth={800} 
-              svgViewBoxHeight={82}
-              fontSize={85}
+              svgViewBoxHeight={90}
+              fontSize={66}
               className="h-40 sm:h-52 md:h-64"
             />
           </div>
