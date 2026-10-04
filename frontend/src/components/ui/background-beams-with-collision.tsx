@@ -13,14 +13,16 @@ export const BackgroundBeamsWithCollision = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const parentRef = useRef<HTMLDivElement>(null);
   const [isInView, setIsInView] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    setIsMobile(typeof window !== "undefined" && window.innerWidth < 768);
     if (!parentRef.current) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsInView(entry.isIntersecting);
       },
-      { rootMargin: "200px" }
+      { rootMargin: "50px" }
     );
     observer.observe(parentRef.current);
     return () => observer.disconnect();
@@ -79,6 +81,9 @@ export const BackgroundBeamsWithCollision = ({
     },
   ];
 
+  // On desktop only: mount collision beams. On mobile, skip beams to keep scrolling 100% smooth.
+  const activeBeams = isMobile ? [] : beams;
+
   return (
     <div
       ref={parentRef}
@@ -87,7 +92,7 @@ export const BackgroundBeamsWithCollision = ({
         className
       )}
     >
-      {beams.map((beam) => (
+      {activeBeams.map((beam) => (
         <CollisionMechanism
           key={beam.initialX + "beam-idx"}
           beamOptions={beam}
