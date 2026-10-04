@@ -48,8 +48,8 @@ export default function Home() {
         ]}
         socialItems={[
           { label: "Meetup", link: "https://www.meetup.com/aws-sbg-at-charotar-university-of-science-and-technology/" },
-          { label: "LinkedIn", link: "https://linkedin.com" },
-          { label: "Instagram", link: "https://instagram.com" },
+          { label: "LinkedIn", link: "https://www.linkedin.com/company/asc-charusat/posts/?feedView=all" },
+          { label: "Instagram", link: "https://www.instagram.com/awssbg_charusat/" },
         ]}
       />
 
