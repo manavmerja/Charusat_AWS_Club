@@ -174,7 +174,7 @@ export function MeetupSection() {
           <div className="flex flex-wrap items-center gap-3.5 pt-1">
             {/* Join Meetup Primary Button */}
             <a
-              href="https://www.meetup.com/pro/aws-student-community"
+              href="https://www.meetup.com/aws-sbg-at-charotar-university-of-science-and-technology/"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#00e676] text-black font-semibold text-sm shadow-[0_0_20px_rgba(0,230,118,0.3)] hover:shadow-[0_0_30px_rgba(0,230,118,0.5)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer group"

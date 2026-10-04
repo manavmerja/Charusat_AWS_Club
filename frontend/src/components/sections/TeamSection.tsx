@@ -141,7 +141,14 @@ function MemberCard({
   person,
   hideGithub,
 }: {
-  person: { name: string; role: string; department?: string; image?: string; socials?: Socials }
+  person: {
+    name: string
+    role: string
+    designation?: string
+    department?: string
+    image?: string
+    socials?: Socials
+  }
   hideGithub?: boolean
 }) {
   return (
@@ -188,12 +195,24 @@ function MemberCard({
             {/* Division / Team Section */}
             <div className="mb-4 relative z-10 w-full max-w-[200px]">
               <span className="block text-[10px] font-mono uppercase tracking-[0.2em] text-slate-400 mb-1">
-                Role / Team
+                Role
               </span>
               <p className="text-sm font-bold text-white px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/10 shadow-sm">
                 {person.role}
               </p>
             </div>
+
+            {/* Designation Section (Academic Mentors) */}
+            {person.designation && (
+              <div className="mb-4 relative z-10 w-full max-w-[200px]">
+                <span className="block text-[10px] font-mono uppercase tracking-[0.2em] text-slate-400 mb-1">
+                  Designation
+                </span>
+                <p className="text-sm font-bold text-amber-300 px-3 py-1.5 rounded-lg bg-amber-500/[0.08] border border-amber-500/25 shadow-sm">
+                  {person.designation}
+                </p>
+              </div>
+            )}
 
             {/* Subtle Divider */}
             <div className="w-12 h-px bg-white/10 mb-4 relative z-10" />
@@ -284,6 +303,7 @@ export function TeamSection() {
                     person={{
                       name: person.name,
                       role: person.role,
+                      designation: person.designation,
                       department: person.department,
                       image: person.image,
                       socials: person.socials,
