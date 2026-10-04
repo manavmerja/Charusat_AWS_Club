@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import Image from "next/image"
 import { motion, useReducedMotion } from "framer-motion"
 import {
@@ -270,6 +270,31 @@ function MemberCard({
 export function TeamSection() {
   const [showMoreMobile, setShowMoreMobile] = useState(false)
   const reduceMotion = useReducedMotion()
+  const moreMembersRef = useRef<HTMLDivElement>(null)
+  const captainRef = useRef<HTMLDivElement>(null)
+
+  // Expanding inserts content above the button, so the browser keeps the button
+  // in view and the user lands at the bottom. Scroll to the start of the newly
+  // revealed members instead (or back to the captain card when collapsing).
+  const toggleShowMore = () => {
+    const expanding = !showMoreMobile
+    setShowMoreMobile(expanding)
+
+    requestAnimationFrame(() => {
+      const target = expanding ? moreMembersRef.current : captainRef.current
+      if (!target) return
+      const offset = -90 // clear the fixed header
+      const lenis = (window as unknown as {
+        lenis?: { scrollTo: (target: HTMLElement, opts?: { offset?: number; immediate?: boolean; duration?: number }) => void }
+      }).lenis
+      if (lenis && typeof lenis.scrollTo === "function") {
+        lenis.scrollTo(target, { offset, immediate: expanding, duration: 0.8 })
+      } else {
+        const top = target.getBoundingClientRect().top + window.scrollY + offset
+        window.scrollTo({ top, behavior: expanding ? "auto" : "smooth" })
+      }
+    })
+  }
   const reveal = (delay = 0) =>
     reduceMotion
       ? {}
@@ -344,8 +369,8 @@ export function TeamSection() {
 
         {/* 2. Cloud Captain (Always visible on mobile & desktop) */}
         {STUDENT_LEADERSHIP.length > 0 && (
-          <div id="cloud-captain-section">
-            <CategoryHeading>Student Leadership</CategoryHeading>
+          <div id="cloud-captain-section" ref={captainRef}>
+            <CategoryHeading>Cloud Captain</CategoryHeading>
             <div className="max-w-xs mx-auto">
               {STUDENT_LEADERSHIP.map((person, i) => (
                 <motion.div key={`${person.name}-${person.role}`} {...reveal(i * 0.08)}>
@@ -365,7 +390,10 @@ export function TeamSection() {
         )}
 
         {/* 3. Founding Divisions (Visible on desktop; toggleable on mobile) */}
-        <div className={cn("space-y-16", !showMoreMobile && "hidden md:block")}>
+        <div
+          ref={moreMembersRef}
+          className={cn("space-y-16", !showMoreMobile && "hidden md:block")}
+        >
           {FOUNDING_DIVISIONS.map((division) => (
             <div key={division.id}>
               <CategoryHeading>{division.name}</CategoryHeading>
@@ -403,7 +431,7 @@ export function TeamSection() {
         <div className="flex justify-center pt-2 md:hidden">
           <button
             type="button"
-            onClick={() => setShowMoreMobile((prev) => !prev)}
+            onClick={toggleShowMore}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/[0.1] bg-[#0c0d16] hover:bg-white/[0.05] text-xs font-mono font-medium text-slate-300 hover:text-white transition-all shadow-md active:scale-95"
           >
             <span>{showMoreMobile ? "Show Less" : "Show More Team Members"}</span>

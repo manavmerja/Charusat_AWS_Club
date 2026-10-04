@@ -23,8 +23,8 @@ const linksExplore = [
 
 const socialLinks = [
   { name: "Meetup", href: "https://www.meetup.com/aws-sbg-at-charotar-university-of-science-and-technology/", icon: FaMeetup },
-  { name: "LinkedIn", href: "https://linkedin.com", icon: IconBrandLinkedin },
-  { name: "Instagram", href: "https://instagram.com", icon: IconBrandInstagram },
+  { name: "LinkedIn", href: "https://www.linkedin.com/company/asc-charusat/posts/?feedView=all", icon: IconBrandLinkedin },
+  { name: "Instagram", href: "https://www.instagram.com/awssbg_charusat/", icon: IconBrandInstagram },
 ];
 
 export function Footer() {
