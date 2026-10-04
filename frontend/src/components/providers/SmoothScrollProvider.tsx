@@ -16,19 +16,22 @@ export default function SmoothScrollProvider({ children }: SmoothScrollProviderP
       gestureOrientation: "vertical",
       smoothWheel: true,
       wheelMultiplier: 1,
-      touchMultiplier: 2,
+      touchMultiplier: 1,
+      syncTouch: false,
     });
 
     (window as unknown as { lenis?: Lenis }).lenis = lenis;
 
+    let rafId = 0;
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     return () => {
+      cancelAnimationFrame(rafId);
       delete (window as unknown as { lenis?: Lenis }).lenis;
       lenis.destroy();
     };
