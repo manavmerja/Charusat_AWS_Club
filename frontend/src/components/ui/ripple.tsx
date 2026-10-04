@@ -8,6 +8,7 @@ interface RippleProps {
   numCircles?: number;
   className?: string;
   color?: string;
+  isPaused?: boolean;
 }
 
 export const Ripple = React.memo(function Ripple({
@@ -16,7 +17,25 @@ export const Ripple = React.memo(function Ripple({
   numCircles = 8,
   className,
   color = "0, 230, 118", // Default to the emerald green theme color
+  isPaused: externalIsPaused,
 }: RippleProps) {
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!containerRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.05, rootMargin: "150px" }
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const isPaused = externalIsPaused !== undefined ? externalIsPaused : !isInView;
+
   return (
     <>
       <style dangerouslySetInnerHTML={{
@@ -32,6 +51,7 @@ export const Ripple = React.memo(function Ripple({
         `
       }} />
       <div
+        ref={containerRef}
         className={cn(
           "pointer-events-none absolute inset-0 select-none flex items-center justify-center w-full h-full",
           className,
@@ -61,6 +81,7 @@ export const Ripple = React.memo(function Ripple({
                   left: "50%",
                   transform: "translate(-50%, -50%) scale(1)",
                   animation: `ripple-pulse 3s ease-in-out ${animationDelay} infinite`,
+                  animationPlayState: isPaused ? "paused" : "running",
                 } as CSSProperties
               }
             />
