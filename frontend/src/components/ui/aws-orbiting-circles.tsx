@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { OrbitingCircles } from "@/components/ui/orbiting-circles";
 import { fetchSimpleIcons } from "react-icon-cloud";
 
@@ -40,6 +40,20 @@ const customColors: Record<string, string> = {
 
 export function AWSOrbitingCircles({ iconSlugs }: { iconSlugs: string[] }) {
   const [icons, setIcons] = useState<React.ReactNode[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.05, rootMargin: "150px" }
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (iconSlugs && iconSlugs.length > 0) {
@@ -91,19 +105,22 @@ export function AWSOrbitingCircles({ iconSlugs }: { iconSlugs: string[] }) {
   const ring3 = icons.slice(ring1Count + ring2Count, ring1Count + ring2Count + ring3Count);
 
   return (
-    <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-visible">
+    <div
+      ref={containerRef}
+      className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-visible"
+    >
       {ring1.length > 0 && (
-        <OrbitingCircles iconSize={36} radius={95} speed={1.5}>
+        <OrbitingCircles iconSize={36} radius={95} speed={1.5} isPaused={!isInView}>
           {ring1}
         </OrbitingCircles>
       )}
       {ring2.length > 0 && (
-        <OrbitingCircles iconSize={32} radius={160} speed={2} reverse>
+        <OrbitingCircles iconSize={32} radius={160} speed={2} reverse isPaused={!isInView}>
           {ring2}
         </OrbitingCircles>
       )}
       {ring3.length > 0 && (
-        <OrbitingCircles iconSize={28} radius={230} speed={2.5}>
+        <OrbitingCircles iconSize={28} radius={230} speed={2.5} isPaused={!isInView}>
           {ring3}
         </OrbitingCircles>
       )}
