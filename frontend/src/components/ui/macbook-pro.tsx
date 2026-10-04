@@ -150,7 +150,7 @@ export function MacbookPro({
                     >
                       <Image
                         src="/image.png"
-                        alt="Student Builder Group Leader ( Cloud Captain )"
+                        alt="Group Leader ( Cloud Captain )"
                         width={120}
                         height={120}
                         className="object-contain drop-shadow-[0_0_24px_rgba(0,230,118,0.5)]"

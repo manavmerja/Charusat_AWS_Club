@@ -140,36 +140,6 @@ export function MeetupSection() {
             Our official Meetup group is the single source of truth — workshops, speaker sessions, and community updates all flow through here. RSVP and get reminders.
           </p>
 
-          {/* ── Key Metrics & Stats Row ── */}
-          <div className="grid grid-cols-3 gap-6 pt-5 border-t border-white/[0.08]">
-            <div>
-              <div className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
-                50+
-              </div>
-              <div className="text-[10px] sm:text-[11px] font-mono font-medium uppercase tracking-wider text-slate-400 mt-1">
-                BUILDER
-              </div>
-            </div>
-
-            <div>
-              <div className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
-                6
-              </div>
-              <div className="text-[10px] sm:text-[11px] font-mono font-medium uppercase tracking-wider text-slate-400 mt-1">
-                ACTIVE WINGS
-              </div>
-            </div>
-
-            <div>
-              <div className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
-                10+
-              </div>
-              <div className="text-[10px] sm:text-[11px] font-mono font-medium uppercase tracking-wider text-slate-400 mt-1">
-                AWS SERVICES
-              </div>
-            </div>
-          </div>
-
           {/* ── CTA Action & Badges ── */}
           <div className="flex flex-wrap items-center gap-3.5 pt-1">
             {/* Join Meetup Primary Button */}

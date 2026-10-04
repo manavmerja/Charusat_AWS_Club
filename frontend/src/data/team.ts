@@ -80,11 +80,11 @@ export const ACADEMIC_MENTORS: Mentor[] = [
 export const STUDENT_LEADERSHIP: StudentLeader[] = [
   {
     name: "Diya Prajapati",
-    role: "Student Builder Group Leader( Cloud Captain )",
+    role: "Group Leader( Cloud Captain )",
     badges: ["AWS Cloud Captain", "Chapter Lead"],
     department: "DEPSTAR-CSE",
     initials: "DP",
-    image: "/team/Diya_Group_Leader_card.jpg",
+    image: "/team/Diya_Group_Leader.png",
     bio: "Leads the AWS Student Builder Group at CHARUSAT. Sets the semester roadmap, coordinates founding student teams, and acts as the official liaison to AWS Student Programs.",
     socials: {
       linkedin: "https://www.linkedin.com/in/diya-h-prajapati",
@@ -188,7 +188,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
   },
   {
     id: "creative-design",
-    name: "Creative & Design",
+    name: "Creative Team",
     icon: "🎨",
     description:
       "Crafts visual brand identity, technical architecture diagrams, session posters, stage backdrops, and presentation decks.",
@@ -309,7 +309,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
   },
   {
     id: "media-operations",
-    name: "Median Team",
+    name: "Media Team",
     icon: "🎬",
     description:
       "Manages session photography, workshop video recordings, auditorium audio/visual production, and social media reels.",

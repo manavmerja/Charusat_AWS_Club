@@ -151,11 +151,32 @@ function MemberCard({
   }
   hideGithub?: boolean
 }) {
+  const [flipped, setFlipped] = useState(false)
+
   return (
     <div className="group relative w-full h-full overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-white/[0.045] to-white/[0.01] backdrop-blur-sm flex flex-col transition-[border-color,box-shadow] duration-300 hover:border-emerald-500/40 hover:shadow-[0_0_35px_-10px_rgba(0,230,118,0.35)]">
-      {/* ── Flippable Photo Container (Flips 180° on hovering the picture) ── */}
-      <div className="group/flip relative aspect-[4/5] w-full [perspective:1000px] cursor-pointer select-none">
-        <div className="relative w-full h-full duration-700 [transform-style:preserve-3d] transition-transform ease-in-out group-hover/flip:[transform:rotateY(180deg)]">
+      {/* ── Flippable Photo Container (hover on desktop, tap on touch devices) ── */}
+      <div
+        role="button"
+        tabIndex={0}
+        aria-pressed={flipped}
+        aria-label={`Show details for ${person.name}`}
+        onClick={() => setFlipped((prev) => !prev)}
+        onMouseLeave={() => setFlipped(false)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault()
+            setFlipped((prev) => !prev)
+          }
+        }}
+        className="group/flip relative aspect-[4/5] w-full [perspective:1000px] cursor-pointer select-none [-webkit-tap-highlight-color:transparent] focus-visible:outline-none"
+      >
+        <div
+          className={cn(
+            "relative w-full h-full duration-700 [transform-style:preserve-3d] transition-transform ease-in-out [@media(hover:hover)]:group-hover/flip:[transform:rotateY(180deg)]",
+            flipped && "[transform:rotateY(180deg)]"
+          )}
+        >
           
           {/* FRONT FACE (Photo + Name + Role) */}
           <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] overflow-hidden bg-[#0a0d14]">
@@ -167,6 +188,11 @@ function MemberCard({
 
             {/* Deep dark gradient overlay for crystal clear text */}
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-[#07070d] via-[#07070d]/85 to-transparent" />
+
+            {/* Tap hint — only on touch devices where hover isn't available */}
+            <span className="pointer-events-none absolute top-3 right-3 z-10 inline-flex items-center gap-1 rounded-full border border-white/10 bg-black/50 px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-slate-200 backdrop-blur-sm [@media(hover:hover)]:hidden">
+              Tap to flip
+            </span>
 
             {/* Member Name and Role Overlay */}
             <div className="absolute inset-x-0 bottom-0 p-5 z-10">
