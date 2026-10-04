@@ -93,8 +93,8 @@ export function FAQSection() {
       <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-black via-black/70 to-transparent pointer-events-none z-20" />
       <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent via-black/70 to-black pointer-events-none z-20" />
 
-      {/* Light Rays Background (Top-Center God Rays) */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-65">
+      {/* Light Rays Background (Top-Center God Rays - Desktop only) */}
+      <div className="hidden md:block absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-65">
         <LightRays
           raysOrigin="top-center"
           raysColor="#ffffff"
