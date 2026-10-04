@@ -85,39 +85,26 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
   const isVisibleRef = useRef(true);
 
   useEffect(() => {
-    let width = 0;
-    let animationFrameId: number;
+    let animationFrameId = 0;
+    if (!canvasRef.current || !containerRef.current) return;
 
     const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
-
-    const onResize = () => {
-      if (containerRef.current) {
-        width = containerRef.current.offsetWidth;
-      }
-    };
-    window.addEventListener("resize", onResize, { passive: true });
-    onResize();
-
-    if (!canvasRef.current) return;
+    let cachedWidth = containerRef.current.offsetWidth || 500;
+    const dpr = isMobile ? 1.0 : Math.min(typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1, 1.25);
 
     let isDisposed = false;
-    const currentWidth = width || 500;
-    // Optimal DPR for crisp edges without 4x bloated WebGL raster buffer
-    const dpr = Math.min(typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1, isMobile ? 1.25 : 1.5);
-    let cachedWidth = currentWidth;
-
     let globe: { update: (opts: Record<string, unknown>) => void; destroy: () => void } | null = null;
 
     try {
       globe = createGlobe(canvasRef.current, {
         devicePixelRatio: dpr,
-        width: currentWidth * dpr,
-        height: currentWidth * dpr,
+        width: cachedWidth * dpr,
+        height: cachedWidth * dpr,
         phi: 0,
         theta: 0.22,
         dark: 1,
         diffuse: 1.2,
-        mapSamples: isMobile ? 7000 : 12000,
+        mapSamples: isMobile ? 3500 : 6000,
         mapBrightness: 5.5,
         baseColor: [0.04, 0.06, 0.09],
         markerColor: [0.15, 0.65, 0.4],
@@ -155,24 +142,25 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
       console.warn("COBE initialization error:", err);
     }
 
-    // ── Performance Optimization: Pause rendering when offscreen ──
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        isVisibleRef.current = entry.isIntersecting;
-      },
-      { threshold: 0.05 }
-    );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
+    const onResize = () => {
+      if (containerRef.current) {
+        const newW = containerRef.current.offsetWidth;
+        if (newW && newW !== cachedWidth) {
+          cachedWidth = newW;
+          if (globe) {
+            globe.update({
+              width: cachedWidth * dpr,
+              height: cachedWidth * dpr,
+            });
+          }
+        }
+      }
+    };
+    window.addEventListener("resize", onResize, { passive: true });
 
     const animate = () => {
-      if (isDisposed) return;
-
-      if (!isVisibleRef.current) {
-        // Paused offscreen — wait and re-check without running shader calculations
-        animationFrameId = requestAnimationFrame(animate);
+      if (isDisposed || !isVisibleRef.current) {
+        animationFrameId = 0;
         return;
       }
 
@@ -200,26 +188,15 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
 
       const currentPhi = rotation.current.phi;
       const currentTheta = rotation.current.theta;
-      const cWidth = containerRef.current?.offsetWidth || currentWidth;
 
       if (globe) {
-        if (cWidth !== cachedWidth) {
-          cachedWidth = cWidth;
-          globe.update({
-            phi: currentPhi,
-            theta: currentTheta,
-            width: cWidth * dpr,
-            height: cWidth * dpr,
-          });
-        } else {
-          globe.update({
-            phi: currentPhi,
-            theta: currentTheta,
-          });
-        }
+        globe.update({
+          phi: currentPhi,
+          theta: currentTheta,
+        });
       }
 
-      // Update 3D projected city tags
+      // Update 3D projected city tags using GPU translate3d (zero layout reflow)
       tagElementsRef.current.forEach((el, index) => {
         if (!el) return;
         const city = CITIES[index];
@@ -234,8 +211,9 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
 
         if (proj.isVisible) {
           el.style.opacity = `${proj.opacity}`;
-          el.style.left = `${proj.normX * 100}%`;
-          el.style.top = `${proj.normY * 100}%`;
+          const posX = proj.normX * cachedWidth;
+          const posY = proj.normY * cachedWidth;
+          el.style.transform = `translate3d(${posX}px, ${posY}px, 0) translate(-50%, -100%) translateY(-8px)`;
           el.style.pointerEvents = proj.opacity > 0.5 ? "auto" : "none";
         } else {
           el.style.opacity = "0";
@@ -246,7 +224,28 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
       animationFrameId = requestAnimationFrame(animate);
     };
 
-    animationFrameId = requestAnimationFrame(animate);
+    // ── Performance: True sleeping when offscreen (no RAF overhead) ──
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const visible = entry.isIntersecting;
+        isVisibleRef.current = visible;
+        if (visible) {
+          if (!animationFrameId) {
+            animationFrameId = requestAnimationFrame(animate);
+          }
+        } else {
+          if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = 0;
+          }
+        }
+      },
+      { threshold: 0.05 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
 
     setTimeout(() => {
       if (canvasRef.current) {
@@ -349,7 +348,7 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
               ref={(el) => {
                 tagElementsRef.current[idx] = el;
               }}
-              className="absolute -translate-x-1/2 -translate-y-full -mt-2 opacity-0 transition-opacity duration-150 flex flex-col items-center"
+              className="absolute top-0 left-0 will-change-transform opacity-0 transition-opacity duration-150 flex flex-col items-center"
             >
               <div
                 className={cn(
