@@ -431,24 +431,43 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
         {/* Right Side: Navbar Toggle Button */}
         <button
           ref={toggleBtnRef}
-          className="pointer-events-auto relative inline-flex items-center gap-2.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-[#0e1526]/90 hover:bg-[#141b2d] border border-white/20 backdrop-blur-xl cursor-pointer font-bold text-xs uppercase tracking-wider transition-all shadow-[0_4px_20px_rgba(0,0,0,0.5)] text-white active:scale-95 touch-manipulation hover:border-emerald-500/50"
+          className="pointer-events-auto relative inline-flex items-center justify-center gap-2.5 w-11 h-11 sm:w-auto sm:h-auto sm:px-5 sm:py-2.5 rounded-xl sm:rounded-full bg-[#0e1526]/90 hover:bg-[#141b2d] border border-white/20 backdrop-blur-xl cursor-pointer font-bold text-xs uppercase tracking-wider transition-all shadow-[0_4px_20px_rgba(0,0,0,0.5)] text-white active:scale-95 touch-manipulation hover:border-emerald-500/50"
           aria-label={open ? 'Close navbar' : 'Open navbar'}
           aria-expanded={open}
           aria-controls="staggered-menu-panel"
           onClick={toggleMenu}
           type="button"
         >
+          {/* Mobile: classic three-line hamburger that morphs into an X */}
+          <span className="relative block w-5 h-[14px] sm:hidden" aria-hidden="true">
+            <span
+              className={`absolute left-0 h-[2px] w-full rounded-full bg-white transition-all duration-300 ease-out ${
+                open ? 'top-1/2 -translate-y-1/2 rotate-45 bg-[#00e676]' : 'top-0'
+              }`}
+            />
+            <span
+              className={`absolute left-0 top-1/2 -translate-y-1/2 h-[2px] rounded-full bg-[#00e676] transition-all duration-300 ease-out ${
+                open ? 'w-0 opacity-0' : 'w-3/4 opacity-100'
+              }`}
+            />
+            <span
+              className={`absolute left-0 h-[2px] w-full rounded-full bg-white transition-all duration-300 ease-out ${
+                open ? 'top-1/2 -translate-y-1/2 -rotate-45 bg-[#00e676]' : 'bottom-0'
+              }`}
+            />
+          </span>
+
           {/* Subtle live indicator dot for students to easily notice */}
-          <span className="w-2 h-2 rounded-full bg-[#00e676] animate-pulse" />
+          <span className="hidden sm:block w-2 h-2 rounded-full bg-[#00e676] animate-pulse" />
 
           {/* Label Text */}
-          <span className="font-bold text-xs uppercase tracking-wider text-white select-none">
+          <span className="hidden sm:inline font-bold text-xs uppercase tracking-wider text-white select-none">
             {open ? 'CLOSE' : 'NAVBAR'}
           </span>
 
           <span
             ref={iconRef}
-            className="relative w-[13px] h-[13px] shrink-0 inline-flex items-center justify-center [will-change:transform]"
+            className="relative w-[13px] h-[13px] shrink-0 hidden sm:inline-flex items-center justify-center [will-change:transform]"
             aria-hidden="true"
           >
             <span
