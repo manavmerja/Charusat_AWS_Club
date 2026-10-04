@@ -370,7 +370,7 @@ export function TeamSection() {
         {/* 2. Cloud Captain (Always visible on mobile & desktop) */}
         {STUDENT_LEADERSHIP.length > 0 && (
           <div id="cloud-captain-section" ref={captainRef}>
-            <CategoryHeading>Cloud Captain</CategoryHeading>
+            <CategoryHeading>Student Leadership</CategoryHeading>
             <div className="max-w-xs mx-auto">
               {STUDENT_LEADERSHIP.map((person, i) => (
                 <motion.div key={`${person.name}-${person.role}`} {...reveal(i * 0.08)}>
