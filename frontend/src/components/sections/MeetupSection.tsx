@@ -27,8 +27,8 @@ export function MeetupSection() {
       <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black via-black/80 to-transparent pointer-events-none z-20" />
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent via-black/80 to-black pointer-events-none z-20" />
 
-      {/* ── 1. Angled Spotlight Light Rays from Top-Left over the Cosmic Globe ── */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-40">
+      {/* ── 1. Angled Spotlight Light Rays from Top-Left over the Cosmic Globe (Desktop only) ── */}
+      <div className="hidden md:block absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-40">
         <LightRays
           raysOrigin="top-left"
           raysColor="#ffffff"
