@@ -713,7 +713,14 @@ export const TechText = ({
     resizeObserver.observe(container);
     const intersectionObserver = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
-      wake();
+      if (!visible) {
+        if (raf) {
+          cancelAnimationFrame(raf);
+          raf = 0;
+        }
+      } else {
+        wake();
+      }
     });
     intersectionObserver.observe(container);
     if (document.fonts) document.fonts.ready.then(refreshFonts, refreshFonts);
