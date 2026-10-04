@@ -11,7 +11,6 @@ export interface OrbitingCirclesProps extends React.HTMLAttributes<HTMLDivElemen
   path?: boolean
   iconSize?: number
   speed?: number
-  isPaused?: boolean
 }
 
 export function OrbitingCircles({
@@ -23,7 +22,6 @@ export function OrbitingCircles({
   path = true,
   iconSize = 30,
   speed = 1,
-  isPaused = false,
   ...props
 }: OrbitingCirclesProps) {
   const calculatedDuration = duration / speed
@@ -92,7 +90,6 @@ export function OrbitingCircles({
             justifyContent: "center",
             transformOrigin: "center center",
             animation: `${keyPrefix}-${index} ${calculatedDuration}s linear infinite`,
-            animationPlayState: isPaused ? "paused" : "running",
           }}
           className={cn("transform-gpu rounded-full", className)}
           {...props}
