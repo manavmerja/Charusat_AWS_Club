@@ -206,25 +206,33 @@ export function HeroStarsBackground() {
         </p>
 
         <div className="flex flex-wrap items-center gap-4 sm:gap-6">
-          <a
-            href="#contacts"
-            onClick={(e) => {
-              e.preventDefault();
-              const element = document.getElementById("contacts");
-              const lenis = (window as unknown as { lenis?: { scrollTo: (target: HTMLElement, opts?: { duration?: number; easing?: (t: number) => number }) => void } }).lenis;
-              if (lenis && element) {
-                lenis.scrollTo(element, { duration: 1.7, easing: (t) => 1 - Math.pow(1 - t, 3.5) });
-              } else if (element) {
-                element.scrollIntoView({ behavior: "smooth" });
-              }
-              window.history.pushState(null, "", "#contacts");
-            }}
-            className="inline-block cursor-pointer"
-          >
-            <LiquidButton size="default">
-              JOIN COMMUNITY
-            </LiquidButton>
-          </a>
+          <div className="relative inline-flex flex-col items-start">
+            <a
+              href="#contacts"
+              onClick={(e) => {
+                e.preventDefault();
+                const element = document.getElementById("contacts");
+                const lenis = (window as unknown as { lenis?: { scrollTo: (target: HTMLElement, opts?: { duration?: number; easing?: (t: number) => number }) => void } }).lenis;
+                if (lenis && element) {
+                  lenis.scrollTo(element, { duration: 1.7, easing: (t) => 1 - Math.pow(1 - t, 3.5) });
+                } else if (element) {
+                  element.scrollIntoView({ behavior: "smooth" });
+                }
+                window.history.pushState(null, "", "#contacts");
+              }}
+              className="inline-block cursor-pointer"
+            >
+              <LiquidButton size="default">
+                JOIN COMMUNITY
+              </LiquidButton>
+            </a>
+
+            {/* S-Rail Circuit Origin Socket (Launch point for train line) */}
+            <div className="absolute -bottom-4 left-10 flex flex-col items-center pointer-events-none">
+              <span className="w-2 h-2 rounded-full bg-[#00e676] shadow-[0_0_10px_#00e676] ring-1 ring-[#00e676]/50" />
+              <span className="w-0.5 h-3 bg-gradient-to-b from-[#00e676] to-transparent" />
+            </div>
+          </div>
           <a
             href="#events"
             onClick={(e) => {
