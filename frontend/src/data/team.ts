@@ -16,6 +16,7 @@ export type Mentor = {
   department: string;
   initials: string;
   image?: string;
+  imagePosition?: string;
   bio?: string;
   socials?: Socials;
 };
@@ -27,6 +28,7 @@ export type StudentLeader = {
   department: string;
   initials: string;
   image?: string;
+  imagePosition?: string;
   bio?: string;
   socials?: Socials;
 };
@@ -36,6 +38,7 @@ export type DivisionMember = {
   role: string;
   initials: string;
   image?: string;
+  imagePosition?: string;
   department?: string;
   specialty?: string;
   socials?: Socials;
@@ -85,6 +88,7 @@ export const STUDENT_LEADERSHIP: StudentLeader[] = [
     department: "DEPSTAR-CSE",
     initials: "DP",
     image: "/team/Diya_Group_Leader.png",
+    imagePosition: "center 38%",
     bio: "Leads the AWS Student Builder Group at CHARUSAT. Sets the semester roadmap, coordinates founding student teams, and acts as the official liaison to AWS Student Programs.",
     socials: {
       linkedin: "https://www.linkedin.com/in/diya-h-prajapati",
