@@ -31,10 +31,11 @@ export function MeetupStraightRail({ className }: MeetupStraightRailProps) {
     return () => window.removeEventListener("resize", updateHeight);
   }, []);
 
-  // Scroll tracking across the Meetup section
+  // Scroll tracking across the Meetup section:
+  // Completes journey while user views Meetup and parks safely at the depot stop
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start 80%", "end 20%"],
+    offset: ["start 75%", "center 20%"],
   });
 
   // Fast, smooth spring physics
@@ -44,25 +45,31 @@ export function MeetupStraightRail({ className }: MeetupStraightRailProps) {
     restDelta: 0.001,
   });
 
+  // The track stops cleanly before bottom padding, safely above the next section
+  const startY = 20;
+  const stopY = Math.max(220, trackHeight - 140);
+  const totalTravel = stopY - startY;
+
   // Smoothly move the cyber bullet train straight down with 0 React re-renders
+  // Parks at stopY (DEPOT END) and stays safely inside Meetup section
   useEffect(() => {
     if (reduceMotion) return;
 
     return smoothProgress.on("change", (latest) => {
       if (!trainRef.current) return;
       const progress = Math.max(0, Math.min(1, latest));
-      const ptY = 16 + progress * (trackHeight - 32);
+      const ptY = startY + progress * totalTravel;
 
       // Rotate 90 deg = pointing straight down in the direction of motion
       trainRef.current.setAttribute("transform", `translate(20, ${ptY}) rotate(90)`);
     });
-  }, [smoothProgress, reduceMotion, trackHeight]);
+  }, [smoothProgress, reduceMotion, totalTravel, startY]);
 
   return (
     <div
       ref={containerRef}
       className={cn(
-        "absolute left-4 sm:left-8 lg:left-12 top-0 bottom-0 w-10 z-20 pointer-events-none select-none overflow-visible",
+        "absolute left-3 sm:left-6 lg:left-12 top-0 bottom-0 w-10 z-20 pointer-events-none select-none overflow-visible",
         className
       )}
       aria-hidden="true"
@@ -75,7 +82,7 @@ export function MeetupStraightRail({ className }: MeetupStraightRailProps) {
       >
         <defs>
           {/* Active Electrified Neon Beam Gradient */}
-          <linearGradient id={laserGradId} x1="20" y1="16" x2="20" y2={trackHeight - 16} gradientUnits="userSpaceOnUse">
+          <linearGradient id={laserGradId} x1="20" y1={startY} x2="20" y2={stopY} gradientUnits="userSpaceOnUse">
             <stop offset="0%" stopColor="#00e676" stopOpacity="0.4" />
             <stop offset="30%" stopColor="#00e676" stopOpacity="1" />
             <stop offset="60%" stopColor="#00f5d4" stopOpacity="1" />
@@ -95,29 +102,31 @@ export function MeetupStraightRail({ className }: MeetupStraightRailProps) {
         <g stroke="rgba(255, 255, 255, 0.06)" strokeWidth="1.2" strokeLinecap="round">
           <path d="M 20 60 L 8 60 L 4 68" />
           <path d="M 20 180 L 32 180 L 36 172" />
-          <path d="M 20 320 L 8 320 L 4 328" />
-          <path d="M 20 460 L 32 460 L 36 452" />
+          {stopY > 360 && (
+            <>
+              <path d="M 20 320 L 8 320 L 4 328" />
+              <circle cx="4" cy="328" r="2" fill="#070b14" stroke="rgba(0, 230, 118, 0.35)" />
+            </>
+          )}
           <circle cx="4" cy="68" r="2" fill="#070b14" stroke="rgba(0, 230, 118, 0.35)" />
           <circle cx="36" cy="172" r="2" fill="#070b14" stroke="rgba(0, 230, 118, 0.35)" />
-          <circle cx="4" cy="328" r="2" fill="#070b14" stroke="rgba(0, 230, 118, 0.35)" />
-          <circle cx="36" cy="452" r="2" fill="#070b14" stroke="rgba(0, 230, 118, 0.35)" />
         </g>
 
         {/* ── 2. Inactive Base Straight Track (Dual-Rail Circuit Wire) ── */}
         <line
           x1="20"
-          y1="16"
+          y1={startY}
           x2="20"
-          y2={trackHeight - 16}
+          y2={stopY}
           stroke="rgba(255, 255, 255, 0.08)"
           strokeWidth="3.5"
           strokeLinecap="round"
         />
         <line
           x1="20"
-          y1="16"
+          y1={startY}
           x2="20"
-          y2={trackHeight - 16}
+          y2={stopY}
           stroke="rgba(0, 230, 118, 0.2)"
           strokeWidth="1.5"
           strokeDasharray="4 6"
@@ -128,9 +137,9 @@ export function MeetupStraightRail({ className }: MeetupStraightRailProps) {
         {!reduceMotion && (
           <motion.line
             x1="20"
-            y1="16"
+            y1={startY}
             x2="20"
-            y2={trackHeight - 16}
+            y2={stopY}
             stroke={`url(#${laserGradId})`}
             strokeWidth="2.5"
             strokeLinecap="round"
@@ -141,13 +150,30 @@ export function MeetupStraightRail({ className }: MeetupStraightRailProps) {
           />
         )}
 
-        {/* Top Solder Node (Connecting from Events section) */}
-        <circle cx="20" cy="16" r="4" fill="#0b0f19" stroke="#00e676" strokeWidth="1.5" />
-        <circle cx="20" cy="16" r="2" fill="#00e676" />
+        {/* Top Solder Node (Entry origin into Meetup section) */}
+        <circle cx="20" cy={startY} r="4" fill="#0b0f19" stroke="#00e676" strokeWidth="1.5" />
+        <circle cx="20" cy={startY} r="2" fill="#00e676" />
 
-        {/* Bottom Solder Node (Reaching into Team Community section) */}
-        <circle cx="20" cy={trackHeight - 16} r="4" fill="#0b0f19" stroke="#00e676" strokeWidth="1.5" />
-        <circle cx="20" cy={trackHeight - 16} r="2" fill="#00e676" />
+        {/* ── Terminal Depot Stop (Safe terminus inside Meetup section - NEVER reaches Team section) ── */}
+        {/* Terminal buffer cross-bars */}
+        <line x1="8" y1={stopY} x2="32" y2={stopY} stroke="#00e676" strokeWidth="3" strokeLinecap="round" />
+        <line x1="12" y1={stopY + 4} x2="28" y2={stopY + 4} stroke="rgba(0, 230, 118, 0.5)" strokeWidth="1.5" strokeLinecap="round" />
+        {/* Terminal solder node with pulse ring */}
+        <circle cx="20" cy={stopY} r="4.5" fill="#0b0f19" stroke="#00e676" strokeWidth="1.8" />
+        <circle cx="20" cy={stopY} r="2" fill="#00e676" />
+        {/* Futuristic station terminal tag */}
+        <text
+          x="20"
+          y={stopY + 15}
+          textAnchor="middle"
+          fill="#00e676"
+          fontSize="6.5"
+          fontFamily="monospace"
+          letterSpacing="0.8"
+          opacity="0.8"
+        >
+          DEPOT END
+        </text>
 
         {/* ── 4. Cyber Bullet Train (Pointing straight down) ── */}
         {!reduceMotion && (
