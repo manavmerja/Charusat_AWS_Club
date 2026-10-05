@@ -79,10 +79,18 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
 
   // Fluid Trackball Physics State
   const isDragging = useRef(false);
+  const touchStartPos = useRef<{ x: number; y: number } | null>(null);
+  const isTouchSpinning = useRef(false);
+  const pointerIdRef = useRef<number | null>(null);
   const lastPointerPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const velocity = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const rotation = useRef<{ phi: number; theta: number }>({ phi: 0, theta: 0.22 });
   const isVisibleRef = useRef(true);
+
+  // Ergonomic tilt boundaries (prevents severe pole distortion and gimbal lock)
+  const DEFAULT_THETA = 0.22;
+  const MIN_THETA = -0.45;
+  const MAX_THETA = 0.55;
 
   useEffect(() => {
     let animationFrameId = 0;
@@ -158,6 +166,19 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
     };
     window.addEventListener("resize", onResize, { passive: true });
 
+    // Dynamic scroll rotation: subtle spin when user scrolls down the page
+    let lastScrollY = typeof window !== "undefined" ? window.scrollY : 0;
+    const onWindowScroll = () => {
+      if (!isVisibleRef.current) return;
+      const currentY = window.scrollY;
+      const deltaScroll = currentY - lastScrollY;
+      lastScrollY = currentY;
+      if (Math.abs(deltaScroll) > 0.5) {
+        rotation.current.phi += deltaScroll * 0.001;
+      }
+    };
+    window.addEventListener("scroll", onWindowScroll, { passive: true });
+
     const animate = () => {
       if (isDisposed || !isVisibleRef.current) {
         animationFrameId = 0;
@@ -167,23 +188,26 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
       if (isDragging.current) {
         // Active drag updates rotation directly
       } else {
-        // Inertia coasting & auto-spin
+        // Inertia coasting & auto-spin in all axes
         if (
           Math.abs(velocity.current.x) > 0.0001 ||
           Math.abs(velocity.current.y) > 0.0001
         ) {
           rotation.current.phi += velocity.current.x;
           rotation.current.theta = Math.max(
-            -Math.PI / 2.2,
-            Math.min(Math.PI / 2.2, rotation.current.theta + velocity.current.y)
+            MIN_THETA,
+            Math.min(MAX_THETA, rotation.current.theta + velocity.current.y)
           );
           // Smooth friction damping
-          velocity.current.x *= 0.93;
-          velocity.current.y *= 0.93;
+          velocity.current.x *= 0.94;
+          velocity.current.y *= 0.94;
         } else {
           // Continuous smooth auto-rotation
-          rotation.current.phi += 0.003;
+          rotation.current.phi += 0.0028;
         }
+
+        // Gentle spring return to default elevation so the globe always stays aesthetically centered
+        rotation.current.theta += (DEFAULT_THETA - rotation.current.theta) * 0.025;
       }
 
       const currentPhi = rotation.current.phi;
@@ -263,6 +287,7 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
         } catch {}
       }
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("scroll", onWindowScroll);
     };
   }, []);
 
@@ -283,22 +308,32 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
           <div className="w-3/4 h-3/4 rounded-full bg-emerald-500/[0.03] blur-[100px]" />
         </div>
 
-        {/* Interactive WebGL Canvas with Mobile-Tuned Touch Tracking */}
+        {/* Interactive WebGL Canvas with Multi-Directional Rotation & Non-Blocking Touch */}
         <canvas
           ref={canvasRef}
           onPointerDown={(e) => {
             isDragging.current = true;
+            pointerIdRef.current = e.pointerId;
             lastPointerPos.current = { x: e.clientX, y: e.clientY };
             velocity.current = { x: 0, y: 0 };
-            if (canvasRef.current) {
-              canvasRef.current.style.cursor = "grabbing";
-              try {
-                canvasRef.current.setPointerCapture(e.pointerId);
-              } catch {}
+
+            if (e.pointerType === "mouse") {
+              if (canvasRef.current) {
+                canvasRef.current.style.cursor = "grabbing";
+                try {
+                  canvasRef.current.setPointerCapture(e.pointerId);
+                } catch {}
+              }
+            } else {
+              // Touch pointer: initialize touch tracker so vertical page scroll is never trapped
+              touchStartPos.current = { x: e.clientX, y: e.clientY };
+              isTouchSpinning.current = false;
             }
           }}
           onPointerUp={(e) => {
             isDragging.current = false;
+            touchStartPos.current = null;
+            isTouchSpinning.current = false;
             if (canvasRef.current) {
               canvasRef.current.style.cursor = "grab";
               try {
@@ -308,6 +343,8 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
           }}
           onPointerCancel={(e) => {
             isDragging.current = false;
+            touchStartPos.current = null;
+            isTouchSpinning.current = false;
             if (canvasRef.current) {
               canvasRef.current.style.cursor = "grab";
               try {
@@ -317,27 +354,52 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
           }}
           onPointerMove={(e) => {
             if (!isDragging.current) return;
+
+            // Touch gesture arbitration: if user is scrolling vertically, let native scroll work freely
+            if (e.pointerType === "touch" && touchStartPos.current && !isTouchSpinning.current) {
+              const distX = Math.abs(e.clientX - touchStartPos.current.x);
+              const distY = Math.abs(e.clientY - touchStartPos.current.y);
+              if (distX < 8 && distY < 8) return; // Wait for intentional gesture
+
+              if (distY > distX) {
+                // User is scrolling the page vertically! Release and let browser scroll freely
+                isDragging.current = false;
+                touchStartPos.current = null;
+                return;
+              } else {
+                // User is spinning the globe horizontally/diagonally!
+                isTouchSpinning.current = true;
+                try {
+                  canvasRef.current?.setPointerCapture(e.pointerId);
+                } catch {}
+              }
+            }
+
             const deltaX = e.clientX - lastPointerPos.current.x;
             const deltaY = e.clientY - lastPointerPos.current.y;
             lastPointerPos.current = { x: e.clientX, y: e.clientY };
 
             const sensX = 0.0055;
-            const sensY = 0.0055;
+            const sensY = 0.0045;
 
-            // Update angles in all axes
+            // Natural multi-directional rotation (left, right, up, down, diagonal)
             rotation.current.phi += deltaX * sensX;
             rotation.current.theta = Math.max(
-              -Math.PI / 2.2,
-              Math.min(Math.PI / 2.2, rotation.current.theta - deltaY * sensY)
+              MIN_THETA,
+              Math.min(MAX_THETA, rotation.current.theta + deltaY * sensY)
             );
 
-            // Track momentum for smooth inertia fling
+            // Track momentum for smooth inertia fling in all directions
             velocity.current = {
               x: deltaX * sensX,
-              y: -deltaY * sensY,
+              y: deltaY * sensY,
             };
           }}
-          className="relative z-10 w-full h-full opacity-0 transition-opacity duration-1000 cursor-grab touch-pan-y"
+          onWheel={(e) => {
+            // Passive scroll response: roll globe subtly with wheel without blocking page scroll
+            rotation.current.phi += e.deltaY * 0.0006;
+          }}
+          className="relative z-10 w-full h-full opacity-0 transition-opacity duration-1000 cursor-grab active:cursor-grabbing touch-pan-y"
         />
 
         {/* 3D Real-time Projected Floating City Tags */}
