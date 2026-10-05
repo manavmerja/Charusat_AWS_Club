@@ -7,6 +7,7 @@ import { IconArrowUpRight } from "@tabler/icons-react";
 
 import { DotPattern } from "@/components/ui/dot-pattern";
 import { LightRays } from "@/components/ui/light-rays";
+import { MeetupStraightRail } from "@/components/ui/meetup-straight-rail";
 
 export function MeetupSection() {
   const reduceMotion = useReducedMotion();
@@ -23,6 +24,9 @@ export function MeetupSection() {
 
   return (
     <section className="relative w-full bg-black text-slate-200 py-16 sm:py-20 px-6 sm:px-12 lg:px-16 overflow-hidden flex items-center justify-center font-[var(--font-geist-sans)]">
+      {/* ── Left-Flank Straight Cyber Train Rail (From Events ➔ Team Community) ── */}
+      <MeetupStraightRail />
+
       {/* ── Seamless Gradient Transitions (Blends seamlessly into Events & Teams) ── */}
       <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black via-black/80 to-transparent pointer-events-none z-20" />
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent via-black/80 to-black pointer-events-none z-20" />
