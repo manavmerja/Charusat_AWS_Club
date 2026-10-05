@@ -26,14 +26,14 @@ interface VariantConfig {
 
 const VARIANT_CONFIGS: Record<CircuitBridgeVariant, VariantConfig> = {
   // Single Clean Zig-Zag S-Curve:
-  // Starts directly under JOIN COMMUNITY (x:40, y:0),
-  // swoops right (x:190, y:85), and curves down-left to land above ABOUT AWS SBG (x:60, y:175)
+  // Starts directly under JOIN COMMUNITY (x:32, y:0),
+  // swoops right (x:180, y:85), and curves down-left to land above ABOUT AWS SBG (x:60, y:175)
   "hero-to-about": {
     viewBox: "0 0 380 180",
-    curveD: "M 40 0 C 40 50, 190 35, 190 85 S 60 135, 60 175",
-    startPoint: { x: 40, y: 0 },
+    curveD: "M 32 0 C 32 50, 180 35, 180 85 S 60 135, 60 175",
+    startPoint: { x: 32, y: 0 },
     endPoint: { x: 60, y: 175 },
-    heightClass: "h-36 sm:h-44 md:h-52",
+    heightClass: "h-28 sm:h-44 md:h-52",
     svgWidthClass: "w-full max-w-[320px] sm:max-w-[380px] md:max-w-[420px]",
     alignClass: "justify-start",
   },
@@ -122,7 +122,7 @@ export function CircuitBridgeTrack({
     <div
       ref={containerRef}
       className={cn(
-        "relative w-full overflow-visible select-none z-20 bg-black pointer-events-none",
+        "relative w-full max-w-[100vw] overflow-x-clip select-none z-20 bg-black pointer-events-none",
         config.heightClass,
         className
       )}
@@ -131,7 +131,7 @@ export function CircuitBridgeTrack({
       {/* Aligned within the site's standard max-w-7xl responsive container */}
       <div
         className={cn(
-          "w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 relative h-full flex items-center",
+          "w-full max-w-7xl mx-auto px-5 sm:px-10 lg:px-12 relative h-full flex items-center",
           config.alignClass
         )}
       >
