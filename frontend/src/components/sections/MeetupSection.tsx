@@ -128,7 +128,7 @@ export function MeetupSection() {
         {/* ── RIGHT: Typography, Copy, Stats & Action ── */}
         <motion.div
           {...reveal(0.2)}
-          className="flex-1 max-w-lg space-y-6"
+          className="flex-1 max-w-lg space-y-6 pl-8 sm:pl-10 lg:pl-0"
         >
           {/* Main 3-Line Heading with Geist Sans */}
           <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-bold tracking-tight text-white leading-[1.12]">
