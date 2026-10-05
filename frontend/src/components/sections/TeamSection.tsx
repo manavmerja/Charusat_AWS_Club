@@ -90,11 +90,13 @@ function ProfilePhoto({
   image,
   sizes,
   colored = true,
+  imagePosition,
 }: {
   name: string
   image?: string
   sizes: string
   colored?: boolean
+  imagePosition?: string
 }) {
   const [failed, setFailed] = useState(false)
 
@@ -115,7 +117,8 @@ function ProfilePhoto({
       fill
       sizes={sizes}
       onError={() => setFailed(true)}
-      className={`object-cover object-top transition-[filter,transform] duration-500 ease-out group-hover:scale-105 motion-reduce:group-hover:scale-100 ${
+      style={imagePosition ? { objectPosition: imagePosition } : undefined}
+      className={`object-cover ${imagePosition ? "" : "object-top"} transition-[filter,transform] duration-500 ease-out group-hover:scale-105 motion-reduce:group-hover:scale-100 ${
         colored ? "grayscale-0" : "grayscale"
       }`}
     />
@@ -147,6 +150,7 @@ function MemberCard({
     designation?: string
     department?: string
     image?: string
+    imagePosition?: string
     socials?: Socials
   }
   hideGithub?: boolean
@@ -183,11 +187,12 @@ function MemberCard({
             <ProfilePhoto
               name={person.name}
               image={person.image}
+              imagePosition={person.imagePosition}
               sizes="(min-width: 1024px) 280px, (min-width: 640px) 45vw, 100vw"
             />
 
-            {/* Deep dark gradient overlay for crystal clear text */}
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-[#07070d] via-[#07070d]/85 to-transparent" />
+            {/* Subtle bottom gradient overlay for text readability without obscuring faces */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[42%] bg-gradient-to-t from-[#07070d] via-[#07070d]/70 to-transparent" />
 
             {/* Tap hint — only on touch devices where hover isn't available */}
             <span className="pointer-events-none absolute top-3 right-3 z-10 inline-flex items-center gap-1 rounded-full border border-white/10 bg-black/50 px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-slate-200 backdrop-blur-sm [@media(hover:hover)]:hidden">
@@ -357,6 +362,7 @@ export function TeamSection() {
                       designation: person.designation,
                       department: person.department,
                       image: person.image,
+                      imagePosition: person.imagePosition,
                       socials: person.socials,
                     }}
                     hideGithub
@@ -380,6 +386,7 @@ export function TeamSection() {
                       role: person.role,
                       department: person.department,
                       image: person.image,
+                      imagePosition: person.imagePosition,
                       socials: person.socials,
                     }}
                   />
@@ -417,6 +424,7 @@ export function TeamSection() {
                         role: person.role,
                         department: person.department,
                         image: person.image,
+                        imagePosition: person.imagePosition,
                         socials: person.socials,
                       }}
                     />
