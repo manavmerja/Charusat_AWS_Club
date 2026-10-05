@@ -284,7 +284,7 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
       if (globe) {
         try {
           globe.destroy();
-        } catch {}
+        } catch { }
       }
       window.removeEventListener("resize", onResize);
       window.removeEventListener("scroll", onWindowScroll);
@@ -322,7 +322,7 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
                 canvasRef.current.style.cursor = "grabbing";
                 try {
                   canvasRef.current.setPointerCapture(e.pointerId);
-                } catch {}
+                } catch { }
               }
             } else {
               // Touch pointer: initialize touch tracker so vertical page scroll is never trapped
@@ -338,7 +338,7 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
               canvasRef.current.style.cursor = "grab";
               try {
                 canvasRef.current.releasePointerCapture(e.pointerId);
-              } catch {}
+              } catch { }
             }
           }}
           onPointerCancel={(e) => {
@@ -349,7 +349,7 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
               canvasRef.current.style.cursor = "grab";
               try {
                 canvasRef.current.releasePointerCapture(e.pointerId);
-              } catch {}
+              } catch { }
             }
           }}
           onPointerMove={(e) => {
@@ -371,7 +371,7 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
                 isTouchSpinning.current = true;
                 try {
                   canvasRef.current?.setPointerCapture(e.pointerId);
-                } catch {}
+                } catch { }
               }
             }
 
