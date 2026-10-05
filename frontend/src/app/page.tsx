@@ -59,7 +59,7 @@ export default function Home() {
       </section>
 
       {/* 2. ABOUT US SECTION (Dot Background & Nothing Font Style) */}
-      <section id="about" className="relative min-h-screen w-full">
+      <section id="about" className="relative min-h-[auto] md:min-h-screen w-full">
         <AboutSection />
       </section>
 
