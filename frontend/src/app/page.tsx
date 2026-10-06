@@ -14,6 +14,8 @@ import { ContactSection } from "@/components/sections/ContactSection";
 import { Footer } from "@/components/sections/Footer";
 import { ScrollToTop } from "@/components/ui/scroll-to-top";
 import { FloatingEventToast } from "@/components/ui/FloatingEventToast";
+import { CircuitBridgeTrack } from "@/components/ui/circuit-bridge-track";
+import { MobileCircuitRail } from "@/components/ui/mobile-circuit-rail";
 
 let hasShownPreloader = false;
 
@@ -33,7 +35,7 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <main className="min-h-screen bg-black text-white relative selection:bg-[#00e676] selection:text-[#0b0f19] font-[var(--font-space-grotesk)]">
+      <main className="min-h-screen w-full max-w-[100vw] overflow-x-hidden bg-black text-white relative selection:bg-[#00e676] selection:text-[#0b0f19] font-[var(--font-space-grotesk)]">
       {/* Top Staggered Menu Navigation */}
       <StaggeredMenu
         colors={["#0f172a", "#064e3b", "#00e676"]}
@@ -58,15 +60,22 @@ export default function Home() {
         <HeroStarsBackground />
       </section>
 
+      {/* S-Rail Leg 1: Hero (Join Community) ➔ About SBG */}
+      <CircuitBridgeTrack variant="hero-to-about" className="hidden md:block -mt-16 md:-mt-20 relative z-30" />
+      <MobileCircuitRail variant="hero-to-about" className="block md:hidden relative z-30" />
+
       {/* 2. ABOUT US SECTION (Dot Background & Nothing Font Style) */}
-      <section id="about" className="relative min-h-screen w-full">
+      <section id="about" className="relative min-h-[auto] md:min-h-screen w-full">
         <AboutSection />
       </section>
+
+      {/* S-Rail Leg 2: About SBG ➔ Events (Desktop only) */}
+      <CircuitBridgeTrack variant="about-to-events" className="hidden md:block" />
 
       {/* 3. EVENTS & WORKSHOPS SECTION */}
       <EventsSection />
 
-      {/* 3.5. MEETUP COMMUNITY HUB SECTION */}
+      {/* 3.5. MEETUP COMMUNITY HUB SECTION (Features Left-Flank Straight Cyber Rail) */}
       <MeetupSection />
 
       {/* 4. CORE TEAMS SECTION */}

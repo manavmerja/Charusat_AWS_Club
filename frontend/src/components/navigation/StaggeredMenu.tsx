@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import Image from 'next/image';
 import { IoArrowBackOutline } from 'react-icons/io5';
+import { cn } from '@/lib/utils';
 
 export interface StaggeredMenuItem {
   label: string;
@@ -60,6 +61,45 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 }: StaggeredMenuProps) => {
   const [open, setOpen] = useState(false);
   const openRef = useRef(false);
+  const [logoVisible, setLogoVisible] = useState(true);
+  const lastScrollYRef = useRef(0);
+
+  useEffect(() => {
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+          const diff = currentScrollY - lastScrollYRef.current;
+
+          // Always visible at the top (Hero section: within top 120px) or if menu is open
+          if (currentScrollY <= 120 || openRef.current) {
+            setLogoVisible(true);
+          } else if (diff > 8) {
+            // Scrolling down past Hero: smoothly hide
+            setLogoVisible(false);
+          } else if (diff < -8) {
+            // Scrolling up: smoothly reveal
+            setLogoVisible(true);
+          }
+
+          lastScrollYRef.current = currentScrollY;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (open) {
+      setLogoVisible(true);
+    }
+  }, [open]);
 
   const panelRef = useRef<HTMLDivElement | null>(null);
   const preLayersRef = useRef<HTMLDivElement | null>(null);
@@ -403,26 +443,31 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           href="#home"
           onClick={(e) => handleSmoothNavigation(e, '#home')}
           aria-label="AWS Student Builder Group Home"
-          className="pointer-events-auto flex items-center gap-2.5 p-1.5 pr-4 sm:pr-5 rounded-2xl bg-white/[0.03] backdrop-blur-md border border-white/10 hover:border-white/[0.16] hover:bg-white/[0.05] transition-all duration-200 ease-out select-none group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00e676]/50 cursor-pointer"
+          className={cn(
+            "flex items-center gap-2 sm:gap-3.5 p-1.5 pr-4 sm:p-2.5 sm:pr-6 rounded-2xl bg-white/[0.04] backdrop-blur-md border border-white/10 hover:border-white/[0.18] hover:bg-white/[0.06] select-none group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00e676]/50 cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.4)] transition-all duration-300 ease-out",
+            logoVisible
+              ? "opacity-100 translate-y-0 pointer-events-auto"
+              : "opacity-0 -translate-y-14 pointer-events-none"
+          )}
         >
-          {/* Logo Container */}
-          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-[10px] overflow-hidden flex-shrink-0 flex items-center justify-center bg-[#F4F7F5] border border-white/[0.08] group-hover:scale-[1.03] transition-transform duration-200 ease-out">
+          {/* Logo Container (Compact on mobile, enlarged on desktop) */}
+          <div className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-[10px] sm:rounded-[14px] overflow-hidden flex-shrink-0 flex items-center justify-center bg-[#F4F7F5] border border-white/[0.12] group-hover:scale-[1.03] transition-transform duration-200 ease-out shadow-sm">
             <Image
-              src="/image.svg"
+              src="/logo.png"
               alt="AWS Student Builder Group Logo"
-              width={40}
-              height={40}
-              className="object-contain w-full h-full scale-[1.15]"
+              width={64}
+              height={64}
+              className="object-contain w-full h-full p-1"
               priority
             />
           </div>
 
           {/* Clean Typography Branding */}
           <div className="flex flex-col text-left font-[family-name:var(--font-geist-sans)] justify-center">
-            <span className="text-[10px] sm:text-[11.5px] font-semibold tracking-[0.02em] text-[#F5F5F5] uppercase leading-tight">
+            <span className="text-[10px] sm:text-[13px] md:text-[14px] font-bold tracking-[0.03em] text-[#F5F5F5] uppercase leading-tight">
               AWS Student Builder Group
             </span>
-            <span className="hidden sm:block text-[9.5px] text-[#00e676]/75 font-medium tracking-wide leading-tight mt-0.5">
+            <span className="text-[9px] sm:text-[11.5px] text-[#00e676] font-semibold tracking-wide leading-tight mt-0.5 sm:mt-1">
               CHARUSAT University
             </span>
           </div>

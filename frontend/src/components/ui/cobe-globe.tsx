@@ -79,45 +79,40 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
 
   // Fluid Trackball Physics State
   const isDragging = useRef(false);
+  const touchStartPos = useRef<{ x: number; y: number } | null>(null);
+  const isTouchSpinning = useRef(false);
+  const pointerIdRef = useRef<number | null>(null);
   const lastPointerPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const velocity = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const rotation = useRef<{ phi: number; theta: number }>({ phi: 0, theta: 0.22 });
   const isVisibleRef = useRef(true);
 
+  // Ergonomic tilt boundaries (prevents severe pole distortion and gimbal lock)
+  const DEFAULT_THETA = 0.22;
+  const MIN_THETA = -0.45;
+  const MAX_THETA = 0.55;
+
   useEffect(() => {
-    let width = 0;
-    let animationFrameId: number;
+    let animationFrameId = 0;
+    if (!canvasRef.current || !containerRef.current) return;
 
     const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
-
-    const onResize = () => {
-      if (containerRef.current) {
-        width = containerRef.current.offsetWidth;
-      }
-    };
-    window.addEventListener("resize", onResize, { passive: true });
-    onResize();
-
-    if (!canvasRef.current) return;
+    let cachedWidth = containerRef.current.offsetWidth || 500;
+    const dpr = isMobile ? 1.0 : Math.min(typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1, 1.25);
 
     let isDisposed = false;
-    const currentWidth = width || 500;
-    // Optimal DPR for crisp edges without 4x bloated WebGL raster buffer
-    const dpr = Math.min(typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1, isMobile ? 1.25 : 1.5);
-    let cachedWidth = currentWidth;
-
     let globe: { update: (opts: Record<string, unknown>) => void; destroy: () => void } | null = null;
 
     try {
       globe = createGlobe(canvasRef.current, {
         devicePixelRatio: dpr,
-        width: currentWidth * dpr,
-        height: currentWidth * dpr,
+        width: cachedWidth * dpr,
+        height: cachedWidth * dpr,
         phi: 0,
         theta: 0.22,
         dark: 1,
         diffuse: 1.2,
-        mapSamples: isMobile ? 7000 : 12000,
+        mapSamples: isMobile ? 3500 : 6000,
         mapBrightness: 5.5,
         baseColor: [0.04, 0.06, 0.09],
         markerColor: [0.15, 0.65, 0.4],
@@ -155,71 +150,77 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
       console.warn("COBE initialization error:", err);
     }
 
-    // ── Performance Optimization: Pause rendering when offscreen ──
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        isVisibleRef.current = entry.isIntersecting;
-      },
-      { threshold: 0.05 }
-    );
+    const onResize = () => {
+      if (containerRef.current) {
+        const newW = containerRef.current.offsetWidth;
+        if (newW && newW !== cachedWidth) {
+          cachedWidth = newW;
+          if (globe) {
+            globe.update({
+              width: cachedWidth * dpr,
+              height: cachedWidth * dpr,
+            });
+          }
+        }
+      }
+    };
+    window.addEventListener("resize", onResize, { passive: true });
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
+    // Dynamic scroll rotation: subtle spin when user scrolls down the page
+    let lastScrollY = typeof window !== "undefined" ? window.scrollY : 0;
+    const onWindowScroll = () => {
+      if (!isVisibleRef.current) return;
+      const currentY = window.scrollY;
+      const deltaScroll = currentY - lastScrollY;
+      lastScrollY = currentY;
+      if (Math.abs(deltaScroll) > 0.5) {
+        rotation.current.phi += deltaScroll * 0.001;
+      }
+    };
+    window.addEventListener("scroll", onWindowScroll, { passive: true });
 
     const animate = () => {
-      if (isDisposed) return;
-
-      if (!isVisibleRef.current) {
-        // Paused offscreen — wait and re-check without running shader calculations
-        animationFrameId = requestAnimationFrame(animate);
+      if (isDisposed || !isVisibleRef.current) {
+        animationFrameId = 0;
         return;
       }
 
       if (isDragging.current) {
         // Active drag updates rotation directly
       } else {
-        // Inertia coasting & auto-spin
+        // Inertia coasting & auto-spin in all axes
         if (
           Math.abs(velocity.current.x) > 0.0001 ||
           Math.abs(velocity.current.y) > 0.0001
         ) {
           rotation.current.phi += velocity.current.x;
           rotation.current.theta = Math.max(
-            -Math.PI / 2.2,
-            Math.min(Math.PI / 2.2, rotation.current.theta + velocity.current.y)
+            MIN_THETA,
+            Math.min(MAX_THETA, rotation.current.theta + velocity.current.y)
           );
           // Smooth friction damping
-          velocity.current.x *= 0.93;
-          velocity.current.y *= 0.93;
+          velocity.current.x *= 0.94;
+          velocity.current.y *= 0.94;
         } else {
           // Continuous smooth auto-rotation
-          rotation.current.phi += 0.003;
+          rotation.current.phi += 0.0028;
         }
+
+        // Gentle spring return to default elevation so the globe always stays aesthetically centered
+        rotation.current.theta += (DEFAULT_THETA - rotation.current.theta) * 0.025;
       }
 
       const currentPhi = rotation.current.phi;
       const currentTheta = rotation.current.theta;
-      const cWidth = containerRef.current?.offsetWidth || currentWidth;
 
       if (globe) {
-        if (cWidth !== cachedWidth) {
-          cachedWidth = cWidth;
-          globe.update({
-            phi: currentPhi,
-            theta: currentTheta,
-            width: cWidth * dpr,
-            height: cWidth * dpr,
-          });
-        } else {
-          globe.update({
-            phi: currentPhi,
-            theta: currentTheta,
-          });
-        }
+        globe.update({
+          phi: currentPhi,
+          theta: currentTheta,
+        });
       }
 
-      // Update 3D projected city tags
+      // Update 3D projected city tags using GPU translate3d (zero layout reflow)
       tagElementsRef.current.forEach((el, index) => {
         if (!el) return;
         const city = CITIES[index];
@@ -234,8 +235,9 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
 
         if (proj.isVisible) {
           el.style.opacity = `${proj.opacity}`;
-          el.style.left = `${proj.normX * 100}%`;
-          el.style.top = `${proj.normY * 100}%`;
+          const posX = proj.normX * cachedWidth;
+          const posY = proj.normY * cachedWidth;
+          el.style.transform = `translate3d(${posX}px, ${posY}px, 0) translate(-50%, -100%) translateY(-8px)`;
           el.style.pointerEvents = proj.opacity > 0.5 ? "auto" : "none";
         } else {
           el.style.opacity = "0";
@@ -246,7 +248,28 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
       animationFrameId = requestAnimationFrame(animate);
     };
 
-    animationFrameId = requestAnimationFrame(animate);
+    // ── Performance: True sleeping when offscreen (no RAF overhead) ──
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const visible = entry.isIntersecting;
+        isVisibleRef.current = visible;
+        if (visible) {
+          if (!animationFrameId) {
+            animationFrameId = requestAnimationFrame(animate);
+          }
+        } else {
+          if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = 0;
+          }
+        }
+      },
+      { threshold: 0.05 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
 
     setTimeout(() => {
       if (canvasRef.current) {
@@ -261,9 +284,10 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
       if (globe) {
         try {
           globe.destroy();
-        } catch {}
+        } catch { }
       }
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("scroll", onWindowScroll);
     };
   }, []);
 
@@ -284,61 +308,98 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
           <div className="w-3/4 h-3/4 rounded-full bg-emerald-500/[0.03] blur-[100px]" />
         </div>
 
-        {/* Interactive WebGL Canvas with Mobile-Tuned Touch Tracking */}
+        {/* Interactive WebGL Canvas with Multi-Directional Rotation & Non-Blocking Touch */}
         <canvas
           ref={canvasRef}
           onPointerDown={(e) => {
             isDragging.current = true;
+            pointerIdRef.current = e.pointerId;
             lastPointerPos.current = { x: e.clientX, y: e.clientY };
             velocity.current = { x: 0, y: 0 };
-            if (canvasRef.current) {
-              canvasRef.current.style.cursor = "grabbing";
-              try {
-                canvasRef.current.setPointerCapture(e.pointerId);
-              } catch {}
+
+            if (e.pointerType === "mouse") {
+              if (canvasRef.current) {
+                canvasRef.current.style.cursor = "grabbing";
+                try {
+                  canvasRef.current.setPointerCapture(e.pointerId);
+                } catch { }
+              }
+            } else {
+              // Touch pointer: initialize touch tracker so vertical page scroll is never trapped
+              touchStartPos.current = { x: e.clientX, y: e.clientY };
+              isTouchSpinning.current = false;
             }
           }}
           onPointerUp={(e) => {
             isDragging.current = false;
+            touchStartPos.current = null;
+            isTouchSpinning.current = false;
             if (canvasRef.current) {
               canvasRef.current.style.cursor = "grab";
               try {
                 canvasRef.current.releasePointerCapture(e.pointerId);
-              } catch {}
+              } catch { }
             }
           }}
           onPointerCancel={(e) => {
             isDragging.current = false;
+            touchStartPos.current = null;
+            isTouchSpinning.current = false;
             if (canvasRef.current) {
               canvasRef.current.style.cursor = "grab";
               try {
                 canvasRef.current.releasePointerCapture(e.pointerId);
-              } catch {}
+              } catch { }
             }
           }}
           onPointerMove={(e) => {
             if (!isDragging.current) return;
+
+            // Touch gesture arbitration: if user is scrolling vertically, let native scroll work freely
+            if (e.pointerType === "touch" && touchStartPos.current && !isTouchSpinning.current) {
+              const distX = Math.abs(e.clientX - touchStartPos.current.x);
+              const distY = Math.abs(e.clientY - touchStartPos.current.y);
+              if (distX < 8 && distY < 8) return; // Wait for intentional gesture
+
+              if (distY > distX) {
+                // User is scrolling the page vertically! Release and let browser scroll freely
+                isDragging.current = false;
+                touchStartPos.current = null;
+                return;
+              } else {
+                // User is spinning the globe horizontally/diagonally!
+                isTouchSpinning.current = true;
+                try {
+                  canvasRef.current?.setPointerCapture(e.pointerId);
+                } catch { }
+              }
+            }
+
             const deltaX = e.clientX - lastPointerPos.current.x;
             const deltaY = e.clientY - lastPointerPos.current.y;
             lastPointerPos.current = { x: e.clientX, y: e.clientY };
 
             const sensX = 0.0055;
-            const sensY = 0.0055;
+            const sensY = 0.0045;
 
-            // Update angles in all axes
+            // Natural multi-directional rotation (left, right, up, down, diagonal)
             rotation.current.phi += deltaX * sensX;
             rotation.current.theta = Math.max(
-              -Math.PI / 2.2,
-              Math.min(Math.PI / 2.2, rotation.current.theta - deltaY * sensY)
+              MIN_THETA,
+              Math.min(MAX_THETA, rotation.current.theta + deltaY * sensY)
             );
 
-            // Track momentum for smooth inertia fling
+            // Track momentum for smooth inertia fling in all directions
             velocity.current = {
               x: deltaX * sensX,
-              y: -deltaY * sensY,
+              y: deltaY * sensY,
             };
           }}
-          className="relative z-10 w-full h-full opacity-0 transition-opacity duration-1000 cursor-grab touch-pan-y"
+          onWheel={(e) => {
+            // Passive scroll response: roll globe subtly with wheel without blocking page scroll
+            rotation.current.phi += e.deltaY * 0.0006;
+          }}
+          className="relative z-10 w-full h-full opacity-0 transition-opacity duration-1000 cursor-grab active:cursor-grabbing touch-pan-y"
         />
 
         {/* 3D Real-time Projected Floating City Tags */}
@@ -349,7 +410,7 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
               ref={(el) => {
                 tagElementsRef.current[idx] = el;
               }}
-              className="absolute -translate-x-1/2 -translate-y-full -mt-2 opacity-0 transition-opacity duration-150 flex flex-col items-center"
+              className="absolute top-0 left-0 will-change-transform opacity-0 transition-opacity duration-150 flex flex-col items-center"
             >
               <div
                 className={cn(

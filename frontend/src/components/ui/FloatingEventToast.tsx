@@ -111,7 +111,7 @@ export function FloatingEventToast({ customEvent }: FloatingEventToastProps) {
             stiffness: 300,
             damping: 26,
           }}
-          className="fixed inset-x-3 bottom-3 sm:inset-x-auto sm:bottom-8 sm:left-8 z-40 w-auto sm:w-[370px] max-w-[calc(100vw-24px)] sm:max-w-[400px] select-none font-[var(--font-space-grotesk)] pointer-events-auto"
+          className="fixed inset-x-3 bottom-3 sm:inset-x-auto sm:bottom-8 sm:left-8 z-40 w-auto sm:w-[370px] max-w-[calc(100vw-24px)] sm:max-w-[400px] select-none font-[var(--font-space-grotesk)] pointer-events-auto transform-gpu will-change-transform"
         >
           {/* Card Container: Pure Obsidian Black (#08080a / #050505) with subtle frosted glass */}
           <div className="relative overflow-hidden rounded-2xl border border-white/[0.09] bg-gradient-to-b from-[#090a0f] via-[#07070a] to-[#040406] p-4 sm:p-5 backdrop-blur-2xl shadow-[0_16px_40px_rgba(0,0,0,0.75)] transition-colors duration-200 hover:border-emerald-500/25">

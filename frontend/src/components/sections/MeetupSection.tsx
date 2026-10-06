@@ -7,6 +7,7 @@ import { IconArrowUpRight } from "@tabler/icons-react";
 
 import { DotPattern } from "@/components/ui/dot-pattern";
 import { LightRays } from "@/components/ui/light-rays";
+import { MeetupStraightRail } from "@/components/ui/meetup-straight-rail";
 
 export function MeetupSection() {
   const reduceMotion = useReducedMotion();
@@ -23,12 +24,15 @@ export function MeetupSection() {
 
   return (
     <section className="relative w-full bg-black text-slate-200 py-16 sm:py-20 px-6 sm:px-12 lg:px-16 overflow-hidden flex items-center justify-center font-[var(--font-geist-sans)]">
+      {/* ── Left-Flank Straight Cyber Train Rail (From Events ➔ Team Community) ── */}
+      <MeetupStraightRail />
+
       {/* ── Seamless Gradient Transitions (Blends seamlessly into Events & Teams) ── */}
       <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black via-black/80 to-transparent pointer-events-none z-20" />
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent via-black/80 to-black pointer-events-none z-20" />
 
-      {/* ── 1. Angled Spotlight Light Rays from Top-Left over the Cosmic Globe ── */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-40">
+      {/* ── 1. Angled Spotlight Light Rays from Top-Left over the Cosmic Globe (Desktop only) ── */}
+      <div className="hidden md:block absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-40">
         <LightRays
           raysOrigin="top-left"
           raysColor="#ffffff"
@@ -124,7 +128,7 @@ export function MeetupSection() {
         {/* ── RIGHT: Typography, Copy, Stats & Action ── */}
         <motion.div
           {...reveal(0.2)}
-          className="flex-1 max-w-lg space-y-6"
+          className="flex-1 max-w-lg space-y-6 pl-8 sm:pl-10 lg:pl-0"
         >
           {/* Main 3-Line Heading with Geist Sans */}
           <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-bold tracking-tight text-white leading-[1.12]">

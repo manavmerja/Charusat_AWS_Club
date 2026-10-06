@@ -154,8 +154,8 @@ export const LightRays: React.FC<LightRaysProps> = ({
       // Optimize DPR for buttery smoothness on both mobile and 4K displays
       const isMobile = window.innerWidth < 768;
       const targetDpr = isMobile
-        ? Math.min(window.devicePixelRatio, 1.25)
-        : Math.min(window.devicePixelRatio, 1.5);
+        ? 1.0
+        : Math.min(window.devicePixelRatio, 1.25);
 
       const renderer = new Renderer({
         dpr: targetDpr,
@@ -321,8 +321,8 @@ void main() {
 
         const isMobileNow = window.innerWidth < 768;
         renderer.dpr = isMobileNow
-          ? Math.min(window.devicePixelRatio, 1.25)
-          : Math.min(window.devicePixelRatio, 1.5);
+          ? 1.0
+          : Math.min(window.devicePixelRatio, 1.25);
 
         const { clientWidth: wCSS, clientHeight: hCSS } = containerRef.current;
         renderer.setSize(wCSS, hCSS);

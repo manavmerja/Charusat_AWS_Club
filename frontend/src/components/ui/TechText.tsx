@@ -44,7 +44,7 @@ export interface TechTextProps {
 
 type Settings = Required<Omit<TechTextProps, 'className' | 'style'>>;
 
-const LABEL_FONT = 'bold 11px Consolas, Monaco, monospace';
+const LABEL_FONT = '10px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace';
 const FALLOFF_STEPS = 8;
 const SPRING = 320;
 const DAMPING = 22;
@@ -186,7 +186,7 @@ export const TechText = ({
     };
 
     const sprite = (s: Settings, view: Word, glyph: Shape, stroke: boolean): Art => {
-      const pad = Math.ceil(s.strokeWidth * 2 + 8);
+      const pad = Math.ceil(s.strokeWidth * 2 + 4);
       const left = glyph.box.x1 - pad;
       const top = glyph.box.y1 - pad;
       const w = Math.max(1, glyph.box.x2 - glyph.box.x1 + pad * 2);
@@ -245,29 +245,27 @@ export const TechText = ({
       const probe = scratchCtx;
       setFont(probe, s, s.fontSize);
       let m = probe.measureText(s.text);
-      const measuredW = Math.max(m.width || 0, (m.actualBoundingBoxLeft || 0) + (m.actualBoundingBoxRight || 0));
-      const measuredH = Math.max((m.actualBoundingBoxAscent || 0) + (m.actualBoundingBoxDescent || 0), s.fontSize * 0.75);
+      const inkWidth = m.actualBoundingBoxLeft + m.actualBoundingBoxRight;
+      const inkHeight = m.actualBoundingBoxAscent + m.actualBoundingBoxDescent;
       const fit = Math.min(
         1,
-        (width * 0.98) / Math.max(measuredW, 1),
-        (height * 0.88) / Math.max(measuredH, 1)
+        (width * 0.95) / Math.max(inkWidth, 1),
+        (height * 0.8) / Math.max(inkHeight, 1)
       );
-      const size = Math.max(20, s.fontSize * fit);
+      const size = s.fontSize * fit;
       setFont(probe, s, size);
       m = probe.measureText(s.text);
-      const leftAscent = m.actualBoundingBoxAscent || size * 0.75;
-      const leftDescent = m.actualBoundingBoxDescent || size * 0.2;
-      const inkWidth = Math.max(m.width, (m.actualBoundingBoxLeft || 0) + (m.actualBoundingBoxRight || m.width));
-      const inkHeight = leftAscent + leftDescent;
-      const x = s.align === 'left' ? 4 : (width - inkWidth) / 2;
-      const baseline = (height - inkHeight) / 2 + leftAscent;
-      const next = {
+      const finalInkWidth = m.actualBoundingBoxLeft + m.actualBoundingBoxRight;
+      const finalInkHeight = m.actualBoundingBoxAscent + m.actualBoundingBoxDescent;
+      const x = s.align === 'left' ? m.actualBoundingBoxLeft + 4 : (width - finalInkWidth) / 2 + m.actualBoundingBoxLeft;
+      const baseline = (height - finalInkHeight) / 2 + m.actualBoundingBoxAscent;
+      const next: Word = {
         size,
         baseline,
-        left: x,
-        right: x + inkWidth,
-        top: baseline - leftAscent,
-        bottom: baseline + leftDescent
+        left: x - m.actualBoundingBoxLeft,
+        right: x + m.actualBoundingBoxRight,
+        top: baseline - m.actualBoundingBoxAscent,
+        bottom: baseline + m.actualBoundingBoxDescent
       };
       word = next;
 
@@ -276,21 +274,18 @@ export const TechText = ({
       glyphs = [];
       let prefix = '';
       chars.forEach((char, i) => {
-        const prefixWidth = probe.measureText(prefix).width;
         prefix += char;
         const own = probe.measureText(char);
-        const ownAscent = own.actualBoundingBoxAscent || size * 0.75;
-        const ownDescent = own.actualBoundingBoxDescent || size * 0.2;
-        const gx = x + prefixWidth;
+        const gx = x + probe.measureText(prefix).width - own.width;
         if (!char.trim()) return;
         const base = {
           char,
           x: gx,
           box: {
-            x1: gx,
-            y1: baseline - ownAscent,
-            x2: gx + Math.max(own.width, 10),
-            y2: baseline + ownDescent
+            x1: gx - own.actualBoundingBoxLeft,
+            y1: baseline - own.actualBoundingBoxAscent,
+            x2: gx + own.actualBoundingBoxRight,
+            y2: baseline + own.actualBoundingBoxDescent
           }
         };
         const kept = previous[glyphs.length];
@@ -713,7 +708,14 @@ export const TechText = ({
     resizeObserver.observe(container);
     const intersectionObserver = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
-      wake();
+      if (!visible) {
+        if (raf) {
+          cancelAnimationFrame(raf);
+          raf = 0;
+        }
+      } else {
+        wake();
+      }
     });
     intersectionObserver.observe(container);
     if (document.fonts) document.fonts.ready.then(refreshFonts, refreshFonts);

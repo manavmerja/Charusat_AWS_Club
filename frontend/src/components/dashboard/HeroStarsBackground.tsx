@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { StarsBackground } from "@/components/animate-ui/components/backgrounds/stars";
 import { TechText } from "@/components/ui/TechText";
 import { LiquidButton } from "@/components/ui/liquid-button";
+import Image from "next/image";
 import Link from "next/link";
 import { FaAws, FaCloudflare } from "react-icons/fa6";
 import { SiTerraform, SiKubernetes } from "react-icons/si";
@@ -143,7 +144,7 @@ export function HeroStarsBackground() {
       <motion.div
         initial={{ opacity: 0.88, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-20 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-28 pb-20 flex flex-col items-start justify-center"
       >
@@ -170,22 +171,22 @@ export function HeroStarsBackground() {
           {/* Row 2: Student Builder Group */}
           <span className="tracking-tight font-bold">Student Builder Group</span>
           
-          {/* Row 3: at + Charusat TechText */}
+          {/* Row 3: at + CHARUSAT TechText */}
           <div className="flex items-center gap-3 sm:gap-4 flex-wrap w-full mt-1">
             <span className="tracking-tight font-bold text-gray-200">at</span>
-            <div className="relative w-full h-[65px] sm:h-[95px] md:h-[120px] lg:h-[150px] max-w-[420px] sm:max-w-[580px] -ml-1 sm:-ml-2">
+            <div className="relative w-full h-[65px] sm:h-[95px] md:h-[120px] lg:h-[150px] max-w-[420px] sm:max-w-[580px] md:max-w-[720px] lg:max-w-[850px] -ml-1 sm:-ml-2">
               <TechText
-                text="Charusat"
+                text="CHARUSAT"
                 fontWeight={700}
-                fontSize={130}
+                fontSize={110}
                 reveal="letter"
-                dashLength={15}
+                dashLength={4}
                 dashGap={2}
-                specks={16}
+                specks={15}
                 fontFamily="'Playfair Display', Georgia, Cambria, serif"
                 color="#19b380"
                 accentColor="#ffffff"
-                letterSpacing={-0.05}
+                letterSpacing={-0.03}
                 reach={200}
                 softness={0.7}
                 strokeWidth={1.5}
@@ -206,25 +207,33 @@ export function HeroStarsBackground() {
         </p>
 
         <div className="flex flex-wrap items-center gap-4 sm:gap-6">
-          <a
-            href="#contacts"
-            onClick={(e) => {
-              e.preventDefault();
-              const element = document.getElementById("contacts");
-              const lenis = (window as unknown as { lenis?: { scrollTo: (target: HTMLElement, opts?: { duration?: number; easing?: (t: number) => number }) => void } }).lenis;
-              if (lenis && element) {
-                lenis.scrollTo(element, { duration: 1.7, easing: (t) => 1 - Math.pow(1 - t, 3.5) });
-              } else if (element) {
-                element.scrollIntoView({ behavior: "smooth" });
-              }
-              window.history.pushState(null, "", "#contacts");
-            }}
-            className="inline-block cursor-pointer"
-          >
-            <LiquidButton size="default">
-              JOIN COMMUNITY
-            </LiquidButton>
-          </a>
+          <div className="relative inline-flex flex-col items-start">
+            <a
+              href="#contacts"
+              onClick={(e) => {
+                e.preventDefault();
+                const element = document.getElementById("contacts");
+                const lenis = (window as unknown as { lenis?: { scrollTo: (target: HTMLElement, opts?: { duration?: number; easing?: (t: number) => number }) => void } }).lenis;
+                if (lenis && element) {
+                  lenis.scrollTo(element, { duration: 1.7, easing: (t) => 1 - Math.pow(1 - t, 3.5) });
+                } else if (element) {
+                  element.scrollIntoView({ behavior: "smooth" });
+                }
+                window.history.pushState(null, "", "#contacts");
+              }}
+              className="inline-block cursor-pointer"
+            >
+              <LiquidButton size="default">
+                JOIN COMMUNITY
+              </LiquidButton>
+            </a>
+
+            {/* S-Rail Circuit Origin Socket (Launch point for train line) */}
+            <div className="absolute -bottom-4 left-10 flex flex-col items-center pointer-events-none">
+              <span className="w-2 h-2 rounded-full bg-[#00e676] shadow-[0_0_10px_#00e676] ring-1 ring-[#00e676]/50" />
+              <span className="w-0.5 h-3 bg-gradient-to-b from-[#00e676] to-transparent" />
+            </div>
+          </div>
           <a
             href="#events"
             onClick={(e) => {

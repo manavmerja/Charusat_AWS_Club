@@ -14,7 +14,7 @@ export function AboutSection({ className }: AboutSectionProps) {
   return (
     <div
       className={cn(
-        "relative min-h-screen w-full flex items-center justify-center bg-black overflow-hidden px-6 sm:px-12 lg:px-20 py-24 sm:py-32 font-[var(--font-space-grotesk)]",
+        "relative min-h-[auto] md:min-h-screen w-full flex items-center justify-center bg-black overflow-hidden px-6 sm:px-12 lg:px-20 py-12 sm:py-20 md:py-28 font-[var(--font-space-grotesk)]",
         className
       )}
     >
@@ -24,9 +24,9 @@ export function AboutSection({ className }: AboutSectionProps) {
         fill="#00e676"
       />
 
-      {/* 2. Seamless Blend Transitions (Top from Hero, Bottom into Events) */}
-      <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-black via-black/70 to-transparent pointer-events-none z-20" />
-      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent via-black/70 to-black pointer-events-none z-20" />
+      {/* 2. Seamless Blend Transitions (Top from Hero, Bottom into Marquee/Events) */}
+      <div className="absolute top-0 left-0 right-0 h-24 sm:h-36 md:h-48 bg-gradient-to-b from-black via-black/70 to-transparent pointer-events-none z-20" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-36 md:h-48 bg-gradient-to-b from-transparent via-black/70 to-black pointer-events-none z-20" />
 
       {/* 3. Background Subtle Grid Pattern */}
       <div

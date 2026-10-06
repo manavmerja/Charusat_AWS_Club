@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { OrbitingCircles } from "@/components/ui/orbiting-circles";
 import { fetchSimpleIcons } from "react-icon-cloud";
 

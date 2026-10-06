@@ -17,6 +17,7 @@ type StarLayerProps = HTMLMotionProps<'div'> & {
   size: number;
   transition: Transition;
   starColor: string;
+  isInView?: boolean;
 };
 
 function generateStars(count: number, starColor: string) {
@@ -34,6 +35,7 @@ function StarLayer({
   size = 1,
   transition = { repeat: Infinity, duration: 50, ease: 'linear' },
   starColor = '#fff',
+  isInView = true,
   className,
   ...props
 }: StarLayerProps) {
@@ -46,9 +48,9 @@ function StarLayer({
   return (
     <motion.div
       data-slot="star-layer"
-      animate={{ y: [0, -2000] }}
-      transition={transition}
-      className={cn('absolute top-0 left-0 w-full h-[2000px]', className)}
+      animate={isInView ? { y: [0, -2000] } : undefined}
+      transition={isInView ? transition : { duration: 0 }}
+      className={cn('absolute top-0 left-0 w-full h-[2000px] will-change-transform', className)}
       {...props}
     >
       <div
@@ -89,14 +91,32 @@ function StarsBackground({
   pointerEvents = true,
   ...props
 }: StarsBackgroundProps) {
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = React.useState(true);
+  const [isMobile, setIsMobile] = React.useState(false);
+
   const offsetX = useMotionValue(1);
   const offsetY = useMotionValue(1);
 
   const springX = useSpring(offsetX, transition);
   const springY = useSpring(offsetY, transition);
 
+  React.useEffect(() => {
+    setIsMobile(typeof window !== "undefined" && window.innerWidth < 768);
+    if (!containerRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { rootMargin: "200px" }
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   const handleMouseMove = React.useCallback(
     (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      if (!isInView) return;
       const centerX = window.innerWidth / 2;
       const centerY = window.innerHeight / 2;
       const newOffsetX = -(e.clientX - centerX) * factor;
@@ -104,11 +124,12 @@ function StarsBackground({
       offsetX.set(newOffsetX);
       offsetY.set(newOffsetY);
     },
-    [offsetX, offsetY, factor],
+    [offsetX, offsetY, factor, isInView],
   );
 
   return (
     <div
+      ref={containerRef}
       data-slot="stars-background"
       className={cn(
         'relative size-full overflow-hidden bg-[radial-gradient(ellipse_at_bottom,_#262626_0%,_#000_100%)]',
@@ -122,13 +143,14 @@ function StarsBackground({
         className={cn({ 'pointer-events-none': !pointerEvents })}
       >
         <StarLayer
-          count={1000}
+          count={isMobile ? 320 : 1000}
           size={1}
           transition={{ repeat: Infinity, duration: speed, ease: 'linear' }}
           starColor={starColor}
+          isInView={isInView}
         />
         <StarLayer
-          count={400}
+          count={isMobile ? 120 : 400}
           size={2}
           transition={{
             repeat: Infinity,
@@ -136,9 +158,10 @@ function StarsBackground({
             ease: 'linear',
           }}
           starColor={starColor}
+          isInView={isInView}
         />
         <StarLayer
-          count={200}
+          count={isMobile ? 60 : 200}
           size={3}
           transition={{
             repeat: Infinity,
@@ -146,6 +169,7 @@ function StarsBackground({
             ease: 'linear',
           }}
           starColor={starColor}
+          isInView={isInView}
         />
       </motion.div>
       {children}
