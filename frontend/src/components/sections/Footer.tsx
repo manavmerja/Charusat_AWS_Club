@@ -84,7 +84,7 @@ export function Footer() {
                 <div className="relative p-4 rounded-3xl bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-white/[0.01] border border-white/15 hover:border-emerald-500/40 hover:bg-white/[0.08] transition-all duration-300 w-fit backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.6)]">
                   <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-emerald-500/[0.06] to-transparent pointer-events-none" />
                   <Image 
-                    src="/logo.png" 
+                    src="/banner.png" 
                     alt="CHARUSAT AWS Student Builder Group Logo" 
                     width={260}
                     height={100}
