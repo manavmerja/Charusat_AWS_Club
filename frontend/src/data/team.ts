@@ -275,7 +275,7 @@ export const FOUNDING_DIVISIONS: Division[] = [
         role: "Community Team",
         department: "CSPIT - CSE",
         initials: "DV",
-        image: "",
+        image: "/team/Dhanya_Vala.png",
         specialty: "Peer Networking & Support",
         socials: {
           linkedin:
