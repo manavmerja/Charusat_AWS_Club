@@ -177,13 +177,14 @@ function MemberCard({
       >
         <div
           className={cn(
-            "relative w-full h-full duration-700 [transform-style:preserve-3d] transition-transform ease-in-out [@media(hover:hover)]:group-hover/flip:[transform:rotateY(180deg)]",
+            "relative w-full h-full duration-700 [-webkit-transform-style:preserve-3d] [transform-style:preserve-3d] transition-transform ease-in-out [@media(hover:hover)]:group-hover/flip:[transform:rotateY(180deg)]",
             flipped && "[transform:rotateY(180deg)]"
           )}
         >
           
           {/* FRONT FACE (Photo + Name + Role) */}
-          <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] overflow-hidden bg-[#0a0d14]">
+          {/* Safari: needs -webkit- prefix, a translateZ offset, and backface hidden on composited children, or the front face mirrors through the back */}
+          <div className="absolute inset-0 w-full h-full [-webkit-backface-visibility:hidden] [backface-visibility:hidden] [transform:rotateY(0deg)_translateZ(1px)] [&_*]:[-webkit-backface-visibility:hidden] overflow-hidden bg-[#0a0d14]">
             <ProfilePhoto
               name={person.name}
               image={person.image}
@@ -211,7 +212,7 @@ function MemberCard({
           </div>
 
           {/* BACK FACE (180deg Flip - Sleek Handcrafted Obsidian Glass) */}
-          <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] overflow-hidden bg-[#090b10] border-b border-white/[0.06] p-6 flex flex-col items-center justify-center text-center">
+          <div className="absolute inset-0 w-full h-full [-webkit-backface-visibility:hidden] [backface-visibility:hidden] [transform:rotateY(180deg)_translateZ(1px)] overflow-hidden bg-[#090b10] border-b border-white/[0.06] p-6 flex flex-col items-center justify-center text-center">
             {/* Subtle Clean Tech Dot Pattern */}
             <div className="absolute inset-0 bg-[radial-gradient(#ffffff12_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
             
