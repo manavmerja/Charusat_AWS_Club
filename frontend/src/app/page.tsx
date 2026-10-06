@@ -69,9 +69,8 @@ export default function Home() {
         <AboutSection />
       </section>
 
-      {/* S-Rail Leg 2: About SBG ➔ Events */}
+      {/* S-Rail Leg 2: About SBG ➔ Events (Desktop only) */}
       <CircuitBridgeTrack variant="about-to-events" className="hidden md:block" />
-      <MobileCircuitRail variant="about-to-events" className="block md:hidden" />
 
       {/* 3. EVENTS & WORKSHOPS SECTION */}
       <EventsSection />
