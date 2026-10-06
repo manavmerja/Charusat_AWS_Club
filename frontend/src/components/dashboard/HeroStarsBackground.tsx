@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { StarsBackground } from "@/components/animate-ui/components/backgrounds/stars";
 import { TechText } from "@/components/ui/TechText";
 import { LiquidButton } from "@/components/ui/liquid-button";
+import Image from "next/image";
 import Link from "next/link";
 import { FaAws, FaCloudflare } from "react-icons/fa6";
 import { SiTerraform, SiKubernetes } from "react-icons/si";
@@ -170,22 +171,22 @@ export function HeroStarsBackground() {
           {/* Row 2: Student Builder Group */}
           <span className="tracking-tight font-bold">Student Builder Group</span>
           
-          {/* Row 3: at + Charusat TechText */}
+          {/* Row 3: at + CHARUSAT TechText */}
           <div className="flex items-center gap-3 sm:gap-4 flex-wrap w-full mt-1">
             <span className="tracking-tight font-bold text-gray-200">at</span>
-            <div className="relative w-full h-[65px] sm:h-[95px] md:h-[120px] lg:h-[150px] max-w-[420px] sm:max-w-[580px] -ml-1 sm:-ml-2">
+            <div className="relative w-full h-[65px] sm:h-[95px] md:h-[120px] lg:h-[150px] max-w-[420px] sm:max-w-[580px] md:max-w-[720px] lg:max-w-[850px] -ml-1 sm:-ml-2">
               <TechText
-                text="Charusat"
+                text="CHARUSAT"
                 fontWeight={700}
-                fontSize={130}
+                fontSize={110}
                 reveal="letter"
-                dashLength={15}
+                dashLength={4}
                 dashGap={2}
-                specks={16}
+                specks={15}
                 fontFamily="'Playfair Display', Georgia, Cambria, serif"
                 color="#19b380"
                 accentColor="#ffffff"
-                letterSpacing={-0.05}
+                letterSpacing={-0.03}
                 reach={200}
                 softness={0.7}
                 strokeWidth={1.5}
