@@ -8,23 +8,25 @@ interface CobeGlobeProps {
   className?: string;
 }
 
-interface CityMarker {
-  name: string;
+interface AwsRegionMarker {
+  code: string;
+  locationName: string;
   lat: number;
   lng: number;
   isPrimary?: boolean;
 }
 
-const CITIES: CityMarker[] = [
-  { name: "CHARUSAT", lat: 22.5996, lng: 72.8205, isPrimary: true },
-  { name: "SAN FRANCISCO", lat: 37.7749, lng: -122.4194 },
-  { name: "NEW YORK", lat: 40.7128, lng: -74.006 },
-  { name: "LONDON", lat: 51.5074, lng: -0.1278 },
-  { name: "FRANKFURT", lat: 50.1109, lng: 8.6821 },
-  { name: "TOKYO", lat: 35.6762, lng: 139.6503 },
-  { name: "SINGAPORE", lat: 1.3521, lng: 103.8198 },
-  { name: "SÃO PAULO", lat: -23.5505, lng: -46.6333 },
-  { name: "SYDNEY", lat: -33.8688, lng: 151.2093 },
+// Official Major AWS Global Cloud Regions
+const AWS_REGIONS: AwsRegionMarker[] = [
+  { code: "ap-south-1", locationName: "Mumbai", lat: 19.076, lng: 72.8777, isPrimary: true },
+  { code: "us-east-1", locationName: "N. Virginia", lat: 38.0321, lng: -78.4775 },
+  { code: "us-west-2", locationName: "Oregon", lat: 45.5152, lng: -122.6784 },
+  { code: "eu-west-1", locationName: "Ireland", lat: 53.3498, lng: -6.2603 },
+  { code: "eu-central-1", locationName: "Frankfurt", lat: 50.1109, lng: 8.6821 },
+  { code: "ap-southeast-1", locationName: "Singapore", lat: 1.3521, lng: 103.8198 },
+  { code: "ap-northeast-1", locationName: "Tokyo", lat: 35.6762, lng: 139.6503 },
+  { code: "ap-southeast-2", locationName: "Sydney", lat: -33.8688, lng: 151.2093 },
+  { code: "sa-east-1", locationName: "São Paulo", lat: -23.5505, lng: -46.6333 },
 ];
 
 const PI = Math.PI;
@@ -118,29 +120,30 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
         markerColor: [0.15, 0.65, 0.4],
         glowColor: [0.02, 0.12, 0.08],
         markerElevation: 0.05,
-        markers: CITIES.map((c) => ({
-          location: [c.lat, c.lng] as [number, number],
-          size: c.isPrimary ? 0.07 : 0.04,
+        markers: AWS_REGIONS.map((r) => ({
+          location: [r.lat, r.lng] as [number, number],
+          size: r.isPrimary ? 0.07 : 0.04,
         })),
+        // Real AWS Global Backbone Fiber Arcs
         arcs: [
-          // San Francisco ↔ New York
-          { from: [37.7749, -122.4194], to: [40.7128, -74.006] },
-          // New York ↔ London
-          { from: [40.7128, -74.006], to: [51.5074, -0.1278] },
-          // London ↔ Frankfurt
-          { from: [51.5074, -0.1278], to: [50.1109, 8.6821] },
-          // Frankfurt ↔ CHARUSAT (Gujarat)
-          { from: [50.1109, 8.6821], to: [22.5996, 72.8205] },
-          // CHARUSAT (Gujarat) ↔ Singapore
-          { from: [22.5996, 72.8205], to: [1.3521, 103.8198] },
-          // Singapore ↔ Tokyo
-          { from: [1.3521, 103.8198], to: [35.6762, 139.6503] },
-          // Tokyo ↔ San Francisco
-          { from: [35.6762, 139.6503], to: [37.7749, -122.4194] },
-          // Singapore ↔ Sydney
+          // Mumbai ↔ Frankfurt (Asia-Europe Transit)
+          { from: [19.076, 72.8777], to: [50.1109, 8.6821] },
+          // Mumbai ↔ Singapore (South Asia Corridor)
+          { from: [19.076, 72.8777], to: [1.3521, 103.8198] },
+          // Frankfurt ↔ Ireland
+          { from: [50.1109, 8.6821], to: [53.3498, -6.2603] },
+          // Ireland ↔ N. Virginia (Transatlantic Fiber)
+          { from: [53.3498, -6.2603], to: [38.0321, -78.4775] },
+          // N. Virginia ↔ Oregon (US Continental Backbone)
+          { from: [38.0321, -78.4775], to: [45.5152, -122.6784] },
+          // N. Virginia ↔ São Paulo (Pan-American Route)
+          { from: [38.0321, -78.4775], to: [-23.5505, -46.6333] },
+          // Oregon ↔ Tokyo (Transpacific Fiber)
+          { from: [45.5152, -122.6784], to: [35.6762, 139.6503] },
+          // Tokyo ↔ Singapore (East Asia Backbone)
+          { from: [35.6762, 139.6503], to: [1.3521, 103.8198] },
+          // Singapore ↔ Sydney (Oceania Link)
           { from: [1.3521, 103.8198], to: [-33.8688, 151.2093] },
-          // New York ↔ São Paulo
-          { from: [40.7128, -74.006], to: [-23.5505, -46.6333] },
         ],
         arcColor: [0.15, 0.6, 0.38],
         arcWidth: 0.35,
@@ -220,13 +223,13 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
         });
       }
 
-      // Update 3D projected city tags using GPU translate3d (zero layout reflow)
-      tagElementsRef.current.forEach((el, index) => {
-        if (!el) return;
-        const city = CITIES[index];
+      // Update 3D projected AWS region tags using GPU translate3d (zero layout reflow)
+      AWS_REGIONS.forEach((region, index) => {
+        const el = tagElementsRef.current[index];
+        if (!el || !region) return;
         const proj = projectToScreen(
-          city.lat,
-          city.lng,
+          region.lat,
+          region.lng,
           currentPhi,
           currentTheta,
           1,
@@ -288,6 +291,7 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
       }
       window.removeEventListener("resize", onResize);
       window.removeEventListener("scroll", onWindowScroll);
+      tagElementsRef.current = [];
     };
   }, []);
 
@@ -402,11 +406,11 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
           className="relative z-10 w-full h-full opacity-0 transition-opacity duration-1000 cursor-grab active:cursor-grabbing touch-pan-y"
         />
 
-        {/* 3D Real-time Projected Floating City Tags */}
+        {/* 3D Real-time Projected Floating AWS Region Tags */}
         <div className="absolute inset-0 pointer-events-none z-20 overflow-visible">
-          {CITIES.map((city, idx) => (
+          {AWS_REGIONS.map((region, idx) => (
             <div
-              key={city.name}
+              key={region.code}
               ref={(el) => {
                 tagElementsRef.current[idx] = el;
               }}
@@ -414,19 +418,33 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
             >
               <div
                 className={cn(
-                  "px-1.5 sm:px-2 py-0.5 rounded text-[8px] sm:text-[10px] font-mono font-bold tracking-wider whitespace-nowrap shadow-md",
-                  city.isPrimary
-                    ? "bg-[#00e676] text-black ring-1 ring-emerald-300"
-                    : "bg-blue-600/90 text-white border border-blue-400/40 backdrop-blur-sm"
+                  "px-2.5 py-0.5 rounded-md text-[8.5px] sm:text-[10px] font-mono font-bold tracking-wider whitespace-nowrap shadow-md flex items-center gap-1.5 transition-colors",
+                  region.isPrimary
+                    ? "bg-[#00e676] text-black ring-1 ring-emerald-300 shadow-[0_0_14px_rgba(0,230,118,0.55)]"
+                    : "bg-[#0b101d]/90 text-slate-200 border border-white/10 backdrop-blur-md"
                 )}
               >
-                {city.name}
+                <span
+                  className={cn(
+                    "w-1.5 h-1.5 rounded-full flex-shrink-0",
+                    region.isPrimary ? "bg-black" : "bg-[#00e676]"
+                  )}
+                />
+                <span className="font-bold tracking-tight">{region.code}</span>
+                <span
+                  className={cn(
+                    "text-[8px] sm:text-[9.5px] font-sans font-bold",
+                    region.isPrimary ? "text-black" : "text-emerald-400 font-medium"
+                  )}
+                >
+                  ({region.locationName})
+                </span>
               </div>
               {/* Pointer tick */}
               <div
                 className={cn(
                   "w-1 h-1 sm:w-1.5 sm:h-1.5 rotate-45 -mt-0.5 sm:-mt-1",
-                  city.isPrimary ? "bg-[#00e676]" : "bg-blue-600/90"
+                  region.isPrimary ? "bg-[#00e676]" : "bg-[#0b101d]"
                 )}
               />
             </div>
@@ -434,10 +452,10 @@ export function CobeGlobe({ className }: CobeGlobeProps) {
         </div>
       </div>
 
-      {/* Spacious Bottom Title */}
-      <div className="mt-7 flex items-center justify-center px-5 py-2 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md shadow-xl">
+      {/* Clean AWS Global Infrastructure Badge */}
+      <div className="mt-7 flex items-center justify-center px-6 py-2.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md shadow-lg">
         <span className="text-xs sm:text-sm font-semibold tracking-wider text-slate-200 uppercase font-sans">
-          AWS SBG at Charusat
+          AWS Global Infrastructure
         </span>
       </div>
     </div>
