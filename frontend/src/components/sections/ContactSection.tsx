@@ -1,47 +1,83 @@
-"use client"
+"use client";
 
-import React, { useState } from "react"
-import { motion } from "framer-motion"
-import { CobeGlobe } from "@/components/ui/cobe-globe"
-import { Highlight } from "@/components/ui/hero-highlight"
+import React, { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { CobeGlobe } from "@/components/ui/cobe-globe";
+import { Highlight } from "@/components/ui/hero-highlight";
+import { ChevronDown, Check, AlertCircle } from "lucide-react";
 
 // Subject options ─
-
 const SUBJECT_OPTIONS = [
   "Workshop Inquiry",
-  "Partnership",
-  "Sponsorship",
-  "General Question",
+  "Volunteer",
   "Event Collaboration",
+  "General Question",
   "Other",
-]
+];
 
 // Contact Form ─
-
 function ContactForm() {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
-    subject: "",
+    phone: "",
+    subject: "Workshop Inquiry",
     message: "",
-  })
-  const [submitted, setSubmitted] = useState(false)
-  const [loading, setLoading] = useState(false)
+  });
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-  }
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    if (error) setError(null);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    // Simulate dispatch
-    await new Promise((resolve) => setTimeout(resolve, 1400))
-    setLoading(false)
-    setSubmitted(true)
-  }
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || "Failed to dispatch message. Please try again.");
+      }
+
+      setSubmitted(true);
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "An unexpected error occurred. Please try again later."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (submitted) {
     return (
@@ -61,17 +97,41 @@ function ContactForm() {
           Thank you for reaching out. We will get back to you soon.
         </p>
         <button
-          onClick={() => { setSubmitted(false); setFormData({ fullName: "", email: "", subject: "", message: "" }) }}
-          className="mt-2 px-6 py-2 text-xs font-bold uppercase tracking-widest text-emerald-400 border border-emerald-500/40 rounded-full hover:bg-emerald-500/10 transition-colors"
+          onClick={() => {
+            setSubmitted(false);
+            setFormData({
+              fullName: "",
+              email: "",
+              phone: "",
+              subject: "Workshop Inquiry",
+              message: "",
+            });
+          }}
+          className="mt-2 px-6 py-2 text-xs font-bold uppercase tracking-widest text-emerald-400 border border-emerald-500/40 rounded-full hover:bg-emerald-500/10 transition-colors cursor-pointer"
         >
           Send Another
         </button>
       </motion.div>
-    )
+    );
   }
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5 w-full">
+      {/* Error alert if any */}
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            className="flex items-center gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs"
+          >
+            <AlertCircle className="w-4 h-4 flex-shrink-0 text-red-400" />
+            <span>{error}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Full Name */}
       <div className="flex flex-col gap-1.5">
         <label className="text-xs font-semibold uppercase tracking-widest text-slate-400">
@@ -104,25 +164,77 @@ function ContactForm() {
         />
       </div>
 
-      {/* Subject */}
+      {/* Phone Number */}
       <div className="flex flex-col gap-1.5">
+        <label className="text-xs font-semibold uppercase tracking-widest text-slate-400">
+          Phone Number
+        </label>
+        <input
+          type="tel"
+          name="phone"
+          value={formData.phone}
+          onChange={handleChange}
+          placeholder="+91 98765 43210"
+          required
+          className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/50 focus:bg-white/[0.06] focus:shadow-[0_0_0_2px_rgba(0,230,118,0.08)] transition-all"
+        />
+      </div>
+
+      {/* Subject Dropdown (Clean Floating Glass) */}
+      <div className="flex flex-col gap-1.5" ref={dropdownRef}>
         <label className="text-xs font-semibold uppercase tracking-widest text-slate-400">
           Subject
         </label>
-        <select
-          name="subject"
-          value={formData.subject}
-          onChange={handleChange}
-          required
-          className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/50 focus:bg-white/[0.06] focus:shadow-[0_0_0_2px_rgba(0,230,118,0.08)] transition-all appearance-none cursor-pointer"
-        >
-          <option value="" className="bg-black text-slate-500">Workshop Inquiry / Partnership</option>
-          {SUBJECT_OPTIONS.map((opt) => (
-            <option key={opt} value={opt} className="bg-black text-white">
-              {opt}
-            </option>
-          ))}
-        </select>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setDropdownOpen((prev) => !prev)}
+            className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-left flex items-center justify-between focus:outline-none focus:border-emerald-500/50 focus:bg-white/[0.06] focus:shadow-[0_0_0_2px_rgba(0,230,118,0.08)] transition-all cursor-pointer"
+          >
+            <span className={formData.subject ? "text-white" : "text-slate-600"}>
+              {formData.subject || "Workshop Inquiry"}
+            </span>
+            <ChevronDown
+              className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
+                dropdownOpen ? "rotate-180 text-emerald-400" : ""
+              }`}
+            />
+          </button>
+
+          <AnimatePresence>
+            {dropdownOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: -4, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -4, scale: 0.98 }}
+                transition={{ duration: 0.15, ease: "easeOut" }}
+                className="absolute top-full left-0 right-0 mt-2 z-50 rounded-xl border border-white/10 bg-[#0c101d]/95 backdrop-blur-xl p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.8)] overflow-hidden"
+              >
+                {SUBJECT_OPTIONS.map((opt) => {
+                  const isSelected = formData.subject === opt;
+                  return (
+                    <button
+                      key={opt}
+                      type="button"
+                      onClick={() => {
+                        setFormData((prev) => ({ ...prev, subject: opt }));
+                        setDropdownOpen(false);
+                      }}
+                      className={`w-full text-left px-3.5 py-2.5 rounded-lg text-sm transition-colors cursor-pointer flex items-center justify-between ${
+                        isSelected
+                          ? "bg-emerald-500/15 text-emerald-400 font-semibold"
+                          : "text-slate-300 hover:bg-white/[0.06] hover:text-white"
+                      }`}
+                    >
+                      <span>{opt}</span>
+                      {isSelected && <Check className="w-4 h-4 text-emerald-400" />}
+                    </button>
+                  );
+                })}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* Detailed Message */}
@@ -147,7 +259,7 @@ function ContactForm() {
         disabled={loading}
         whileHover={{ scale: loading ? 1 : 1.01 }}
         whileTap={{ scale: loading ? 1 : 0.99 }}
-        className="relative mt-1 w-full py-4 rounded-xl font-bold text-sm uppercase tracking-[0.18em] text-slate-950 overflow-hidden bg-gradient-to-r from-emerald-500 via-emerald-400 to-teal-400 hover:from-emerald-400 hover:to-teal-300 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed shadow-md"
+        className="relative mt-1 w-full py-4 rounded-xl font-bold text-sm uppercase tracking-[0.18em] text-slate-950 overflow-hidden bg-gradient-to-r from-emerald-500 via-emerald-400 to-teal-400 hover:from-emerald-400 hover:to-teal-300 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed shadow-md cursor-pointer"
       >
         {loading ? (
           <span className="flex items-center justify-center gap-2">
@@ -162,11 +274,10 @@ function ContactForm() {
         )}
       </motion.button>
     </form>
-  )
+  );
 }
 
 // Main Contact Section ─
-
 export function ContactSection() {
   return (
     <section
@@ -183,7 +294,7 @@ export function ContactSection() {
         <div className="absolute right-1/4 bottom-1/4 w-[400px] h-[400px] rounded-full bg-indigo-500/[0.04] blur-[80px]" />
       </div>
 
-      {/* Section header (Left-aligned title + Right-aligned paragraph like Events/TeamSection) */}
+      {/* Section header */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -207,7 +318,6 @@ export function ContactSection() {
 
       {/* Two-column layout */}
       <div className="relative z-10 w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-
         {/* ── LEFT: Interactive 3D COBE Globe ── */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -241,5 +351,7 @@ export function ContactSection() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }
+
+export default ContactSection;
