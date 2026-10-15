@@ -54,7 +54,7 @@ export const EVENTS: ClubEvent[] = [
     slug: "first-step-into-aws",
     title: "First Step into AWS",
     tagline: "Your first step into the cloud",
-    date: "2026-10-08",
+    date: "2026-10-09",
     time: "09:15 AM – 11:30 AM",
     mode: "In-person",
     venue: "CHARUSAT Campus",
