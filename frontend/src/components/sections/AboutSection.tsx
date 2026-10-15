@@ -89,7 +89,7 @@ export function AboutSection({ className }: AboutSectionProps) {
           <div className="relative mx-auto flex w-full max-w-xl items-center justify-center p-4 sm:p-6">
             
             {/* Outer Wrapper with Scales Around the Photo */}
-            <div className="relative w-full aspect-[4/3] rounded-2xl bg-[#0e1526]/80 p-3 sm:p-4 border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.8)]">
+            <div className="relative w-full aspect-[7/4] rounded-2xl bg-[#0e1526]/80 p-3 sm:p-4 border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.8)]">
               
               {/* Left Scales */}
               <div className="absolute -inset-y-[15%] -left-6 sm:-left-8 h-[130%] w-6 sm:w-8 pointer-events-none z-0 [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)]">
@@ -114,7 +114,7 @@ export function AboutSection({ className }: AboutSectionProps) {
               {/* Inner Group Photo Container (Crisp, High-Res, Perfectly Sized) */}
               <div className="relative z-10 h-full w-full overflow-hidden rounded-xl bg-[#070b14] ring-1 ring-white/15 shadow-inner">
                 <Image
-                  src="/AWS Roots/Group_Photo.jpeg"
+                  src="/team/Team_Group_Photo.jpg"
                   alt="AWS Student Builder Group at CHARUSAT"
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 55vw, 45vw"
