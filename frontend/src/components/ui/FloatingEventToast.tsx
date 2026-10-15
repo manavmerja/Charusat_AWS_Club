@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { CalendarDays, ArrowRight, X, MapPin } from "lucide-react";
-import { splitEvents, type ClubEvent } from "@/data/events";
+import { splitEvents, formatEventDate, type ClubEvent } from "@/data/events";
 
 interface FloatingEventToastProps {
   customEvent?: Partial<ClubEvent>;
@@ -14,18 +14,13 @@ export function FloatingEventToast({ customEvent }: FloatingEventToastProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
 
-  // Retrieve upcoming event from data
+  // Retrieve upcoming event from data; if none exists, do not show any toast
   const { upcoming } = splitEvents();
-  const event = customEvent || upcoming[0] || {
-    slug: "cloud-innovate-genai",
-    title: "Cloud Innovate: GenAI & Serverless",
-    tagline: "Building Next-Gen AI Applications on AWS",
-    date: "2026-10-09",
-    time: "02:00 PM – 04:30 PM",
-    venue: "CHARUSAT Campus",
-  };
+  const event = customEvent || upcoming[0] || null;
 
   useEffect(() => {
+    if (!event) return;
+
     // Observe when the student scrolls down to the Cloud Captain (Diya Prajapati) section
     let observer: IntersectionObserver | null = null;
     let retryTimer: NodeJS.Timeout | null = null;
@@ -154,7 +149,7 @@ export function FloatingEventToast({ customEvent }: FloatingEventToastProps) {
             <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
               <span className="inline-flex items-center gap-1.5 rounded-lg border border-white/[0.06] bg-white/[0.03] px-2.5 py-1 text-slate-200 font-medium">
                 <CalendarDays className="h-3.5 w-3.5 text-emerald-400" aria-hidden="true" />
-                <span>Friday, 9th Oct</span>
+                <span>{event.date ? formatEventDate(event as ClubEvent) : "Date TBA"}</span>
               </span>
 
               {event.venue && (

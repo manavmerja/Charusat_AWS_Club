@@ -11,7 +11,8 @@ const DEFAULT_WORDS = [
   "hola",
   "bonjour",
   "aws sbg",
-  "charusat",
+  "at",
+  "CHARUSAT",
 ];
 
 interface WordsPreloaderProps {

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { WordsPreloader } from "@/components/ui/WordsPreloader";
-import { HeroStarsBackground } from "@/components/dashboard/HeroStarsBackground";
+import { HeroSection } from "@/components/sections/HeroSection";
 import { StaggeredMenu } from "@/components/navigation/StaggeredMenu";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { EventsSection } from "@/components/sections/EventsSection";
@@ -57,7 +57,7 @@ export default function Home() {
 
       {/* 1. HERO SECTION */}
       <section id="home" className="relative w-full min-h-screen">
-        <HeroStarsBackground />
+        <HeroSection />
       </section>
 
       {/* S-Rail Leg 1: Hero (Join Community) ➔ About SBG */}
