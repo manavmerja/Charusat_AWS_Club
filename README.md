@@ -96,5 +96,3 @@ This project is intended for educational and community use. If you plan to deplo
 ## Contact
 
 For collaborations, updates, or project discussions, please reach out through the club’s available communication channels and official community platforms.
-
-AWS
